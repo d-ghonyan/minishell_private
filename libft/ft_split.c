@@ -20,6 +20,8 @@ static size_t	count(char const *s, char c)
 	size_t	count;
 	size_t	i;
 
+	if (!s)
+		return (0);
 	count = 0;
 	i = 0;
 	while (s[i] == c && s[i])
@@ -76,7 +78,8 @@ static char	*ft_strdup(const char *s, char c, size_t len, size_t *i)
 
 static char	**hello(char **arr)
 {
-	free_ptr_arr(arr);
+	if (arr)
+		free_ptr_arr(arr);
 	return (NULL);
 }
 
@@ -87,8 +90,8 @@ char	**ft_split(char const *s, char c)
 
 	i = 0;
 	res = (char **)malloc((count(s, c) + 1) * sizeof (*res));
-	if (!res)
-		return (NULL);
+	if (!res || !s)
+		return (hello(res));
 	while (s[i])
 	{
 		if (s[i] != c)

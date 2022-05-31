@@ -2,8 +2,9 @@
 
 void	die(int signum)
 {
-	printf("HELLOOOOOO");
-	exit (EXIT_SUCCESS);
+	printf(YELLOW "Doing nothing\n" RESET);
+	// printf("minishell$ ");
+	//exit (EXIT_SUCCESS);
 }
 
 static char	*ft_strjoin_for_read(char *s, char c)
@@ -49,41 +50,6 @@ char	*read_from_pipe(int pipe)
 	return (s);
 }
 
-int	call_which(char *command, char **envp, int pipes[2])
-{
-	int		f;
-	int		status;
-	char	*which;
-	char 	**name;
-
-	f = fork();
-	if (f < 0)
-		;//error
-	else if (f == 0)
-	{
-		if (close(pipes[0]) < 0)
-			;//error
-		if (dup2(pipes[1], STDOUT_FILENO) < 0)
-			;//error
-		close(pipes[1]);
-		name = ft_split(command, ' ');
-		which = ft_strjoin("which ", name[0]);
-		free_ptr_arr(name);
-		name = ft_split(which, ' ');
-		execve("/usr/bin/which", name, envp);
-		free_ptr_arr(name);
-		free(which);
-	}
-	else
-	{
-		close(pipes[1]);
-		wait(&status);
-		if (WIFEXITED(status) && WEXITSTATUS(status) == EXIT_FAILURE)
-			return (-1);
-	}
-	return (0);
-}
-
 int	main(int argc, char **argv, char **envp)
 {
 	int		status;
@@ -91,23 +57,15 @@ int	main(int argc, char **argv, char **envp)
 	char	*path;
 	char	*line;
 
-	signal(SIGINT, &die);
+	//signal(SIGINT, &die);
 	//sleep(1);
+	signal(SIGQUIT, &die);
 	while (1)
 	{
 		if (pipe(pipes) < 0)
 			break ;
 		line = readline("minishell$ ");
 		add_history(line);
-		if ((status = call_which(line, envp, pipes)))
-			;//if (path)
-		if (status >= 0)
-		{
-			path = read_from_pipe(pipes[0]);
-			printf("%s\n", path);
-		}
-		//printf("%s", rl_line_buffer);
-		free(line);
-		close(pipes[0]);
+		printf(RED "%s\n" RESET, get_path(line));
 	}
 }
