@@ -62,10 +62,9 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGQUIT, &die);
 	while (1)
 	{
-		if (pipe(pipes) < 0)
-			break ;
-		line = readline("minishell$ ");
+		line = readline(GREEN "minishell" BLUE "$ " RESET);
 		add_history(line);
+		
 		printf(RED "%s\n" RESET, get_path(line));
 	}
 }

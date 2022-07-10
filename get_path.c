@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static char	*free_ret(char **spl);
+static char	*free_ret(char **spl, char *null);
 
 char	*get_path(char *command)
 {
@@ -21,17 +21,18 @@ char	*get_path(char *command)
 		exec = ft_strjoin(slash, command);
 		free(slash);
 		if (!exec)
-			return (free_ret(spl));
+			return (free_ret(spl, NULL));
 		if (!access(exec, X_OK))
-			return (exec);
+			return (free_ret(spl, exec));
 		free(exec);
 		i++;
 	}
-	return (NULL);
+	return (free_ret(spl, NULL));
 }
 
-static char	*free_ret(char **spl)
+static char	*free_ret(char **spl, char *null)
 {
-	free_ptr_arr(spl);
-	return (NULL);
+	if (spl)
+		free_ptr_arr(spl);
+	return (null);
 }
