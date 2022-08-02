@@ -27,6 +27,7 @@ typedef struct s_cmd {
 }	t_cmd;
 
 char	*get_path(char *command);
+int		count_pipes(char *s);
 void	parse_line(char *line);
 
 #endif

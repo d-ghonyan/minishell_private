@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-static int	ft_isspace(const char *str)
+static int	ft_isspace(char *str)
 {
 	int	i;
 
@@ -25,7 +25,7 @@ static int	ft_isspace(const char *str)
 	return (i);
 }
 
-int	ft_atoi(const char *str)
+int	ft_atoi(char *str)
 {
 	int	i;
 	int	minus;

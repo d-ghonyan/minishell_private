@@ -67,7 +67,7 @@ int	main(int argc, char **argv, char **envp)
 		if (!old_line || ft_strcmp(line, old_line))
 			add_history(line);
 		old_line = line;
-		printf(RED "%s\n" RESET, get_path(line));
+		printf(RED "%d\n" RESET, count_pipes(line));
 		// parse_line(line);
 	}
 }

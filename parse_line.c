@@ -19,11 +19,18 @@ void	parse_line(char *line)
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] == '"')
+		if (line[i] == '"' )
 		{
 			i++;
 			while (line[i] != '"')
 				i++;
 		}
+		if (line[i] == '\'')
+		{
+			i++;
+			while (line[i] != '\'')
+				i++;
+		}
+		
 	}
 }
