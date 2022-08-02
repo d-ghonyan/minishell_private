@@ -39,13 +39,12 @@ char	*read_from_pipe(int pipe)
 	{
 		a = read(pipe, &c, 1);
 		if (a == -1)
-			return (NULL);//free_stuff_and_exit(NULL, s, "read() failed at gnl_new()");
-		if (a == 0 || c == '\n')
+			return (NULL);
+		if (a == 0)
 			break ;
 		s = ft_strjoin_for_read(s, c);
 		if (!s)
 			break ;
-		//perror_exit_cond("strjoin() failed at gnl_new()", !s);
 	}
 	return (s);
 }
@@ -55,16 +54,20 @@ int	main(int argc, char **argv, char **envp)
 	int		status;
 	int		pipes[2];
 	char	*path;
+	char	*old_line;
 	char	*line;
 
 	//signal(SIGINT, &die);
 	//sleep(1);
+	old_line = NULL;
 	signal(SIGQUIT, &die);
 	while (1)
 	{
 		line = readline(GREEN "minishell" BLUE "$ " RESET);
-		add_history(line);
-		
+		if (!old_line || ft_strcmp(line, old_line))
+			add_history(line);
+		old_line = line;
 		printf(RED "%s\n" RESET, get_path(line));
+		// parse_line(line);
 	}
 }

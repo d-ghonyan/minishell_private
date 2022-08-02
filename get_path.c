@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static char	*free_ret(char **spl, char *null);
+static char	*free_ret(char **spl, char **comm, char *null);
 
 char	*get_path(char *command)
 {
@@ -8,31 +8,32 @@ char	*get_path(char *command)
 	char	*exec;
 	char	*slash;
 	char	**spl;
+	char	**comm;
 
-	i = 0;
+	i = -1;
 	spl = ft_split(getenv("PATH"), ':');
-	if (!spl)
-		return (NULL);
-	while (spl[i])
+	comm = ft_split(command, ' ');
+	if (!spl || !comm)
+		return (free_ret(spl, comm, NULL));
+	while (spl[++i])
 	{
 		slash = ft_strjoin(spl[i], "/");
 		if (!slash)
-			return (NULL);
-		exec = ft_strjoin(slash, command);
+			return (free_ret(spl, comm, NULL));
+		exec = ft_strjoin(slash, comm[0]);
 		free(slash);
 		if (!exec)
-			return (free_ret(spl, NULL));
+			return (free_ret(spl, comm, NULL));
 		if (!access(exec, X_OK))
-			return (free_ret(spl, exec));
+			return (free_ret(spl, comm, exec));
 		free(exec);
-		i++;
 	}
-	return (free_ret(spl, NULL));
+	return (free_ret(spl, comm, NULL));
 }
 
-static char	*free_ret(char **spl, char *null)
+static char	*free_ret(char **spl, char **comm, char *null)
 {
-	if (spl)
-		free_ptr_arr(spl);
+	free_ptr_arr(spl);
+	free_ptr_arr(comm);
 	return (null);
 }

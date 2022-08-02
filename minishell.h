@@ -19,9 +19,14 @@
 # include "libft/libft.h"
 
 typedef struct s_cmd {
-	int	pipe_count;
+	int		input;
+	int		output;
+	int		heredoc;
+	int		append;
+	char	*here_str;
 }	t_cmd;
 
 char	*get_path(char *command);
+void	parse_line(char *line);
 
-#endif 
+#endif
