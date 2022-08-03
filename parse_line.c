@@ -15,6 +15,7 @@ void	parse_line(char *line)
 {
 	int		i;
 	char	**commands;
+	t_cmd	cmd;
 
 	i = 0;
 	while (line[i])
