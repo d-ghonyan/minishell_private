@@ -2,7 +2,7 @@
 
 static char	*free_ret(char **spl, char **comm, char *null);
 
-char	*get_path(char *command)
+char	*_get_path(char *command)
 {
 	int		i;
 	char	*exec;
@@ -29,6 +29,24 @@ char	*get_path(char *command)
 		free(exec);
 	}
 	return (free_ret(spl, comm, NULL));
+}
+
+char	*get_path(char *command)
+{
+	char	**spl;
+	char	*ret;
+
+	spl = ft_split(command, ' ');
+	if (!spl)
+		return (NULL);
+	if (!access(spl[0], X_OK))
+	{
+		ret = ft_strdup(spl[0]);
+		free_ptr_arr(spl);
+		return (ret);
+	}
+	free_ptr_arr(spl);
+	return (_get_path(command));
 }
 
 static char	*free_ret(char **spl, char **comm, char *null)

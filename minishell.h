@@ -29,5 +29,6 @@ typedef struct s_cmd {
 int		count_pipes(char *s);
 char	*get_path(char *command);
 void	parse_line(char *line);
+void	check_quotes(char *s);
 
 #endif
