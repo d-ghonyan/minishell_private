@@ -54,7 +54,6 @@ int	main(int argc, char **argv, char **envp)
 	char	*line;
 	t_cmd	*cmd;
 
-	//signal(SIGINT, &die);
 	old_line = NULL;
 	signal(SIGQUIT, &die);
 	while (1)
@@ -64,13 +63,23 @@ int	main(int argc, char **argv, char **envp)
 			add_history(line);
 		old_line = line;
 		check_quotes(line);
-		cmd = parse_line(line);
 		if (count_pipes(line) < 0)
 		{
 			free(line);
 			continue;
 		}
-		for (int i = 0; i < count_pipes(line) + 1; i++)
-			printf("%s -- \n", cmd[i].command);
+		cmd = parse_line(line);
+		for (int i = 0; i < count_pipes (line) + 1; i++)
+		{
+			char **a = ft_split(cmd[i].command, ' ');
+			char	*path = get_path(cmd[i].command);
+			if (!path)
+				printf("COMMAND NOT FOUND");
+			pid_t	pid = fork();
+			if (pid == 0)
+				execve(path, a, envp);
+			else
+				wait(NULL);
+		}
 	}
 }
