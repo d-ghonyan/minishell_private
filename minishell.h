@@ -19,6 +19,7 @@
 # include "libft/libft.h"
 
 typedef struct s_cmd {
+	char	*command;
 	char	*infile;
 	char	*outfile;
 	char	*heredoc;
@@ -27,8 +28,11 @@ typedef struct s_cmd {
 }	t_cmd;
 
 int		count_pipes(char *s);
-char	*get_path(char *command);
-void	parse_line(char *line);
+int		count_pipes(char *s);
+int		command_len(char *s, int i);
 void	check_quotes(char *s);
+char	*get_path(char *command);
+char	*alloc_command(char *line, int i, int size, int j);
+t_cmd	*parse_line(char *line);
 
 #endif

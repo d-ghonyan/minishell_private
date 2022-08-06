@@ -3,8 +3,6 @@
 void	die(int signum)
 {
 	printf(YELLOW "Doing nothing\n" RESET);
-	// printf("minishell$ ");
-	//exit (EXIT_SUCCESS);
 }
 
 static char	*ft_strjoin_for_read(char *s, char c)
@@ -52,13 +50,11 @@ char	*read_from_pipe(int pipe)
 int	main(int argc, char **argv, char **envp)
 {
 	int		status;
-	int		pipes[2];
-	char	*path;
 	char	*old_line;
 	char	*line;
+	t_cmd	*cmd;
 
 	//signal(SIGINT, &die);
-	//sleep(1);
 	old_line = NULL;
 	signal(SIGQUIT, &die);
 	while (1)
@@ -67,9 +63,14 @@ int	main(int argc, char **argv, char **envp)
 		if (!old_line || ft_strcmp(line, old_line))
 			add_history(line);
 		old_line = line;
-		printf("%s\n", get_path(line));
-		printf(RED "%d\n" RESET, count_pipes(line));
 		check_quotes(line);
-		// parse_line(line);
+		cmd = parse_line(line);
+		if (count_pipes(line) < 0)
+		{
+			free(line);
+			continue;
+		}
+		for (int i = 0; i < count_pipes(line) + 1; i++)
+			printf("%s -- \n", cmd[i].command);
 	}
 }
