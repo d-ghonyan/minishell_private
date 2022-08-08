@@ -1,16 +1,5 @@
 #include "minishell.h"
 
-int	is_a_builtin(char *s)
-{
-	return (!ft_strcmp(s, "echo")
-		|| !ft_strcmp(s, "cd")
-		|| !ft_strcmp(s, "pwd")
-		|| !ft_strcmp(s, "export")
-		|| !ft_strcmp(s, "unset")
-		|| !ft_strcmp(s, "env")
-		|| !ft_strcmp(s, "exit"));
-}
-
 int	command_len(char *s, int i)
 {
 	int	len;
@@ -48,17 +37,25 @@ int	command_len(char *s, int i)
 
 t_cmd	*init_cmd(int size)
 {
+	int		i;
 	t_cmd	*cmd;
 
+	i = -1;
 	cmd = malloc(sizeof (*cmd) * size);
 	if (!cmd)
 		return (NULL);
-	cmd->append = 0;
-	cmd->here_str = NULL;
-	cmd->heredoc = NULL;
-	cmd->command = NULL;
-	cmd->infile = NULL;
-	cmd->outfile = NULL;
+	while (++i < size)
+	{
+		cmd[i].len = size;
+		cmd[i].append = 0;
+		cmd[i].here_str = NULL;
+		cmd[i].heredoc = NULL;
+		cmd[i].command = NULL;
+		cmd[i].infile = NULL;
+		cmd[i].outfile = NULL;
+		cmd[i].exec.exec = NULL;
+		cmd[i].exec.argv = NULL;
+	}
 	return (cmd);
 }
 

@@ -24,6 +24,7 @@ static char	*ft_strjoin_for_read(char *s, char c)
 	res[i + 1] = '\0';
 	return (res);
 }
+
 char	*read_from_pipe(int pipe)
 {
 	char	*s;
@@ -66,20 +67,9 @@ int	main(int argc, char **argv, char **envp)
 		if (count_pipes(line) < 0)
 		{
 			free(line);
-			continue;
+			continue ;
 		}
 		cmd = parse_line(line);
-		for (int i = 0; i < count_pipes (line) + 1; i++)
-		{
-			char **a = ft_split(cmd[i].command, ' ');
-			char	*path = get_path(cmd[i].command);
-			if (!path)
-				printf("COMMAND NOT FOUND");
-			pid_t	pid = fork();
-			if (pid == 0)
-				execve(path, a, envp);
-			else
-				wait(NULL);
-		}
+		exec_argv(cmd);
 	}
 }

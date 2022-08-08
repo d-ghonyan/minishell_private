@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static char	*free_ret(char **spl, char **comm, char *null);
+static char	*free_ret(char **spl, char *null);
 
 char	*_get_path(char *command)
 {
@@ -8,50 +8,41 @@ char	*_get_path(char *command)
 	char	*exec;
 	char	*slash;
 	char	**spl;
-	char	**comm;
 
 	i = -1;
 	spl = ft_split(getenv("PATH"), ':');
-	comm = ft_split(command, ' ');
-	if (!spl || !comm)
-		return (free_ret(spl, comm, NULL));
+	if (!spl)
+		return (NULL);
 	while (spl[++i])
 	{
 		slash = ft_strjoin(spl[i], "/");
 		if (!slash)
-			return (free_ret(spl, comm, NULL));
-		exec = ft_strjoin(slash, comm[0]);
+			return (free_ret(spl, NULL));
+		exec = ft_strjoin(slash, command);
 		free(slash);
 		if (!exec)
-			return (free_ret(spl, comm, NULL));
-		if (!access(exec, X_OK))
-			return (free_ret(spl, comm, exec));
+			return (free_ret(spl, NULL));
+		if (!access(exec, F_OK))
+			return (free_ret(spl, exec));
 		free(exec);
 	}
-	return (free_ret(spl, comm, NULL));
+	return (free_ret(spl, NULL));
 }
 
 char	*get_path(char *command)
 {
-	char	**spl;
 	char	*ret;
 
-	spl = ft_split(command, ' ');
-	if (!spl)
-		return (NULL);
-	if (!access(spl[0], X_OK))
+	if (!access(command, F_OK))
 	{
-		ret = ft_strdup(spl[0]);
-		free_ptr_arr(spl);
+		ret = ft_strdup(command);
 		return (ret);
 	}
-	free_ptr_arr(spl);
 	return (_get_path(command));
 }
 
-static char	*free_ret(char **spl, char **comm, char *null)
+static char	*free_ret(char **spl, char *null)
 {
 	free_ptr_arr(spl);
-	free_ptr_arr(comm);
 	return (null);
 }

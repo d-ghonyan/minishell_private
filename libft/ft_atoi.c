@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-static int	ft_isspace(char *str)
+int	ft_isspace_index(char *str)
 {
 	int	i;
 
@@ -33,7 +33,7 @@ int	ft_atoi(char *str)
 
 	minus = 1;
 	res = 0;
-	i = ft_isspace(str);
+	i = ft_isspace_index(str);
 	if (str[i] == '-' || str[i] == '+')
 	{
 		if (str[i] == '-')
