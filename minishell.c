@@ -67,8 +67,12 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		}
 		cmd = parse_line(line);
-		printf("%d\n", var_len(line, 1, 0));
-		// exec_argv(cmd);
+		exec_argv(cmd);
+		for (int i = 0; i < count_pipes(line) + 1; i++)
+		{
+			printf("%s\n", expand_line(cmd[i].exec.exec));
+		}
+		// printf("%d\n", expanded_len(line, 4, 0));
 		// for (int i = 0; i < count_pipes(line) + 1; i++)
 		// {	
 		// 	pid_t pid = fork();

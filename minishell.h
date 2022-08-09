@@ -35,6 +35,7 @@ typedef struct s_cmd {
 }	t_cmd;
 
 int		count_pipes(char *s);
+int 	final_len(char *s);
 int		expanded_len(char *s, int i, int quote);
 int		var_len(char *s, int i, int quote);
 int		check_quotes(char *s);
