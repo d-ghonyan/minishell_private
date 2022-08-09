@@ -51,12 +51,18 @@ void	init_argv(t_exec *exec, char *cmd)
 
 	k = 0;
 	i = exec_len(cmd, 0, 0);
-	exec->argv = malloc(sizeof ((*exec->argv)) * (argv_count(cmd) + 2));
+	exec->argv = malloc(sizeof (*(exec->argv)) * (argv_count(cmd) + 2));
 	if (!exec->argv)
+	{
+		perror("init_argv() 1: ");
 		return ;
+	}
 	exec->argv[k] = ft_strdup(exec->exec);
-	if (!exec->argv[k++])
+	if (!exec->argv[k])
+	{
+		perror("init_argv() 2: ");
 		return ;
+	}
 	while (cmd[i])
 	{
 		while (cmd[i] && ft_isspace(cmd[i]))
@@ -67,7 +73,10 @@ void	init_argv(t_exec *exec, char *cmd)
 		{
 			exec->argv[k] = argv_dup(cmd, i);
 			if (!exec->argv[k])
+			{
+				perror("init_argv() 3: ");
 				return ;
+			}
 			i += argv_len(cmd, i);
 			k++;
 		}
@@ -79,13 +88,30 @@ void	init_argv(t_exec *exec, char *cmd)
 
 void	exec_argv(t_cmd *cmd)
 {
-	int	i;
+	int		i;
+	int		j;
+	char	*temp;
 
 	i = 0;
 	while (i < cmd->len)
 	{
+		j = -1;
 		init_exec(&(cmd[i].exec), cmd[i].command);
+		if (!(cmd[i].exec.exec))
+		{
+			perror("init_exec(): ");
+			return ;
+		}
 		init_argv(&(cmd[i].exec), cmd[i].command);
+		// temp = cmd[i].exec.exec;
+		// cmd[i].exec.exec = expand_line(cmd[i].exec.exec);
+		// // free(temp);
+		// while (cmd[i].exec.argv[++j])
+		// {
+		// 	temp = cmd[i].exec.argv[j];
+		// 	cmd[i].exec.argv[j] = expand_line(cmd[i].exec.argv[j]);
+		// 	// free(temp);
+		// }
 		i++;
 	}
 }

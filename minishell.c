@@ -55,6 +55,7 @@ int	main(int argc, char **argv, char **envp)
 	t_cmd	*cmd;
 	int		a;
 
+	old_line = NULL;
 	while (1)
 	{
 		line = readline(GREEN "minishell" BLUE "$ " RESET);
@@ -63,23 +64,24 @@ int	main(int argc, char **argv, char **envp)
 		old_line = line;
 		if (!line[0] || count_pipes(line) < 0 || check_quotes(line))
 		{
-			free(line);
+			// free(line);
 			continue ;
 		}
 		cmd = parse_line(line);
 		exec_argv(cmd);
-		for (int i = 0; i < count_pipes(line) + 1; i++)
-		{
-			printf("%s\n", expand_line(cmd[i].exec.exec));
-		}
-		// printf("%d\n", expanded_len(line, 4, 0));
 		// for (int i = 0; i < count_pipes(line) + 1; i++)
-		// {	
-		// 	pid_t pid = fork();
-		// 	if (pid == 0)
-		// 		execve(get_path(cmd[i].exec.exec), cmd[i].exec.argv, envp);
-		// 	else
-		// 		waitpid(pid, &a, 0);
+		// {
+		// 	printf("%s\n", cmd[i].exec.exec);
+		// 	for (int j = 0; cmd[i].exec.argv[j]; j++)
+		// 		printf("%s ", cmd[i].exec.argv[j]);
+		// 	printf("\n");
+		// 	// pid_t pid = fork();
+		// 	// if (pid == 0)
+		// 	// 	execve(get_path(cmd[i].exec.exec), cmd[i].exec.argv, envp);
+		// 	// else
+		// 	// 	waitpid(pid, &a, 0);
 		// }
 	}
 }
+
+//echo $PATH'asdasdasaaa'aaaaaaaaaaaaaaaaaaaadddddddddddddddddddddddddddddddddd

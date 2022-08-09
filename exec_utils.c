@@ -139,7 +139,10 @@ char	*argv_dup(char *cmd, int i)
 	j = 0;
 	res = malloc(sizeof (*res) * (argv_len(cmd, i)));
 	if (!res)
+	{
+		perror("argv_dup(): ");
 		return (NULL);
+	}
 	while (cmd[i] && cmd[i] != '<' && cmd[i] != '>' && !ft_isspace(cmd[i]))
 	{
 		if (cmd[i] == '\'')

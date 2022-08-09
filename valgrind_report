@@ -1,0 +1,89 @@
+==7668== Conditional jump or move depends on uninitialised value(s)
+==7668==    at 0x10B1EE: main (in /home/dghonyan/minishell/minishell)
+==7668== 
+==7668== Invalid read of size 1
+==7668==    at 0x109719: init_argv (in /home/dghonyan/minishell/minishell)
+==7668==    by 0x109822: exec_argv (in /home/dghonyan/minishell/minishell)
+==7668==    by 0x10B26D: main (in /home/dghonyan/minishell/minishell)
+==7668==  Address 0x4ae9fdf is 1 bytes after a block of size 78 alloc'd
+==7668==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==7668==    by 0x10B76C: alloc_command (in /home/dghonyan/minishell/minishell)
+==7668==    by 0x10B6F5: parse_line (in /home/dghonyan/minishell/minishell)
+==7668==    by 0x10B25D: main (in /home/dghonyan/minishell/minishell)
+==7668== 
+==7668== Conditional jump or move depends on uninitialised value(s)
+==7668==    at 0x10C586: ft_strlen (in /home/dghonyan/minishell/minishell)
+==7668==    by 0x10A76A: strjoin_var (in /home/dghonyan/minishell/minishell)
+==7668==    by 0x10ADF0: expand_line (in /home/dghonyan/minishell/minishell)
+==7668==    by 0x109937: exec_argv (in /home/dghonyan/minishell/minishell)
+==7668==    by 0x10B26D: main (in /home/dghonyan/minishell/minishell)
+==7668== 
+==7668== Invalid write of size 1
+==7668==    at 0x10ABD6: expand_line (in /home/dghonyan/minishell/minishell)
+==7668==    by 0x109937: exec_argv (in /home/dghonyan/minishell/minishell)
+==7668==    by 0x10B26D: main (in /home/dghonyan/minishell/minishell)
+==7668==  Address 0x4aea4bd is 0 bytes after a block of size 125 alloc'd
+==7668==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==7668==    by 0x10A788: strjoin_var (in /home/dghonyan/minishell/minishell)
+==7668==    by 0x10ADF0: expand_line (in /home/dghonyan/minishell/minishell)
+==7668==    by 0x109937: exec_argv (in /home/dghonyan/minishell/minishell)
+==7668==    by 0x10B26D: main (in /home/dghonyan/minishell/minishell)
+==7668== 
+==7668== Invalid write of size 1
+==7668==    at 0x10AEBA: expand_line (in /home/dghonyan/minishell/minishell)
+==7668==    by 0x109937: exec_argv (in /home/dghonyan/minishell/minishell)
+==7668==    by 0x10B26D: main (in /home/dghonyan/minishell/minishell)
+==7668==  Address 0x4aea4c7 is 10 bytes after a block of size 125 alloc'd
+==7668==    at 0x483877F: malloc (vg_replace_malloc.c:307)
+==7668==    by 0x10A788: strjoin_var (in /home/dghonyan/minishell/minishell)
+==7668==    by 0x10ADF0: expand_line (in /home/dghonyan/minishell/minishell)
+==7668==    by 0x109937: exec_argv (in /home/dghonyan/minishell/minishell)
+==7668==    by 0x10B26D: main (in /home/dghonyan/minishell/minishell)
+==7668== 
+
+valgrind: m_mallocfree.c:303 (get_bszB_as_is): Assertion 'bszB_lo == bszB_hi' failed.
+valgrind: Heap block lo/hi size mismatch: lo = 192, hi = 7234017283807469921.
+This is probably caused by your program erroneously writing past the
+end of a heap block and corrupting heap metadata.  If you fix any
+invalid writes reported by Memcheck, this assertion failure will
+probably go away.  Please try that before reporting this as a bug.
+
+
+host stacktrace:
+==7668==    at 0x58047B6A: show_sched_status_wrk (m_libcassert.c:406)
+==7668==    by 0x58047C87: report_and_quit (m_libcassert.c:477)
+==7668==    by 0x58047E17: vgPlain_assert_fail (m_libcassert.c:543)
+==7668==    by 0x580522E4: get_bszB_as_is (m_mallocfree.c:303)
+==7668==    by 0x580522E4: is_inuse_block (m_mallocfree.c:331)
+==7668==    by 0x580522E4: vgPlain_describe_arena_addr (m_mallocfree.c:1592)
+==7668==    by 0x5803ECEA: vgPlain_describe_addr (m_addrinfo.c:185)
+==7668==    by 0x5803DB3F: vgMemCheck_update_Error_extra (mc_errors.c:1185)
+==7668==    by 0x58042BF4: vgPlain_maybe_record_error (m_errormgr.c:822)
+==7668==    by 0x5803CFA8: vgMemCheck_record_address_error (mc_errors.c:765)
+==7668==    by 0x100423FB47: ???
+==7668==    by 0x1002E8DF2F: ???
+==7668==    by 0x1002E8DF17: ???
+==7668==    by 0x1002E8DF2F: ???
+==7668==    by 0x1002E8DF3F: ???
+
+sched status:
+  running_tid=1
+
+Thread 1: status = VgTs_Runnable (lwpid 7668)
+==7668==    at 0x10AEE1: expand_line (in /home/dghonyan/minishell/minishell)
+==7668==    by 0x109937: exec_argv (in /home/dghonyan/minishell/minishell)
+==7668==    by 0x10B26D: main (in /home/dghonyan/minishell/minishell)
+client stack range: [0x1FFEFE6000 0x1FFF000FFF] client SP: 0x1FFEFFFD60
+valgrind stack range: [0x1002D8E000 0x1002E8DFFF] top usage: 18472 of 1048576
+
+
+Note: see also the FAQ in the source distribution.
+It contains workarounds to several common problems.
+In particular, if Valgrind aborted or crashed after
+identifying problems in your program, there's a good chance
+that fixing those problems will prevent Valgrind aborting or
+crashing, especially if it happened in m_mallocfree.c.
+
+If that doesn't help, please report this bug to: www.valgrind.org
+
+In the bug report, send all the above text, the valgrind

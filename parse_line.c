@@ -65,12 +65,11 @@ void	*free_cmd(t_cmd *cmd)
 	return (NULL);
 }
 
+//TODO HANDLING
 t_cmd	*parse_line(char *line)
 {
 	int		i;
 	int		j;
-	int		k;
-	char	**commands;
 	t_cmd	*cmd;
 
 	i = count_pipes(line);
@@ -86,9 +85,14 @@ t_cmd	*parse_line(char *line)
 	j = 0;
 	while (line[i])
 	{
-		cmd[j++].command = alloc_command(line, i, command_len(line, i) + 1, 0);
+		cmd[j].command = alloc_command(line, i, command_len(line, i) + 1, 0);
+		if (!cmd[j].command)
+		{
+			return (NULL);
+		}
 		i += command_len(line, i);
 		i += (line[i] != '\0');
+		j++;
 	}
 	return (cmd);
 }

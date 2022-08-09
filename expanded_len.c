@@ -34,7 +34,10 @@ int	expanded_len(char *cmd, int i, int quote)
 	j = 0;
 	var = malloc(sizeof (*var) * (var_len(cmd, i, quote) + 1));
 	if (!var)
+	{
+		perror("expanded_len(): ");
 		return (-1);
+	}
 	while (cmd[i] && is_a_valid_name(cmd[i], i > 0 && cmd[i - 1] == '$'))
 	{
 		if (quote && cmd[i] == '"')
@@ -56,7 +59,10 @@ char	*expanded_env(char *cmd, int i, int quote)
 	j = 0;
 	var = malloc(sizeof (*var) * (var_len(cmd, i, quote) + 1));
 	if (!var)
+	{
+		perror("expanded_env(): ");
 		return (NULL);
+	}
 	while (cmd[i] && is_a_valid_name(cmd[i], i > 0 && cmd[i - 1] == '$'))
 	{
 		if (quote && cmd[i] == '"')
@@ -79,7 +85,10 @@ char	*strjoin_var(char *s1, char *s2, int j)
 	k = 0;
 	s = malloc(sizeof (*s) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!s)
+	{
+		free(s1);
 		return (NULL);
+	}
 	while (++i < j)
 		s[i] = s1[i];
 	free(s1);

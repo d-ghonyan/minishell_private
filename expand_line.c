@@ -1,7 +1,7 @@
 #include "minishell.h"
 
-int	var_len(char *s, int i, int quote);
-int	expanded_len(char *cmd, int i, int quote);
+int		var_len(char *s, int i, int quote);
+int 	expanded_len(char *cmd, int i, int quote);
 char	*expanded_env(char *cmd, int i, int quote);
 char	*strjoin_var(char *s1, char *s2, int j);
 
@@ -59,32 +59,20 @@ int final_len(char *s)
 	return (len);
 }
 
-char **expand_argv(char **argv)
-{
-	int i;
-	char **res;
-
-	i = 0;
-	res = malloc(sizeof(*res) * ptr_arr_len(argv));
-	if (!res)
-		return (NULL);
-	while (argv[i])
-	{
-		// res[i] =
-	}
-}
-
 char *expand_line(char *s)
 {
-	int		i;
-	int		j;
-	char	*res;
+	int i;
+	int j;
+	char *res;
 
 	i = 0;
 	j = 0;
-	res = malloc(sizeof (*res) * (final_len(s) + 1));
+	res = malloc(sizeof(*res) * (final_len(s) + 1));
 	if (!res)
+	{
+		perror("expand_line(): ");
 		return (NULL);
+	}
 	while (s[i])
 	{
 		if (s[i] == '\'')
@@ -106,7 +94,10 @@ char *expand_line(char *s)
 						res = strjoin_var(res, expanded_env(s, i + 1, 1), j);
 						j = ft_strlen(res);
 						if (!res)
+						{
+							perror("strjoin from expand_line(): ");
 							return (NULL);
+						}
 					}
 					i += var_len(s, i + 1, 1);
 				}
@@ -124,7 +115,10 @@ char *expand_line(char *s)
 				res = strjoin_var(res, expanded_env(s, i + 1, 0), j);
 				j = ft_strlen(res);
 				if (!res)
+				{
+					perror("strjoin from expand_line(): ");
 					return (NULL);
+				}
 			}
 			i += var_len(s, i + 1, 0) + 1;
 		}
