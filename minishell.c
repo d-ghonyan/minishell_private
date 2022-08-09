@@ -50,26 +50,32 @@ char	*read_from_pipe(int pipe)
 
 int	main(int argc, char **argv, char **envp)
 {
-	int		status;
 	char	*old_line;
 	char	*line;
 	t_cmd	*cmd;
+	int		a;
 
-	old_line = NULL;
-	signal(SIGQUIT, &die);
 	while (1)
 	{
 		line = readline(GREEN "minishell" BLUE "$ " RESET);
 		if (!old_line || ft_strcmp(line, old_line))
 			add_history(line);
 		old_line = line;
-		check_quotes(line);
-		if (count_pipes(line) < 0)
+		if (!line[0] || count_pipes(line) < 0 || check_quotes(line))
 		{
 			free(line);
 			continue ;
 		}
 		cmd = parse_line(line);
-		exec_argv(cmd);
+		printf("%d\n", var_len(line, 1, 0));
+		// exec_argv(cmd);
+		// for (int i = 0; i < count_pipes(line) + 1; i++)
+		// {	
+		// 	pid_t pid = fork();
+		// 	if (pid == 0)
+		// 		execve(get_path(cmd[i].exec.exec), cmd[i].exec.argv, envp);
+		// 	else
+		// 		waitpid(pid, &a, 0);
+		// }
 	}
 }

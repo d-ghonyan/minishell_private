@@ -35,15 +35,15 @@ typedef struct s_cmd {
 }	t_cmd;
 
 int		count_pipes(char *s);
-int		expanded_len(char *s);
+int		expanded_len(char *s, int i, int quote);
 int		var_len(char *s, int i, int quote);
-void	check_quotes(char *s);
+int		check_quotes(char *s);
+int		is_a_builtin(char *s);
+void	exec_argv(t_cmd *cmd);
 char	*get_path(char *command);
 char	*alloc_command(char *line, int i, int size, int j);
+char	*expand_line(char *cmd);
 t_cmd	*parse_line(char *line);
-t_cmd	*expand_line(t_cmd *cmd);
 t_cmd	*init_cmd(int size);
-void	exec_argv(t_cmd *cmd);
-int		is_a_builtin(char *s);
 
 #endif

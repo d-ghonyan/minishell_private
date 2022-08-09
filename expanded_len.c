@@ -1,5 +1,6 @@
 #include "minishell.h"
 
+
 int	is_a_valid_name(char c, int cond)
 {
 	if (cond)
@@ -12,7 +13,7 @@ int	var_len(char *s, int i, int quote)
 	int	len;
 
 	len = 0;
-	while (s[i] && !ft_isspace(s[i]))
+	while (s[i] && is_a_valid_name(s[i], i > 0 && s[i - 1] == '$'))
 	{
 		if (quote && s[i] == '"')
 			break ;
@@ -20,4 +21,11 @@ int	var_len(char *s, int i, int quote)
 		len++;
 	}
 	return (len);
+}
+
+int	expanded_len(char *cmd, int i, int quote)
+{
+	char	*var;
+
+	var = malloc(sizeof (*var) * (var_len(cmd, i, quote)));
 }

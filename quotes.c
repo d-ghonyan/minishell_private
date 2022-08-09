@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	check_quotes(char *s)
+int	check_quotes(char *s)
 {
 	int	i;
 	int	single;
@@ -30,4 +30,5 @@ void	check_quotes(char *s)
 	}
 	if (single % 2 == 1 || dbl % 2 == 1)
 		printf(RED "Error\n" RESET);
+	return (single % 2 == 1 || dbl % 2 == 1);
 }
