@@ -6,26 +6,21 @@ char	*alloc_command(char *line, int i, int size, int j)
 
 	s = malloc(sizeof (*s) * size);
 	if (!s)
-	{
-		perror("alloc_command(): ");
 		return (NULL);
-	}
 	while (line[i] && line[i] != '|')
 	{
-		// if (line[i] == '\'')
-		// {
-		// 	s[j++] = line[i++];
-		// 	while (line[i] && line[i] != '\'')
-		// 		s[j++] = line[i++];
-		// }
-		// if (line[i] == '"')
-		// {
-		// 	s[j++] = line[i++];
-		// 	while (line[i] && line[i] != '"')
-		// 		s[j++] = line[i++];
-		// }
-		// if (!line[i] || line[i] == '|')
-		// 	break ;
+		if (line[i] == '\'')
+		{
+			s[j++] = line[i++];
+			while (line[i] && line[i] != '\'')
+				s[j++] = line[i++];
+		}
+		if (line[i] == '"')
+		{
+			s[j++] = line[i++];
+			while (line[i] && line[i] != '"')
+				s[j++] = line[i++];
+		}
 		s[j++] = line[i++];
 	}
 	s[j] = '\0';

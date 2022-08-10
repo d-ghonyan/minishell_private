@@ -20,7 +20,7 @@ int	redirection_index(char *cmd, int i, char red)
 		}
 		while (cmd[i] && ft_isspace(cmd[i]))
 			i++;
-		if (cmd[i] != '<' || cmd[i] != '>')
+		if (cmd[i] != '<' && cmd[i] != '>')
 			break ;
 	}
 	return (i);
@@ -137,7 +137,7 @@ char	*argv_dup(char *cmd, int i)
 	char	*res;
 
 	j = 0;
-	res = malloc(sizeof (*res) * (argv_len(cmd, i)));
+	res = malloc(sizeof (*res) * (argv_len(cmd, i) + 1));
 	if (!res)
 	{
 		perror("argv_dup(): ");

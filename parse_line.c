@@ -27,8 +27,6 @@ int	command_len(char *s, int i)
 				len++;
 			}
 		}
-		if (!s[i] || s[i] == '|')
-			break ;
 		i++;
 		len++;
 	}
@@ -59,12 +57,6 @@ t_cmd	*init_cmd(int size)
 	return (cmd);
 }
 
-void	*free_cmd(t_cmd *cmd)
-{
-	free(cmd);
-	return (NULL);
-}
-
 //TODO HANDLING
 t_cmd	*parse_line(char *line)
 {
@@ -78,7 +70,7 @@ t_cmd	*parse_line(char *line)
 	cmd = init_cmd(i + 1);
 	if (!cmd)
 	{
-		perror("Malloc failed at parse_line: ");
+		perror("Malloc failed at parse_line(): ");
 		return (NULL);
 	}
 	i = 0;
@@ -88,6 +80,7 @@ t_cmd	*parse_line(char *line)
 		cmd[j].command = alloc_command(line, i, command_len(line, i) + 1, 0);
 		if (!cmd[j].command)
 		{
+			perror("Malloc failed at alloc_command(): ");
 			return (NULL);
 		}
 		i += command_len(line, i);

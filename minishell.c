@@ -48,27 +48,51 @@ char	*read_from_pipe(int pipe)
 	return (s);
 }
 
+void	free_cmd(t_cmd *cmd)
+{
+	int	i;
+	int	len;
+
+	i = -1;
+	len = cmd->len;
+	while (++i < len)
+	{
+		free(cmd[i].here_str);
+		free(cmd[i].heredoc);
+		free(cmd[i].infile);
+		free(cmd[i].outfile);
+		free(cmd[i].command);
+		free(cmd[i].exec.exec);
+		free_ptr_arr(cmd[i].exec.argv);
+	}
+	free(cmd);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char	*old_line;
 	char	*line;
 	t_cmd	*cmd;
-	int		a;
 
 	old_line = NULL;
 	while (1)
 	{
 		line = readline(GREEN "minishell" BLUE "$ " RESET);
-		if (!old_line || ft_strcmp(line, old_line))
+		if (!line[0] || count_pipes(line) < 0 || check_quotes(line))
+			continue ;
+		if (line[0] && (!old_line || ft_strcmp(line, old_line)))
 			add_history(line);
 		old_line = line;
-		if (!line[0] || count_pipes(line) < 0 || check_quotes(line))
-		{
-			// free(line);
-			continue ;
-		}
 		cmd = parse_line(line);
 		exec_argv(cmd);
+		free_cmd(cmd);
+		// for (int i = 0; i < cmd->len; i++)
+		// {
+		// 	for (int j = 0; cmd[i].exec.argv[j]; j++)
+		// 	{
+		// 		printf("%s\n", cmd[i].exec.argv[j]);
+		// 	}
+		// }
 		// for (int i = 0; i < count_pipes(line) + 1; i++)
 		// {
 		// 	printf("%s\n", cmd[i].exec.exec);

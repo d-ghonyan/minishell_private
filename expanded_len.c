@@ -75,25 +75,17 @@ char	*expanded_env(char *cmd, int i, int quote)
 	return (env);
 }
 
-char	*strjoin_var(char *s1, char *s2, int j)
+void	strjoin_var(char *s1, char *s2)
 {
 	int		i;
-	int		k;
-	char	*s;
+	int		j;
 
-	i = -1;
-	k = 0;
-	s = malloc(sizeof (*s) * (ft_strlen(s1) + ft_strlen(s2) + 1));
-	if (!s)
+	i = ft_strlen(s1);
+	j = 0;
+	while (s2 && s2[j])
 	{
-		free(s1);
-		return (NULL);
+		s1[i] = s2[j];
+		j++;
+		i++;
 	}
-	while (++i < j)
-		s[i] = s1[i];
-	free(s1);
-	while (s2 && s2[k])
-		s[i++] = s2[k++];
-	s[i] = '\0';
-	return (s);
 }

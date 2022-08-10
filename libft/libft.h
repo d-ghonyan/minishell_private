@@ -15,6 +15,8 @@
 # define LIBFT_H
 
 # include <stddef.h>
+# include <stdlib.h>
+# include <unistd.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1
@@ -60,7 +62,7 @@ char	*ft_itoa(int n);
 int		ft_isspace_index(char *str);
 //GNL
 char	*get_next_line_new(int fd);
-char	*ft_strjoin_gnl(char const *s1, char const *s2);
+char	*ft_strjoin_gnl(char *s1, char const *s2);
 //GNL
 char	**ft_split(char const *s, char c);
 size_t	ft_strlen(const char *s);

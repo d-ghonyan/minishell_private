@@ -34,6 +34,7 @@ typedef struct s_cmd {
 	t_exec	exec;
 }	t_cmd;
 
+int		redirection_index(char *cmd, int i, char red);
 int		count_pipes(char *s);
 int 	final_len(char *s);
 int		expanded_len(char *s, int i, int quote);
