@@ -72,6 +72,7 @@ int	argv_len(char *cmd, int i)
 		if (cmd[i] == '\'')
 		{
 			len++;
+			i++;
 			while (cmd[i] && cmd[i] != '\'')
 			{
 				i++;
@@ -81,11 +82,13 @@ int	argv_len(char *cmd, int i)
 		if (cmd[i] == '"')
 		{
 			len++;
+			i++;
 			while (cmd[i] && cmd[i] != '"')
 			{
 				i++;
 				len++;
 			}
+			printf("\n");
 		}
 		if (cmd[i])
 		{
