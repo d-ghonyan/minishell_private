@@ -88,7 +88,6 @@ int	argv_len(char *cmd, int i)
 				i++;
 				len++;
 			}
-			printf("\n");
 		}
 		if (cmd[i])
 		{
@@ -112,8 +111,7 @@ int	argv_count(char *cmd)
 			i++;
 		if (cmd[i] == '<' || cmd[i] == '>')
 			i = redirection_index(cmd, i, cmd[i]);
-		else if (cmd[i] && cmd[i] != '<'
-			&& cmd[i] != '>' && !ft_isspace(cmd[i]))
+		if (cmd[i] && cmd[i] != '<' && cmd[i] != '>' && !ft_isspace(cmd[i]))
 		{
 			count++;
 			while (cmd[i] && cmd[i] != '<'
@@ -121,10 +119,10 @@ int	argv_count(char *cmd)
 			{
 				if (cmd[i] == '\'')
 					while (cmd[++i] && cmd[i] != '\'')
-						i++;
+						;
 				if (cmd[i] == '"')
 					while (cmd[++i] && cmd[i] != '"')
-						i++;
+						;
 				i += (cmd[i] != '\0');
 			}
 		}

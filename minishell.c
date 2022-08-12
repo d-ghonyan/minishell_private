@@ -70,6 +70,7 @@ void	free_cmd(t_cmd *cmd)
 
 int	main(int argc, char **argv, char **envp)
 {
+	int		a;
 	char	*old_line;
 	char	*line;
 	t_cmd	*cmd;
@@ -85,6 +86,14 @@ int	main(int argc, char **argv, char **envp)
 		old_line = line;
 		cmd = parse_line(line);
 		exec_argv(cmd);
+		for (int i = 0; i < count_pipes(line) + 1; i++)
+		{
+			pid_t pid = fork();
+			if (pid == 0)
+				execve(get_path(cmd[i].exec.exec), cmd[i].exec.argv, envp);
+			else
+				waitpid(pid, &a, 0);
+		}
 		free_cmd(cmd);
 		// for (int i = 0; i < cmd->len; i++)
 		// {
@@ -92,18 +101,6 @@ int	main(int argc, char **argv, char **envp)
 		// 	{
 		// 		printf("%s\n", cmd[i].exec.argv[j]);
 		// 	}
-		// }
-		// for (int i = 0; i < count_pipes(line) + 1; i++)
-		// {
-		// 	printf("%s\n", cmd[i].exec.exec);
-		// 	for (int j = 0; cmd[i].exec.argv[j]; j++)
-		// 		printf("%s ", cmd[i].exec.argv[j]);
-		// 	printf("\n");
-		// 	// pid_t pid = fork();
-		// 	// if (pid == 0)
-		// 	// 	execve(get_path(cmd[i].exec.exec), cmd[i].exec.argv, envp);
-		// 	// else
-		// 	// 	waitpid(pid, &a, 0);
 		// }
 	}
 }

@@ -77,9 +77,7 @@ void	init_argv(t_exec *exec, char *cmd)
 				perror("init_argv() 3: ");
 				return ;
 			}
-			printf("index %d %d\n", i, argv_len(cmd, i));
 			i += argv_len(cmd, i);
-			printf("%p %d %c\n", &cmd[i], i, cmd[i] == '\0' ? '+' : '-');
 			k++;
 		}
 	}
@@ -111,7 +109,6 @@ void	exec_argv(t_cmd *cmd)
 			temp = cmd[i].exec.argv[j];
 			cmd[i].exec.argv[j] = expand_line(cmd[i].exec.argv[j]);
 			free(temp);
-			printf("%s\n", cmd[i].exec.argv[j]);
 		}
 		i++;
 	}
