@@ -90,7 +90,10 @@ int	main(int argc, char **argv, char **envp)
 		{
 			pid_t pid = fork();
 			if (pid == 0)
+			{
+				//signals
 				execve(get_path(cmd[i].exec.exec), cmd[i].exec.argv, envp);
+			}
 			else
 				waitpid(pid, &a, 0);
 		}
