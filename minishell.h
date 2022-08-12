@@ -10,6 +10,7 @@
 # include <dirent.h>
 # include <stdbool.h>
 # include <termios.h>
+# include <features.h>
 # include <sys/wait.h>
 # include <sys/types.h>
 # include <readline/history.h>
@@ -42,6 +43,9 @@ int		var_len(char *s, int i, int quote);
 int		check_quotes(char *s);
 int		is_a_builtin(char *s);
 void	exec_argv(t_cmd *cmd);
+void	init_signals_parent(void);
+void	init_signals_child(void);
+void	free_cmd(t_cmd *cmd);
 char	*get_path(char *command);
 char	*alloc_command(char *line, int i, int size, int j);
 char	*expand_line(char *cmd);

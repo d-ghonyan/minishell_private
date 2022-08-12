@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-void	die(int signum)
+int	empty_event(void)
 {
-	printf(YELLOW "Doing nothing\n" RESET);
+
 }
 
 static char	*ft_strjoin_for_read(char *s, char c)
@@ -48,26 +48,6 @@ char	*read_from_pipe(int pipe)
 	return (s);
 }
 
-void	free_cmd(t_cmd *cmd)
-{
-	int	i;
-	int	len;
-
-	i = -1;
-	len = cmd->len;
-	while (++i < len)
-	{
-		free(cmd[i].here_str);
-		free(cmd[i].heredoc);
-		free(cmd[i].infile);
-		free(cmd[i].outfile);
-		free(cmd[i].command);
-		free(cmd[i].exec.exec);
-		free_ptr_arr(cmd[i].exec.argv);
-	}
-	free(cmd);
-}
-
 int	main(int argc, char **argv, char **envp)
 {
 	int		a;
@@ -75,10 +55,15 @@ int	main(int argc, char **argv, char **envp)
 	char	*line;
 	t_cmd	*cmd;
 
+	cmd = NULL;
 	old_line = NULL;
+	init_signals_parent();
+	rl_event_hook = &empty_event;
 	while (1)
 	{
 		line = readline(GREEN "minishell" BLUE "$ " RESET);
+		if (!line)
+			return (0);//free stuff
 		if (!line[0] || count_pipes(line) < 0 || check_quotes(line))
 			continue ;
 		if (line[0] && (!old_line || ft_strcmp(line, old_line)))
@@ -91,21 +76,12 @@ int	main(int argc, char **argv, char **envp)
 			pid_t pid = fork();
 			if (pid == 0)
 			{
-				//signals
+				init_signals_child();
 				execve(get_path(cmd[i].exec.exec), cmd[i].exec.argv, envp);
 			}
 			else
 				waitpid(pid, &a, 0);
 		}
 		free_cmd(cmd);
-		// for (int i = 0; i < cmd->len; i++)
-		// {
-		// 	for (int j = 0; cmd[i].exec.argv[j]; j++)
-		// 	{
-		// 		printf("%s\n", cmd[i].exec.argv[j]);
-		// 	}
-		// }
 	}
 }
-
-//echo $PATH'asdasdasaaa'aaaaaaaaaaaaaaaaaaaadddddddddddddddddddddddddddddddddd
