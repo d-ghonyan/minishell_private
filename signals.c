@@ -1,8 +1,8 @@
 #include "minishell.h"
 
 void	sigint_p(int signum);
-void	sigint_c(int signum);
 
+//ignore ctrl+\ and set ctrl+c
 void	init_signals_parent(void)
 {
 	struct sigaction	action;
@@ -12,6 +12,7 @@ void	init_signals_parent(void)
 	sigaction(SIGQUIT, &action, NULL);
 }
 
+//default signal handlers for child
 void	init_signals_child(void)
 {
 	struct sigaction	action;
@@ -24,11 +25,4 @@ void	init_signals_child(void)
 void	sigint_p(int signum)
 {
 	rl_done = 1;
-}
-
-void	sigint_c(int signum)
-{
-	if (signum == SIGQUIT)
-		printf("Quit");
-	printf("\n");
 }
