@@ -12,7 +12,7 @@ void	init_signals_parent(void)
 	sigaction(SIGQUIT, &action, NULL);
 }
 
-//default signal handlers for child
+//default signal handlers for the child
 void	init_signals_child(void)
 {
 	struct sigaction	action;

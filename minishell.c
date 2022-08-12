@@ -51,6 +51,8 @@ char	*read_from_pipe(int pipe)
 int	main(int argc, char **argv, char **envp)
 {
 	int		a;
+	int		(*pipes)[2];
+	pid_t	pids[100];
 	char	*old_line;
 	char	*line;
 	t_cmd	*cmd;
@@ -71,13 +73,75 @@ int	main(int argc, char **argv, char **envp)
 		old_line = line;
 		cmd = parse_line(line);
 		exec_argv(cmd);
-		for (int i = 0; i < count_pipes(line) + 1; i++)
+		if (count_pipes(line) > 0)
+		{
+			pipes = malloc(sizeof (*pipes) * (count_pipes(line)));
+			for (int i = 0; i < count_pipes(line); i++)
+				pipe(pipes[i]);
+			for (int i = 0; i < count_pipes(line) + 1; i++)
+			{
+				pids[i] = fork();
+				if (pids[i] == 0)
+				{
+					if (i == 0)
+					{
+						if (dup2(pipes[i][1], STDOUT_FILENO) < 0)
+							perror("FUCK 1");
+					}
+					else if (i == count_pipes(line))
+					{
+						if (dup2(pipes[i - 1][0], STDIN_FILENO) < 0)
+							perror ("FUCK 3");
+					}
+					else
+					{
+						if (dup2(pipes[i - 1][0], STDIN_FILENO) < 0)
+							perror ("FUCK 4");
+						if (dup2(pipes[i][1], STDOUT_FILENO) < 0)
+							perror("FUCK 2");
+					}
+					for (int i = 0; i < count_pipes(line); i++)
+					{
+						close(pipes[i][1]);
+						close(pipes[i][0]);
+					}
+					init_signals_child();
+					execve(get_path(cmd[i].exec.exec), cmd[i].exec.argv, envp);
+				}
+			}
+			for (int i = 0; i < count_pipes(line) + 1; i++)
+			{
+				for (int i = 0; i < count_pipes(line); i++)
+				{
+					close(pipes[i][1]);
+					close(pipes[i][0]);
+				}
+				// if (i == 0)
+				// {
+				// 	close(pipes[i][1]);
+				// 	close(pipes[i][0]);
+				// }
+				// else if (i == count_pipes(line))
+				// {
+				// 	close(pipes[i - 1][0]);
+				// 	close(pipes[i - 1][1]);
+				// }
+				// else
+				// {
+				// 	close(pipes[i - 1][0]);
+				// 	close(pipes[i][1]);
+				// }
+				waitpid(pids[i], &a, 0);
+			}
+			free(pipes);
+		}
+		else
 		{
 			pid_t pid = fork();
 			if (pid == 0)
 			{
 				init_signals_child();
-				execve(get_path(cmd[i].exec.exec), cmd[i].exec.argv, envp);
+				execve(get_path(cmd[0].exec.exec), cmd[0].exec.argv, envp);
 			}
 			else
 				waitpid(pid, &a, 0);
