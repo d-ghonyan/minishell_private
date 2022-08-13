@@ -1,36 +1,42 @@
 #include "minishell.h"
 
+int	command_not_found(t_cmd *cmd)
+{
+	int		i;
+	char	*path;
+
+	i = 0;
+	while (i < cmd->len)
+	{
+		path = get_path(cmd[i].exec.exec);
+		if (!path)
+			return (i);
+		free(path);
+		i++;
+	}
+	return (-1);
+}
+
 int	command_len(char *s, int i)
 {
 	int	len;
 
-	len = 0;
+	len = i;
 	while (s[i] && s[i] != '|')
 	{
 		if (s[i] == '\'')
 		{
-			i++;
-			len++;
-			while (s[i] && s[i] != '\'')
-			{
-				i++;
-				len++;
-			}
+			while (s[++i] && s[i] != '\'')
+				;
 		}
 		if (s[i] == '"')
 		{
-			i++;
-			len++;
-			while (s[i] && s[i] != '"')
-			{
-				i++;
-				len++;
-			}
+			while (s[++i] && s[i] != '"')
+				;	
 		}
-		i++;
-		len++;
+		i += (s[i] != '\0');
 	}
-	return (len);
+	return (i - len);
 }
 
 t_cmd	*init_cmd(int size, char **envp)

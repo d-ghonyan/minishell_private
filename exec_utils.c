@@ -66,36 +66,22 @@ int	argv_len(char *cmd, int i)
 {
 	int	len;
 
-	len = 0;
+	len = i;
 	while (cmd[i] && cmd[i] != '<' && cmd[i] != '>' && !ft_isspace(cmd[i]))
 	{
 		if (cmd[i] == '\'')
 		{
-			len++;
-			i++;
-			while (cmd[i] && cmd[i] != '\'')
-			{
-				i++;
-				len++;
-			}
+			while (cmd[++i] && cmd[i] != '\'')
+				;
 		}
 		if (cmd[i] == '"')
 		{
-			len++;
-			i++;
-			while (cmd[i] && cmd[i] != '"')
-			{
-				i++;
-				len++;
-			}
+			while (cmd[++i] && cmd[i] != '"')
+				;	
 		}
-		if (cmd[i])
-		{
-			i++;
-			len++;
-		}
+		i += (cmd[i] != '\0');
 	}
-	return (len);
+	return (i - len);
 }
 
 int	argv_count(char *cmd)

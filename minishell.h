@@ -36,6 +36,8 @@ typedef struct s_cmd {
 	t_exec	exec;
 }	t_cmd;
 
+int		perror_ret(char *msg);
+int		command_not_found(t_cmd *cmd);
 int		redirection_index(char *cmd, int i, char red);
 int		count_pipes(char *s);
 int 	final_len(char *s);

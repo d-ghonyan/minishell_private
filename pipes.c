@@ -48,7 +48,7 @@ int	count_pipes(char *s)
 				return (-1);
 			}
 		}
-		i++;
+		i += (s[i] != '\0');
 	}
 	return (count);
 }
