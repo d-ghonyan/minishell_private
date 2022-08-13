@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-
 int	is_a_valid_name(char c, int cond)
 {
 	if (cond)

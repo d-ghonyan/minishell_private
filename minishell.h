@@ -19,6 +19,10 @@
 # include "colors.h"
 # include "libft/libft.h"
 
+typedef struct s_pipe {
+	int		(*pipes)[2];
+}	t_pipe;
+
 typedef struct s_exec {
 	char	*exec;
 	char	**argv;
@@ -36,11 +40,18 @@ typedef struct s_cmd {
 	t_exec	exec;
 }	t_cmd;
 
+//pipes
+int		count_pipes(char *s);
+int		init_pipes(int (*pipes)[2], int size, int cond);
+int		dup_pipes(int i, int (*pipes)[2], int size);
+int		close_pipes(int (*pipes)[2], int size);
+
+int		call_forks(t_cmd *cmd, char *line, int *status);
+
 int		perror_ret(char *msg);
 int		command_not_found(t_cmd *cmd);
 int		redirection_index(char *cmd, int i, char red);
-int		count_pipes(char *s);
-int 	final_len(char *s);
+int		final_len(char *s);
 int		expanded_len(char *s, int i, int quote);
 int		var_len(char *s, int i, int quote);
 int		check_quotes(char *s);

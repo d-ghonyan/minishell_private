@@ -77,7 +77,7 @@ int	argv_len(char *cmd, int i)
 		if (cmd[i] == '"')
 		{
 			while (cmd[++i] && cmd[i] != '"')
-				;	
+				;
 		}
 		i += (cmd[i] != '\0');
 	}
