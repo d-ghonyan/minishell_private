@@ -68,6 +68,8 @@ char	*expanded_env(char *cmd, int i, int quote)
 	char	*var;
 
 	j = 0;
+	if (cmd[i] == '?')
+		return (ft_itoa(1));
 	var = malloc(sizeof (*var) * (var_len(cmd, i, quote) + 1));
 	if (!var)
 	{
@@ -81,7 +83,7 @@ char	*expanded_env(char *cmd, int i, int quote)
 		var[j++] = cmd[i++];
 	}
 	var[j] = '\0';
-	env = getenv(var);
+	env = ft_strdup(getenv(var));
 	free(var);
 	return (env);
 }

@@ -42,6 +42,7 @@ typedef struct s_exec {
 
 typedef struct s_cmd {
 	int		len;
+	int		*status;
 	char	*command;
 	char	*infile;
 	char	*outfile;

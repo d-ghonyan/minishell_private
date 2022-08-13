@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	g_status;
+int	g_status = 0;
 
 int	empty_event(void)
 {
