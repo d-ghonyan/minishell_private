@@ -71,7 +71,7 @@ int	main(int argc, char **argv, char **envp)
 		if (line[0] && (!old_line || ft_strcmp(line, old_line)))
 			add_history(line);
 		old_line = line;
-		cmd = parse_line(line);
+		cmd = parse_line(line, envp);
 		exec_argv(cmd);
 		if (count_pipes(line) > 0)
 		{

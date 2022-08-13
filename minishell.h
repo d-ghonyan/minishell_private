@@ -32,6 +32,7 @@ typedef struct s_cmd {
 	char	*heredoc;
 	int		append;
 	char	*here_str;
+	char	**envp;
 	t_exec	exec;
 }	t_cmd;
 
@@ -49,7 +50,6 @@ void	free_cmd(t_cmd *cmd);
 char	*get_path(char *command);
 char	*alloc_command(char *line, int i, int size, int j);
 char	*expand_line(char *cmd);
-t_cmd	*parse_line(char *line);
-t_cmd	*init_cmd(int size);
+t_cmd	*parse_line(char *line, char **envp);
 
 #endif

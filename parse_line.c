@@ -33,7 +33,7 @@ int	command_len(char *s, int i)
 	return (len);
 }
 
-t_cmd	*init_cmd(int size)
+t_cmd	*init_cmd(int size, char **envp)
 {
 	int		i;
 	t_cmd	*cmd;
@@ -44,6 +44,7 @@ t_cmd	*init_cmd(int size)
 		return (NULL);
 	while (++i < size)
 	{
+		cmd[i].envp = envp;
 		cmd[i].len = size;
 		cmd[i].append = 0;
 		cmd[i].here_str = NULL;
@@ -58,16 +59,13 @@ t_cmd	*init_cmd(int size)
 }
 
 //TODO HANDLING
-t_cmd	*parse_line(char *line)
+t_cmd	*parse_line(char *line, char **envp)
 {
 	int		i;
 	int		j;
 	t_cmd	*cmd;
 
-	i = count_pipes(line);
-	if (i < 0)
-		return (NULL);
-	cmd = init_cmd(i + 1);
+	cmd = init_cmd(count_pipes(line) + 1, envp);
 	if (!cmd)
 	{
 		perror("Malloc failed at parse_line(): ");
