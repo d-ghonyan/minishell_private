@@ -1,14 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   strchr.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dghonyan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
+/*   Updated: 2022/03/10 20:46:54 by dghonyan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int		var_len(char *s, int i, int quote);
-int 	expanded_len(char *cmd, int i, int quote);
+int		expanded_len(char *cmd, int i, int quote);
 char	*expanded_env(char *cmd, int i, int quote);
 void	strjoin_var(char *s1, char *s2);
 
-int final_len(char *s)
+int	final_len(char *s)
 {
-	int i;
-	int len;
+	int	i;
+	int	len;
 
 	i = 0;
 	len = 0;
@@ -59,7 +71,7 @@ int final_len(char *s)
 	return (len);
 }
 
-char *expand_line(char *s)
+char	*expand_line(char *s)
 {
 	int		i;
 	int		j;
