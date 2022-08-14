@@ -18,6 +18,16 @@ int	empty_event(void)
 {
 }
 
+void	change_env(char **envp)
+{
+	int	i = 0;
+	printf("%s\n", getenv("PATH"));
+	while (ft_strncmp(envp[i], "PATH", 4))
+		i++;
+	envp[i][5] = 'A';
+	printf("%s\n", getenv("PATH") ? getenv("PATH") : "null");
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char	*old_line;
@@ -28,6 +38,7 @@ int	main(int argc, char **argv, char **envp)
 	old_line = NULL;
 	init_signals_parent();
 	rl_event_hook = &empty_event;
+	// change_env(envp);
 	while (1)
 	{
 		line = readline(GREEN "minishell" BLUE "$ " RESET);
@@ -47,11 +58,12 @@ int	main(int argc, char **argv, char **envp)
 		cmd->status = &g_status;
 		if (!exec_argv(cmd))
 		{
-			if (command_not_found(cmd) >= 0)
-				printf("%s: Command not found\n",
-					cmd[command_not_found(cmd)].exec.exec);
-			else
-				call_forks(cmd, line, &g_status);
+			printf("%d\n", is_a_builtin(cmd->exec.exec));
+			// if (command_not_found(cmd) >= 0)
+			// 	printf("%s: Command not found\n",
+			// 		cmd[command_not_found(cmd)].exec.exec);
+			// else
+			// 	call_forks(cmd, line, &g_status);
 		}
 		free_cmd(cmd);
 	}

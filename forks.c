@@ -48,6 +48,7 @@ int	children(t_cmd *cmd, int (*pipes)[2], int size, int i)
 	}
 	else
 	{
+		call_builtins(cmd, i);
 	}
 	return (0);
 }

@@ -60,6 +60,7 @@ int		dup_pipes(int i, int (*pipes)[2], int size);
 int		close_pipes(int (*pipes)[2], int size);
 
 int		call_forks(t_cmd *cmd, char *line, int *status);
+int		call_builtins(t_cmd *cmd, int i);
 
 int		perror_ret(char *msg);
 int		command_not_found(t_cmd *cmd);
