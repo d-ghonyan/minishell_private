@@ -63,13 +63,9 @@ int		call_forks(t_cmd *cmd, char *line, int *status);
 
 int		perror_ret(char *msg);
 int		command_not_found(t_cmd *cmd);
-int		redirection_index(char *cmd, int i, char red);
-int		final_len(char *s);
-int		expanded_len(char *s, int i, int quote);
-int		var_len(char *s, int i, int quote);
 int		check_quotes(char *s);
 int		is_a_builtin(char *s);
-void	exec_argv(t_cmd *cmd);
+int		exec_argv(t_cmd *cmd);
 void	init_signals_parent(void);
 void	init_signals_child(void);
 void	free_cmd(t_cmd *cmd);

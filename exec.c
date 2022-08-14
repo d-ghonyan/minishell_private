@@ -96,32 +96,42 @@ void	init_argv(t_exec *exec, char *cmd)
 	exec->argv[k] = NULL;
 }
 
-void	exec_argv(t_cmd *cmd)
+int	exec_argv(t_cmd *cmd)
 {
 	int		i;
 	int		j;
 	char	*temp;
 
-	i = 0;
-	while (i < cmd->len)
+	i = -1;
+	while (++i < cmd->len)
 	{
 		j = -1;
 		init_exec(&(cmd[i].exec), cmd[i].command);
 		if (!(cmd[i].exec.exec))
 		{
-			perror("init_exec(): ");
-			return ;
+			perror("init_exec()");
+			return (1);
 		}
 		init_argv(&(cmd[i].exec), cmd[i].command);
 		temp = cmd[i].exec.exec;
 		cmd[i].exec.exec = expand_line(cmd[i].exec.exec);
 		free(temp);
+		if (!(cmd[i].exec.exec))
+		{
+			perror("expand_line()");
+			return (1);
+		}
 		while (cmd[i].exec.argv[++j])
 		{
 			temp = cmd[i].exec.argv[j];
 			cmd[i].exec.argv[j] = expand_line(cmd[i].exec.argv[j]);
 			free(temp);
+			if (!(cmd[i].exec.argv[j]))
+			{
+				perror("expand_line()");
+				return (1);
+			}
 		}
-		i++;
 	}
+	return (0);
 }

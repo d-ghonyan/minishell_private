@@ -18,81 +18,8 @@ int	empty_event(void)
 {
 }
 
-static char	*ft_strjoin_for_read(char *s, char c)
-{
-	size_t	i;
-	char	*res;
-
-	i = 0;
-	res = (char *)malloc(sizeof(*res) * (ft_strlen(s) + 2));
-	if (!res)
-		return (NULL);
-	while (i < ft_strlen(s))
-	{
-		res[i] = s[i];
-		i++;
-	}
-	free(s);
-	res[i] = c;
-	res[i + 1] = '\0';
-	return (res);
-}
-
-char	*read_from_pipe(int pipe)
-{
-	char	*s;
-	char	c;
-	int		a;
-
-	s = NULL;
-	c = 0;
-	a = 0;
-	while (1)
-	{
-		a = read(pipe, &c, 1);
-		if (a == -1)
-			return (NULL);
-		if (a == 0)
-			break ;
-		s = ft_strjoin_for_read(s, c);
-		if (!s)
-			break ;
-	}
-	return (s);
-}
-
-// int	loop(t_cmd *cmd, int size, int (*pipes)[2])
-// {
-// 	int		i;
-// 	pid_t	*pids;
-
-// 	i = -1;
-// 	pids = malloc(sizeof(*pids) * (size + 1));
-// 	if (!pids)
-// 		return (perror_ret("malloc failed at loop()"));
-// 	while (++i < size)
-// 	{
-// 		pids[i] = fork();
-// 		if (pids[i] < 0)
-// 		{
-// 			free(pids);
-// 			return (perror_ret("pipe failed at loop()"));
-// 		}
-// 		if (pids[i] == 0)
-// 		{
-// 			if (children(cmd, pipes, size, i))
-// 			{
-// 				free(pids);
-// 				return (1);
-// 			}
-// 		}
-// 	}
-// 	parent(cmd, pipes, pids);
-// }
-
 int	main(int argc, char **argv, char **envp)
 {
-	int		cnf;
 	char	*old_line;
 	char	*line;
 	t_cmd	*cmd;
@@ -112,12 +39,20 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		old_line = line;
 		cmd = parse_line(line, envp);
-		exec_argv(cmd);
-		cnf = command_not_found(cmd);
-		if (cnf >= 0)
-			printf("%s: Command not found\n", cmd[cnf].exec.exec);
-		else
-			call_forks(cmd, line, &g_status);
+		if (!cmd)
+		{
+			perror("malloc failed at parse_line()");
+			continue ;
+		}
+		cmd->status = &g_status;
+		if (!exec_argv(cmd))
+		{
+			if (command_not_found(cmd) >= 0)
+				printf("%s: Command not found\n",
+					cmd[command_not_found(cmd)].exec.exec);
+			else
+				call_forks(cmd, line, &g_status);
+		}
 		free_cmd(cmd);
 	}
 }

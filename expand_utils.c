@@ -16,9 +16,9 @@ int	is_a_valid_name(char c, int cond)
 {
 	if (cond)
 		return ((ft_isalpha(c) || c == '_') && c != '$'
-			&& c != '\'' && c != '"' && !ft_isspace(c));
+			&& c != '\'' && c != '"' && !ft_isspace(c) && c != '?');
 	return ((ft_isalnum(c) || c == '_')
-		&& c != '$' && c != '\'' && c != '"' && !ft_isspace(c));
+		&& c != '$' && c != '\'' && c != '"' && !ft_isspace(c) && c != '?');
 }
 
 int	var_len(char *s, int i, int quote)
