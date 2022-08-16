@@ -13,7 +13,6 @@
 #include "minishell.h"
 
 int		exec_len(char *s, int i, int cond);
-int		redirection_index(char *cmd, int i, char red);
 int		argv_len(char *cmd, int i);
 int		argv_count(char *cmd);
 char	*argv_dup(char *cmd, int i);
@@ -29,7 +28,7 @@ void	init_exec(t_exec *exec, char *cmd)
 	while (exec->exec && cmd[i])
 	{
 		if (cmd[i] == '<' || cmd[i] == '>')
-			i = redirection_index(cmd, i, cmd[i]);
+			i = redirection_index(cmd, i);
 		while (cmd[i] && cmd[i] != '<' && cmd[i] != '>' && !ft_isspace(cmd[i]))
 		{
 			if (cmd[i] == '\'')
@@ -80,7 +79,7 @@ void	init_argv(t_exec *exec, char *cmd)
 		while (cmd[i] && ft_isspace(cmd[i]))
 			i++;
 		if (cmd[i] == '>' || cmd[i] == '<')
-			i = redirection_index(cmd, i, cmd[i]);
+			i = redirection_index(cmd, i);
 		if (cmd[i] && cmd[i] != '<' && cmd[i] != '>' && !ft_isspace(cmd[i]))
 		{
 			exec->argv[k] = argv_dup(cmd, i);

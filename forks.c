@@ -45,12 +45,12 @@ int	children(t_cmd *cmd, int (*pipes)[2], int size, int i)
 		if (path)
 			execve(path, cmd[i].exec.argv, cmd->envp);
 		free(path);
+		return (1);
 	}
 	else
 	{
-		call_builtins(cmd, i);
+		return (call_builtins(cmd, i));
 	}
-	return (0);
 }
 
 int	single_command(t_cmd *cmd, int *status)
@@ -58,17 +58,25 @@ int	single_command(t_cmd *cmd, int *status)
 	char	*path;
 	pid_t	pid;
 
-	pid = fork();
-	if (pid == 0)
+	if (!is_a_builtin(cmd[0].exec.exec))
 	{
-		init_signals_child();
-		path = get_path(cmd[0].exec.exec);
-		if (path)
-			execve(path, cmd[0].exec.argv, cmd->envp);
-		free(path);
+		pid = fork();
+		if (pid == 0)
+		{
+			init_signals_child();
+			path = get_path(cmd[0].exec.exec);
+			if (path)
+				execve(path, cmd[0].exec.argv, cmd->envp);
+			free(path);
+			return (1);
+		}
+		else
+			waitpid(pid, status, 0);
 	}
 	else
-		waitpid(pid, status, 0);
+	{
+		return (call_builtins(cmd, 0));
+	}
 }
 
 int	call_forks(t_cmd *cmd, char *line, int *status)

@@ -18,10 +18,11 @@ int	command_not_found(t_cmd *cmd)
 	char	*path;
 
 	i = 0;
+	path = NULL;
 	while (i < cmd->len)
 	{
 		path = get_path(cmd[i].exec.exec);
-		if (!path)
+		if (!path && !is_a_builtin(cmd[i].exec.exec))
 			return (i);
 		free(path);
 		i++;
@@ -64,12 +65,8 @@ t_cmd	*init_cmd(int size, char **envp)
 	{
 		cmd[i].envp = envp;
 		cmd[i].len = size;
-		cmd[i].append = 0;
-		cmd[i].here_str = NULL;
-		cmd[i].heredoc = NULL;
 		cmd[i].command = NULL;
-		cmd[i].infile = NULL;
-		cmd[i].outfile = NULL;
+		cmd[i].fds = NULL;
 		cmd[i].exec.exec = NULL;
 		cmd[i].exec.argv = NULL;
 	}

@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	redirection_index(char *cmd, int i, char red)
+int	redirection_index(char *cmd, int i)
 {
 	while (1)
 	{
@@ -47,7 +47,7 @@ int	exec_len(char *cmd, int i, int cond)
 	while (cmd[i])
 	{
 		if (cmd[i] == '<' || cmd[i] == '>')
-			i = redirection_index(cmd, i, cmd[i]);
+			i = redirection_index(cmd, i);
 		while (cmd[i] && cmd[i] != '<' && cmd[i] != '>' && !ft_isspace(cmd[i]))
 		{
 			if (cmd[i] == '\'')
@@ -108,7 +108,7 @@ int	argv_count(char *cmd)
 		while (cmd[i] && ft_isspace(cmd[i]))
 			i++;
 		if (cmd[i] == '<' || cmd[i] == '>')
-			i = redirection_index(cmd, i, cmd[i]);
+			i = redirection_index(cmd, i);
 		if (cmd[i] && cmd[i] != '<' && cmd[i] != '>' && !ft_isspace(cmd[i]))
 		{
 			count++;
