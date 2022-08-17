@@ -54,27 +54,40 @@ int main(int argc, char **argv, char **envp)
 			free(temp);
 			add_history(line);
 		}
-		heredoc(line, 0);
-		// printf("%s\n", here_expand(line));
-		// if (!line[0] || count_pipes(line) < 0 || check_quotes(line))
-		// 	continue;
-		// cmd = parse_line(line, envp);
-		// if (!cmd)
-		// 	continue;
-		// cmd->status = &status;
-		// // if (!exec_argv(cmd))
-		// // {
-		// // 	// printf("%d\n", is_a_builtin(cmd->exec.exec));
-		// // 	if (command_not_found(cmd) >= 0)
-		// // 		printf("%s: Command not found\n",
-		// // 			cmd[command_not_found(cmd)].exec.exec);
-		// // 	else
-		// // 		call_forks(cmd, line, &status);
-		// // }
-		// // printf("%s\n", (buf = getcwd(NULL, 0)));
-		// // free(buf);
-		// free_cmd(cmd);
-		// free(line);
+		if (!line[0] || count_pipes(line) < 0 || check_quotes(line))
+		{
+			free(line);
+			continue ;
+		}
+		cmd = parse_line(line, envp);
+		if (!cmd)
+			continue;
+		cmd->status = &status;
+		// exec_argv(cmd);
+		// for (int i = 0; i < cmd->len; i++)
+		// {
+		// 	for (int j = 0; cmd->fds && j < cmd[i].fds->len; j++)
+		// 	{
+		// 		char c[100];
+		// 		int a = read(cmd[i].fds[j].fd, c, 100);
+		// 		c[a] = '\0';
+		// 		write(1, c, ft_strlen(c));
+		// 		printf("%d\n", cmd[i].fds[j].fd);
+		// 	}
+		// }
+		// if (!exec_argv(cmd))
+		// {
+		// 	// printf("%d\n", is_a_builtin(cmd->exec.exec));
+		// 	if (command_not_found(cmd) >= 0)
+		// 		printf("%s: Command not found\n",
+		// 			cmd[command_not_found(cmd)].exec.exec);
+		// 	else
+		// 		call_forks(cmd, line, &status);
+		// }
+		// printf("%s\n", (buf = getcwd(NULL, 0)));
+		// free(buf);
+		free_cmd(cmd);
+		free(line);
 	}
 }
 

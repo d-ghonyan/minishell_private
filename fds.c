@@ -30,8 +30,8 @@ int	init_fds(t_fds *fds, char c1, char c2, char *filename)
 	}
 	else if (c1 == '<' && c2 == '<')
 	{
-		fds->quoted = (ft_strchr(filename, '\'') || ft_strchr(filename, '"'));
-		fds->heredoc = 1;
+		flags = (ft_strchr(filename, '\'') || ft_strchr(filename, '"'));
+		fds->fd = heredoc(filename, flags);
 	}
 	return (0);
 }

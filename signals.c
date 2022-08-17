@@ -14,7 +14,6 @@
 
 void	sigint_p(int signum);
 
-//ignore ctrl+\ and set ctrl+c
 void	init_signals_parent(void)
 {
 	struct sigaction	action;
@@ -26,7 +25,6 @@ void	init_signals_parent(void)
 	sigaction(SIGQUIT, &action, NULL);
 }
 
-//default signal handlers for the child
 void	init_signals_child(void)
 {
 	struct sigaction	action;

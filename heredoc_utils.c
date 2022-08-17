@@ -62,6 +62,7 @@ char	*final_limiter(char *s)
 			res[j++] = s[i];
 		i++;
 	}
+	res[i] = '\0';
 	return (res);
 }
 

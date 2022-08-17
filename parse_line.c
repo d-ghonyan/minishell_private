@@ -63,7 +63,7 @@ t_cmd	*init_cmd(int size, char **envp, char *line)
 		return (NULL);
 	while (++i < size)
 	{
-		cmd[i].fds = open_files(line);
+		cmd[i].fds = NULL;
 		cmd[i].envp = envp;
 		cmd[i].len = size;
 		cmd[i].command = NULL;

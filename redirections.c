@@ -85,7 +85,12 @@ t_fds	*open_files(char *s)
 	j = -1;
 	filename = NULL;
 	fds = alloc_fds(redirection_count(s));
-	while (fds && s[i])
+	if (!fds && redirection_count(s) > 0)
+	{
+		perror("malloc at alloc_fds");
+		return (NULL);
+	}
+	while (s[i])
 	{
 		if (s[i] == '<' || s[i] == '>')
 		{
@@ -95,6 +100,7 @@ t_fds	*open_files(char *s)
 				free_fds(fds);
 				return (NULL);
 			}
+			init_fds(fds + ++j, s[i], s[i + 1], filename);
 			i = redirection_index_but_like_changed(s, i);
 		}
 		i += (s[i] != '\0');

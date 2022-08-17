@@ -17,6 +17,21 @@ int		argv_len(char *cmd, int i);
 int		argv_count(char *cmd);
 char	*argv_dup(char *cmd, int i);
 
+int	init_redirections(t_cmd *cmd)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	while (++i < cmd->len)
+	{
+		cmd[i].fds = open_files(cmd[i].command);
+		if (!cmd[i].fds)
+			return (1);
+	}
+	return (0);
+}
+
 void	init_exec(t_exec *exec, char *cmd)
 {
 	int	i;
@@ -132,5 +147,5 @@ int	exec_argv(t_cmd *cmd)
 			}
 		}
 	}
-	return (0);
+	return (init_redirections(cmd));
 }

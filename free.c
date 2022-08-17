@@ -40,6 +40,8 @@ void	free_cmd(t_cmd *cmd)
 	int	len;
 
 	i = -1;
+	if (!cmd)
+		return ;
 	len = cmd->len;
 	while (++i < len)
 	{
