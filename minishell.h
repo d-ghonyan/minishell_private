@@ -62,17 +62,24 @@ int		init_pipes(int (*pipes)[2], int size, int cond);
 int		dup_pipes(int i, int (*pipes)[2], int size);
 int		close_pipes(int (*pipes)[2], int size);
 
+int		var_len(char *s, int i, int quote);
+int		is_a_valid_name(char c, int cond);
+int		expanded_len(char *cmd, int i, int quote);
+char	*expanded_env(char *cmd, int i, int quote);
+void	strjoin_var(char *s1, char *s2);
 int		call_forks(t_cmd *cmd, char *line, int *status);
 int		call_builtins(t_cmd *cmd, int i);
-
+int		heredoc(char *limiter, int quoted);
 int		redirection_index(char *cmd, int i);
 int		perror_ret(char *msg);
+int		perror_neg(char *msg);
 int		command_not_found(t_cmd *cmd);
 int		check_quotes(char *s);
 int		is_a_builtin(char *s);
 int		exec_argv(t_cmd *cmd);
 void	init_signals_parent(void);
 void	init_signals_child(void);
+void	init_signals_heredoc(void);
 
 void	free_cmd(t_cmd *cmd);
 void	free_fds(t_fds *fds);

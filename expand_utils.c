@@ -26,8 +26,6 @@ int	var_len(char *s, int i, int quote)
 	len = 0;
 	while (s[i] && is_a_valid_name(s[i], i > 0 && s[i - 1] == '$'))
 	{
-		if (quote && s[i] == '"')
-			break ;
 		i++;
 		len++;
 	}
@@ -49,8 +47,6 @@ int	expanded_len(char *cmd, int i, int quote)
 	}
 	while (cmd[i] && is_a_valid_name(cmd[i], i > 0 && cmd[i - 1] == '$'))
 	{
-		if (quote && cmd[i] == '"')
-			break ;
 		var[j++] = cmd[i++];
 	}
 	var[j] = '\0';
@@ -66,8 +62,6 @@ char	*expanded_env(char *cmd, int i, int quote)
 	char	*var;
 
 	j = 0;
-	if (cmd[i] == '?')
-		return (ft_itoa(1));
 	var = malloc(sizeof (*var) * (var_len(cmd, i, quote) + 1));
 	if (!var)
 	{
@@ -99,4 +93,5 @@ void	strjoin_var(char *s1, char *s2)
 		j++;
 		i++;
 	}
+	free(s2);
 }

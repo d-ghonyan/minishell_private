@@ -1,7 +1,6 @@
 #include "minishell.h"
 
-int	redirection_count(char *cmd);
-
+int		redirection_count(char *cmd);
 int		init_fds(t_fds *fds, char c1, char c2, char *filename);
 t_fds	*alloc_fds(int size);
 
@@ -81,7 +80,7 @@ t_fds	*open_files(char *s)
 	int		j;
 	char	*filename;
 	t_fds	*fds;
-	
+
 	i = 0;
 	j = -1;
 	filename = NULL;
@@ -96,24 +95,9 @@ t_fds	*open_files(char *s)
 				free_fds(fds);
 				return (NULL);
 			}
-			if (!filename || init_fds(&fds[++j], s[i], s[i + 1], filename))
-			{
-				return (fds);
-			}
 			i = redirection_index_but_like_changed(s, i);
 		}
 		i += (s[i] != '\0');
 	}
 	return (fds);
 }
-
-// int	redirections(t_cmd *cmd)
-// {
-// 	int	i;
-
-// 	i = -1;
-// 	while (++i < cmd->len)
-// 	{
-// 		;
-// 	}
-// }

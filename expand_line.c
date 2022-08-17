@@ -12,11 +12,6 @@
 
 #include "minishell.h"
 
-int		var_len(char *s, int i, int quote);
-int		expanded_len(char *cmd, int i, int quote);
-char	*expanded_env(char *cmd, int i, int quote);
-void	strjoin_var(char *s1, char *s2);
-
 int	final_len(char *s)
 {
 	int	i;

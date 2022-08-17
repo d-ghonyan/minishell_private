@@ -36,7 +36,7 @@ int main(int argc, char **argv, char **envp)
 
 	cmd = NULL;
 	old_line = NULL;
-	// init_signals_pa'rent();
+	init_signals_parent();
 	rl_event_hook = &empty_event;
 	// change_env(envp);
 	while (1)
@@ -54,30 +54,38 @@ int main(int argc, char **argv, char **envp)
 			free(temp);
 			add_history(line);
 		}
-		if (!line[0] || count_pipes(line) < 0 || check_quotes(line))
-			continue;
-		cmd = parse_line(line, envp);
-		for (int i = 0; i < cmd->len; i++)
-			cmd[i].fds = open_files(line);
-		for (int i = 0; redirection_count(line) > 0 && i < cmd->fds->len; i++)
-		{
-			printf("| fd: %d append: %d from: %d to: %d heredoc: %d quoted: %d limiter: %s  |\n\n", cmd->fds[i].fd, cmd->fds[i].append, cmd->fds[i].from, cmd->fds[i].to, cmd->fds[i].heredoc, cmd->fds[i].quoted, cmd->fds[i].here);
-		}
-		if (!cmd)
-			continue;
-		cmd->status = &status;
-		// if (!exec_argv(cmd))
-		// {
-		// 	// printf("%d\n", is_a_builtin(cmd->exec.exec));
-		// 	if (command_not_found(cmd) >= 0)
-		// 		printf("%s: Command not found\n",
-		// 			cmd[command_not_found(cmd)].exec.exec);
-		// 	else
-		// 		call_forks(cmd, line, &status);
-		// }
-		// printf("%s\n", (buf = getcwd(NULL, 0)));
-		// free(buf);
-		free_cmd(cmd);
-		free(line);
+		heredoc(line, 0);
+		// printf("%s\n", here_expand(line));
+		// if (!line[0] || count_pipes(line) < 0 || check_quotes(line))
+		// 	continue;
+		// cmd = parse_line(line, envp);
+		// if (!cmd)
+		// 	continue;
+		// cmd->status = &status;
+		// // if (!exec_argv(cmd))
+		// // {
+		// // 	// printf("%d\n", is_a_builtin(cmd->exec.exec));
+		// // 	if (command_not_found(cmd) >= 0)
+		// // 		printf("%s: Command not found\n",
+		// // 			cmd[command_not_found(cmd)].exec.exec);
+		// // 	else
+		// // 		call_forks(cmd, line, &status);
+		// // }
+		// // printf("%s\n", (buf = getcwd(NULL, 0)));
+		// // free(buf);
+		// free_cmd(cmd);
+		// free(line);
 	}
 }
+
+	// int pipes[2];
+	// pipe(pipes);
+	// write(pipes[1], "asdasdadsasd", 100);
+	// int fd = dup(pipes[0]);
+	// close(pipes[0]);
+	// close(pipes[1]);
+	// char c[100];
+	// int a = read(fd, c, 10);
+	// c[a] = '\0';
+	// write(1, c, 10);
+	// return (0);

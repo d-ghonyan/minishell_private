@@ -52,7 +52,7 @@ int	command_len(char *s, int i)
 	return (i - len);
 }
 
-t_cmd	*init_cmd(int size, char **envp)
+t_cmd	*init_cmd(int size, char **envp, char *line)
 {
 	int		i;
 	t_cmd	*cmd;
@@ -63,6 +63,7 @@ t_cmd	*init_cmd(int size, char **envp)
 		return (NULL);
 	while (++i < size)
 	{
+		cmd[i].fds = open_files(line);
 		cmd[i].envp = envp;
 		cmd[i].len = size;
 		cmd[i].command = NULL;
@@ -80,7 +81,7 @@ t_cmd	*parse_line(char *line, char **envp)
 	int		j;
 	t_cmd	*cmd;
 
-	cmd = init_cmd(count_pipes(line) + 1, envp);
+	cmd = init_cmd(count_pipes(line) + 1, envp, line);
 	if (!cmd)
 	{
 		perror("Malloc failed at parse_line(): ");

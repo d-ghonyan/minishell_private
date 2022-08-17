@@ -26,9 +26,12 @@ void	free_fds(t_fds *fds)
 			if (close(fds[i].fd))
 				perror ("close at free_fds()");
 		}
+		fds[i].fd = -1;
 		free(fds[i].here);
+		fds[i].here = NULL;
 	}
 	free(fds);
+	fds = NULL;
 }
 
 void	free_cmd(t_cmd *cmd)
@@ -44,7 +47,11 @@ void	free_cmd(t_cmd *cmd)
 		free(cmd[i].exec.exec);
 		free_fds(cmd[i].fds);
 		free_ptr_arr(cmd[i].exec.argv);
+		cmd[i].command = NULL;
+		cmd[i].exec.exec = NULL;
+		cmd[i].exec.argv = NULL;
 	}
 	free(cmd);
+	cmd = NULL;
 }
 
