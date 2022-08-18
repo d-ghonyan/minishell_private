@@ -24,24 +24,17 @@ void	sigint_p(int signum)
 	g_status = -1;
 }
 
-
-void change_env(char **envp)
+char	*_readline(char *prompt)
 {
-	int i = 0;
-	printf("%s\n", getenv("PATH"));
-	while (ft_strncmp(envp[i], "PATH", 4))
-		i++;
-	envp[i][5] = 'A';
-	printf("%s\n", getenv("PATH") ? getenv("PATH") : "null");
+	char	*line;
 }
 
 int main(int argc, char **argv, char **envp)
 {
-	int status;
-	char *old_line;
-	char *line;
-	t_cmd *cmd;
-	char *buf;
+	int		status;
+	char	*old_line;
+	char	*line;
+	t_cmd	*cmd;
 
 	cmd = NULL;
 	old_line = NULL;
@@ -73,20 +66,7 @@ int main(int argc, char **argv, char **envp)
 		if (!cmd)
 			continue;
 		cmd->status = &status;
-		// exec_argv(cmd);
-		// for (int i = 0; i < cmd->len; i++)
-		// {
-		// 	printf("%s\n", cmd[i].exec.exec);
-		// 	for (int j = 0; cmd->fds && j < cmd[i].fds->len; j++)
-		// 	{
-		// 		// char c[100];
-		// 		// int a = read(cmd[i].fds[j].fd, c, 100);
-		// 		// c[a] = '\0';
-		// 		// write(1, c, ft_strlen(c));
-		// 		printf("%d\n", cmd[i].fds[j].fd);
-		// 	}
-		// }
-		if (!exec_argv(cmd))
+		if (!exec_argv(cmd, 0, 0))
 		{
 			// printf("%d\n", is_a_builtin(cmd->exec.exec));
 			// if (command_not_found(cmd) >= 0)

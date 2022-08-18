@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   strchr.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dghonyan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
+/*   Updated: 2022/03/10 20:46:54 by dghonyan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	init_flags(char c1, char c2, int *flags)
@@ -24,7 +36,6 @@ int	init_fds(t_fds *fds, char c1, char c2, char *filename)
 	fds->here = filename;
 	if (c1 == '>' || (c1 == '<' && c2 != '<'))
 	{
-		fds->append = (c1 == '>' && c2 == '>');
 		fds->from = (c1 == '<');
 		fds->to = (c1 == '>');
 	}

@@ -2,5 +2,7 @@
 	"files.associations": {
 		"readline.h": "c",
 		"minishell.h": "c"
-	}
+	},
+	"editor.detectIndentation": false,
+	"editor.insertSpaces": false
 }

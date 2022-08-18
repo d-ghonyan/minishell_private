@@ -12,13 +12,13 @@
 
 #include "minishell.h"
 
-int has_an_error(t_cmd *cmd, int i);
+int	has_an_error(t_cmd *cmd, int i);
 
-int last_fd(t_cmd *cmd, int i, int cond)
+int	last_fd(t_cmd *cmd, int i, int cond)
 {
-	int to;
-	int from;
-	int j;
+	int	to;
+	int	from;
+	int	j;
 
 	j = -1;
 	to = -1;
@@ -37,13 +37,11 @@ int last_fd(t_cmd *cmd, int i, int cond)
 	return (from);
 }
 
-int dup_pipes(t_cmd *cmd, int i, int (*pipes)[2], int size)
+int	process_pipes(int i, t_cmd *cmd, int (*pipes)[2])
 {
-	int	j;
 	int	to;
 	int	from;
 
-	j = -1;
 	to = last_fd(cmd, i, 1);
 	from = last_fd(cmd, i, 0);
 	if (!has_an_error(cmd, i) && cmd[i].fds)
@@ -64,12 +62,21 @@ int dup_pipes(t_cmd *cmd, int i, int (*pipes)[2], int size)
 		if (dup2(pipes[i][1], STDOUT_FILENO) < 0)
 			return (perror_ret("dup2 failed 1"));
 	}
-	else if (i == size && from < 0)
+}
+
+int	another_process_pipes(int i, t_cmd *cmd, int (*pipes)[2], int size)
+{
+	int	to;
+	int	from;
+
+	to = last_fd(cmd, i, 1);
+	from = last_fd(cmd, i, 0);
+	if (i == size && from < 0)
 	{
 		if (dup2(pipes[i - 1][0], STDIN_FILENO) < 0)
 			return (perror_ret("dup2 failed 2"));
 	}
-	else
+	else if (i != 0 && i != size)
 	{
 		if (from < 0)
 		{
@@ -82,6 +89,17 @@ int dup_pipes(t_cmd *cmd, int i, int (*pipes)[2], int size)
 				return (perror_ret("dup2 failed 4"));
 		}
 	}
+}
+
+int	dup_pipes(t_cmd *cmd, int i, int (*pipes)[2], int size)
+{
+	int	to;
+	int	from;
+
+	to = last_fd(cmd, i, 1);
+	from = last_fd(cmd, i, 0);
+	process_pipes(i, cmd, pipes);
+	another_process_pipes(i, cmd, pipes, size);
 	i = -1;
 	while (++i < size)
 	{
@@ -93,9 +111,9 @@ int dup_pipes(t_cmd *cmd, int i, int (*pipes)[2], int size)
 	return (0);
 }
 
-int init_pipes(int (*pipes)[2], int size, int cond)
+int	init_pipes(int (*pipes)[2], int size, int cond)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (cond)

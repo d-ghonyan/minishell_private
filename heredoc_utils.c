@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   strchr.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dghonyan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
+/*   Updated: 2022/03/10 20:46:54 by dghonyan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-char	*here_expand(char *s);
+char	*here_expand(char *s, int i, int j);
 
 int	here_final_len(char *s)
 {
@@ -85,7 +97,7 @@ void	here_child(char *limiter, int quoted, int pipes[2])
 		}
 		if (!quoted && ft_strchr(line, '$'))
 		{
-			env = here_expand(line);
+			env = here_expand(line, 0, 0);
 			ft_putendl_fd(env, pipes[1]);
 			free(env);
 		}

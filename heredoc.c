@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   strchr.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dghonyan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
+/*   Updated: 2022/03/10 20:46:54 by dghonyan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 char	*final_limiter(char *s);
@@ -5,20 +17,13 @@ int		here_final_len(char *s);
 int		limiter_quotes(char *s);
 void	here_child(char *limiter, int quoted, int pipes[2]);
 
-char	*here_expand(char *s)
+char	*here_expand(char *s, int i, int j)
 {
-	int		i;
-	int		j;
 	char	*res;
 
-	i = 0;
-	j = 0;
 	res = ft_calloc(sizeof(*res), (here_final_len(s) + 1));
 	if (!res)
-	{
-		perror("malloc at here_expand(): ");
 		return (NULL);
-	}
 	while (s[i])
 	{
 		if (s[i] == '$')
@@ -39,12 +44,25 @@ char	*here_expand(char *s)
 	return (res);
 }
 
-//should expand variables when quoted is false
+void	call_child(char *limiter, int quoted, int pipes[2])
+{
+	char	*l;
+
+	l = final_limiter(limiter);
+	if (!l)
+	{
+		perror("malloc at heredoc()");
+		exit (EXIT_FAILURE);
+	}
+	here_child(l, quoted, pipes);
+	free(l);
+	exit (EXIT_SUCCESS);
+}
+
 int	heredoc(char *limiter, int quoted)
 {
 	int		a;
 	int		pipes[2];
-	char	*l;
 	pid_t	pid;
 
 	a = -1;
@@ -54,17 +72,7 @@ int	heredoc(char *limiter, int quoted)
 	if (pid < 0)
 		return (perror_neg("fork at heredoc()"));
 	if (pid == 0)
-	{
-		l = final_limiter(limiter);
-		if (!l)
-		{
-			perror("malloc at heredoc()");
-			exit (EXIT_FAILURE);
-		}
-		here_child(l, quoted, pipes);
-		free(l);
-		exit (EXIT_SUCCESS);
-	}
+		call_child(limiter, quoted, pipes);
 	else
 	{
 		close(pipes[1]);

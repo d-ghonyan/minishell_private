@@ -38,11 +38,8 @@ int	redirection_index(char *cmd, int i)
 	return (i);
 }
 
-int	exec_len(char *cmd, int i, int cond)
+int	exec_len(char *cmd, int i, int cond, int len)
 {
-	int	len;
-
-	len = 0;
 	i = ft_isspace_index(cmd);
 	while (cmd[i])
 	{
@@ -51,19 +48,13 @@ int	exec_len(char *cmd, int i, int cond)
 		while (cmd[i] && cmd[i] != '<' && cmd[i] != '>' && !ft_isspace(cmd[i]))
 		{
 			if (cmd[i] == '\'')
-			{
-				len++;
-				while (cmd[++i] && cmd[i] != '\'')
-					len++;
-			}
+				while (++len && cmd[++i] && cmd[i] != '\'')
+					;
 			if (cmd[i] == '"')
-			{
-				len++;
-				while (cmd[++i] && cmd[i] != '"')
-					len++;
-			}
+				while (++len && cmd[++i] && cmd[i] != '"')
+					;
+			len += (cmd[i] != '\0');
 			i += (cmd[i] != '\0');
-			len++;
 		}
 		if (!cmd[i] || ((cmd[i] == '<' || cmd[i] == '>'
 					|| ft_isspace(cmd[i])) && len))
@@ -101,7 +92,7 @@ int	argv_count(char *cmd)
 	int	i;
 	int	count;
 
-	i = exec_len(cmd, 0, 0);
+	i = exec_len(cmd, 0, 0, 0);
 	count = 0;
 	while (cmd[i])
 	{

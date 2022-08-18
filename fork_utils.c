@@ -12,47 +12,36 @@
 
 #include "minishell.h"
 
-void	free_fds(t_fds *fds)
+void	to_from(t_cmd *cmd)
 {
-	int	i;
+	int	to;
+	int	from;
 
-	i = -1;
-	if (!fds)
-		return ;
-	while (++i < fds->len)
+	to = last_fd(cmd, 0, 1);
+	from = last_fd(cmd, 0, 0);
+	if (to >= 0)
 	{
-		if (fds[i].fd >= 0)
-		{
-			if (close(fds[i].fd))
-				perror ("close at free_fds()");
-		}
-		fds[i].fd = -1;
-		free(fds[i].here);
-		fds[i].here = NULL;
+		dup2(to, STDOUT_FILENO);
+		close(to);
 	}
-	free(fds);
-	fds = NULL;
+	if (from >= 0)
+	{
+		dup2(from, STDIN_FILENO);
+		close(from);
+	}
 }
 
-void	free_cmd(t_cmd *cmd)
+void	fork_loop(char *line, pid_t *pids, t_cmd *cmd, int (*pipes)[2])
 {
 	int	i;
-	int	len;
 
 	i = -1;
-	if (!cmd)
-		return ;
-	len = cmd->len;
-	while (++i < len)
+	while (++i < count_pipes(line) + 1)
 	{
-		free(cmd[i].command);
-		free(cmd[i].exec.exec);
-		free_fds(cmd[i].fds);
-		free_ptr_arr(cmd[i].exec.argv);
-		cmd[i].command = NULL;
-		cmd[i].exec.exec = NULL;
-		cmd[i].exec.argv = NULL;
+		pids[i] = fork();
+		if (pids[i] < 0)
+			return (perror_ret("fork failed at call_forks()"));
+		if (pids[i] == 0)
+			children(cmd, pipes, count_pipes(line) + 1, i);
 	}
-	free(cmd);
-	cmd = NULL;
 }

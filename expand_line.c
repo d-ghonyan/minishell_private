@@ -12,6 +12,20 @@
 
 #include "minishell.h"
 
+int	dollar_sign(int *len, int *i, char *s)
+{
+	if (var_len(s, *i + 1, 1) == 0)
+		*len += 1;
+	else
+	{
+		if (expanded_len(s, *i + 1, 1) < 0)
+			return (-1);
+		*len += expanded_len(s, *i + 1, 1);
+	}
+	*i += var_len(s, *i + 1, 1);
+	return (0);
+}
+
 int	final_len(char *s)
 {
 	int	i;
