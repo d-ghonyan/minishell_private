@@ -59,9 +59,11 @@ typedef struct s_cmd {
 
 int		count_pipes(char *s);
 int		init_pipes(int (*pipes)[2], int size, int cond);
-int		dup_pipes(int i, int (*pipes)[2], int size);
+int		dup_pipes(t_cmd *cmd, int i, int (*pipes)[2], int size);
 int		close_pipes(int (*pipes)[2], int size);
 
+int		redirection_count(char *cmd);
+int		last_fd(t_cmd *cmd, int i, int cond);
 int		var_len(char *s, int i, int quote);
 int		is_a_valid_name(char c, int cond);
 int		expanded_len(char *cmd, int i, int quote);
@@ -80,7 +82,6 @@ int		exec_argv(t_cmd *cmd);
 void	init_signals_parent(void);
 void	init_signals_child(void);
 void	init_signals_heredoc(void);
-
 void	free_cmd(t_cmd *cmd);
 void	free_fds(t_fds *fds);
 char	*get_path(char *command);

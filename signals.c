@@ -47,8 +47,3 @@ void	init_signals_heredoc(void)
 	action.sa_handler = SIG_IGN;
 	sigaction(SIGQUIT, &action, NULL);
 }
-
-void	sigint_p(int signum)
-{
-	rl_done = 1;
-}

@@ -25,9 +25,24 @@ int	init_redirections(t_cmd *cmd)
 	i = -1;
 	while (++i < cmd->len)
 	{
+		j = -1;
 		cmd[i].fds = open_files(cmd[i].command);
-		if (!cmd[i].fds)
+		if (!cmd[i].fds && redirection_count(cmd[i].command) > 0)
 			return (1);
+		while (cmd[i].fds && ++j < cmd[i].fds->len)
+		{
+			if (cmd[i].fds[j].flags >= 0)
+			{
+				cmd[i].fds[j].fd = open(cmd[i].fds[j].here, cmd[i].fds[j].flags, 0644); 
+				if (cmd[i].fds[j].fd < 0)
+				{
+					ft_putstr_fd("open: ", STDERR_FILENO);
+					ft_putstr_fd(cmd[i].fds[j].here, STDERR_FILENO);
+					perror ("\02");
+					break ;
+				}
+			}
+		}
 	}
 	return (0);
 }

@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-int		redirection_count(char *cmd);
 int		init_fds(t_fds *fds, char c1, char c2, char *filename);
 t_fds	*alloc_fds(int size);
 
@@ -90,7 +89,7 @@ t_fds	*open_files(char *s)
 		perror("malloc at alloc_fds");
 		return (NULL);
 	}
-	while (s[i])
+	while (fds && s[i])
 	{
 		if (s[i] == '<' || s[i] == '>')
 		{

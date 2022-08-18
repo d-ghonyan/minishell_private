@@ -12,9 +12,18 @@
 
 #include "minishell.h"
 
+int	g_status = 0;
+
 int empty_event(void)
 {
 }
+
+void	sigint_p(int signum)
+{
+	rl_done = 1;
+	g_status = -1;
+}
+
 
 void change_env(char **envp)
 {
@@ -41,6 +50,7 @@ int main(int argc, char **argv, char **envp)
 	// change_env(envp);
 	while (1)
 	{
+		g_status = 0;
 		line = readline(GREEN "minishell" BLUE "$ " RESET);
 		if (!line)
 		{
@@ -54,7 +64,7 @@ int main(int argc, char **argv, char **envp)
 			free(temp);
 			add_history(line);
 		}
-		if (!line[0] || count_pipes(line) < 0 || check_quotes(line))
+		if ((rl_done && g_status < 0) || !line[0] || count_pipes(line) < 0 || check_quotes(line))
 		{
 			free(line);
 			continue ;
@@ -66,24 +76,25 @@ int main(int argc, char **argv, char **envp)
 		// exec_argv(cmd);
 		// for (int i = 0; i < cmd->len; i++)
 		// {
+		// 	printf("%s\n", cmd[i].exec.exec);
 		// 	for (int j = 0; cmd->fds && j < cmd[i].fds->len; j++)
 		// 	{
-		// 		char c[100];
-		// 		int a = read(cmd[i].fds[j].fd, c, 100);
-		// 		c[a] = '\0';
-		// 		write(1, c, ft_strlen(c));
+		// 		// char c[100];
+		// 		// int a = read(cmd[i].fds[j].fd, c, 100);
+		// 		// c[a] = '\0';
+		// 		// write(1, c, ft_strlen(c));
 		// 		printf("%d\n", cmd[i].fds[j].fd);
 		// 	}
 		// }
-		// if (!exec_argv(cmd))
-		// {
-		// 	// printf("%d\n", is_a_builtin(cmd->exec.exec));
-		// 	if (command_not_found(cmd) >= 0)
-		// 		printf("%s: Command not found\n",
-		// 			cmd[command_not_found(cmd)].exec.exec);
-		// 	else
-		// 		call_forks(cmd, line, &status);
-		// }
+		if (!exec_argv(cmd))
+		{
+			// printf("%d\n", is_a_builtin(cmd->exec.exec));
+			// if (command_not_found(cmd) >= 0)
+			// 	printf("%s: Command not found\n",
+			// 		cmd[command_not_found(cmd)].exec.exec);
+			// else
+				call_forks(cmd, line, &status);
+		}
 		// printf("%s\n", (buf = getcwd(NULL, 0)));
 		// free(buf);
 		free_cmd(cmd);

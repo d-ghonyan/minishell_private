@@ -30,6 +30,7 @@ int	init_fds(t_fds *fds, char c1, char c2, char *filename)
 	}
 	else if (c1 == '<' && c2 == '<')
 	{
+		fds->flags = -1;
 		flags = (ft_strchr(filename, '\'') || ft_strchr(filename, '"'));
 		fds->fd = heredoc(filename, flags);
 	}
@@ -47,14 +48,14 @@ t_fds	*alloc_fds(int size)
 	fds = malloc (sizeof (*fds) * size);
 	if (!fds)
 	{
-		perror ("open_files()");
+		perror ("mallo at open_files()");
 		return (NULL);
 	}
 	while (++i < size)
 	{
 		fds[i].append = 0;
 		fds[i].fd = -1;
-		fds[i].flags = 0;
+		fds[i].flags = -1;
 		fds[i].from = 0;
 		fds[i].here = NULL;
 		fds[i].heredoc = 0;

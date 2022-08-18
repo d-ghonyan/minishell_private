@@ -12,7 +12,22 @@
 
 #include "minishell.h"
 
-int	parent(t_cmd *cmd, int (*pipes)[2], pid_t *pids)
+int has_an_error(t_cmd *cmd, int i)
+{
+	int	j;
+
+	j = -1;
+	if (!cmd[i].fds)
+		return (0);
+	while (++j < cmd[i].fds->len)
+	{
+		if (!cmd[i].fds[j].heredoc && cmd[i].fds[j].fd < 0)
+			return (1);
+	}
+	return (0);
+}
+
+int parent(t_cmd *cmd, int (*pipes)[2], pid_t *pids)
 {
 	int	i;
 	int	status;
@@ -32,29 +47,34 @@ int	parent(t_cmd *cmd, int (*pipes)[2], pid_t *pids)
 	return (0);
 }
 
-int	children(t_cmd *cmd, int (*pipes)[2], int size, int i)
+int children(t_cmd *cmd, int (*pipes)[2], int size, int i)
 {
 	char	*path;
 
-	if (dup_pipes(i, pipes, size - 1))
-		return (1);
+	if (dup_pipes(cmd, i, pipes, size - 1))
+	{
+		free(pipes);
+		exit(EXIT_FAILURE);
+	}
 	init_signals_child();
 	if (!is_a_builtin(cmd[i].exec.exec))
 	{
 		path = get_path(cmd[i].exec.exec);
-		if (path)
+		// if (path && !has_an_error(cmd, i))
 			execve(path, cmd[i].exec.argv, cmd->envp);
 		free(path);
-		return (1);
+		free(pipes);
+		free_cmd(cmd);
+		exit(EXIT_FAILURE);
 	}
 	else
-	{
 		return (call_builtins(cmd, i));
-	}
 }
 
-int	single_command(t_cmd *cmd, int *status)
+int single_command(t_cmd *cmd, int *status)
 {
+	int		to;
+	int		from;
 	char	*path;
 	pid_t	pid;
 
@@ -63,15 +83,31 @@ int	single_command(t_cmd *cmd, int *status)
 		pid = fork();
 		if (pid == 0)
 		{
+			to = last_fd(cmd, 0, 1);
+			from = last_fd(cmd, 0, 0);
+			if (to >= 0)
+			{
+				dup2(to, STDOUT_FILENO);
+				close(to);
+			}
+			if (from >= 0)
+			{
+				dup2(from, STDIN_FILENO);
+				close(from);
+			}
 			init_signals_child();
 			path = get_path(cmd[0].exec.exec);
-			if (path)
-				execve(path, cmd[0].exec.argv, cmd->envp);
+			if (path && !has_an_error(cmd, 0))
+				;
+			execve(path, cmd[0].exec.argv, cmd->envp);
 			free(path);
-			return (1);
+			free_cmd(cmd);
+			exit(EXIT_FAILURE);
 		}
 		else
+		{
 			waitpid(pid, status, 0);
+		}
 	}
 	else
 	{
@@ -79,7 +115,7 @@ int	single_command(t_cmd *cmd, int *status)
 	}
 }
 
-int	call_forks(t_cmd *cmd, char *line, int *status)
+int call_forks(t_cmd *cmd, char *line, int *status)
 {
 	int		i;
 	int		(*pipes)[2];
@@ -108,5 +144,6 @@ int	call_forks(t_cmd *cmd, char *line, int *status)
 	}
 	else
 		single_command(cmd, status);
+	free(pids);
 	return (0);
 }
