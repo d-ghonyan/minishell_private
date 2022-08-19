@@ -31,12 +31,20 @@
 # include "colors.h"
 # include "libft/libft.h"
 
-typedef struct s_exec {
+typedef struct s_env
+{
+	char	*key;
+	char	*value;
+}	t_env;
+
+typedef struct s_exec
+{
 	char	*exec;
 	char	**argv;
 }	t_exec;
 
-typedef struct s_fds {
+typedef struct s_fds
+{
 	int		len;
 	int		flags;
 	int		fd;
@@ -48,11 +56,13 @@ typedef struct s_fds {
 	char	*here;
 }	t_fds;
 
-typedef struct s_cmd {
+typedef struct s_cmd
+{
 	int		len;
 	int		*status;
 	char	*command;
 	char	**envp;
+	char	**new_env;
 	t_fds	*fds;
 	t_exec	exec;
 }	t_cmd;
@@ -62,6 +72,9 @@ int		init_pipes(int (*pipes)[2], int size, int cond);
 int		dup_pipes(t_cmd *cmd, int i, int (*pipes)[2], int size);
 int		close_pipes(int (*pipes)[2], int size);
 
+char	**env(char **old_env, char *val);
+
+int		children(t_cmd *cmd, int (*pipes)[2], int size, int i);
 int		redirection_count(char *cmd);
 int		last_fd(t_cmd *cmd, int i, int cond);
 int		var_len(char *s, int i, int quote);

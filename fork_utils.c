@@ -31,7 +31,7 @@ void	to_from(t_cmd *cmd)
 	}
 }
 
-void	fork_loop(char *line, pid_t *pids, t_cmd *cmd, int (*pipes)[2])
+int	fork_loop(char *line, pid_t *pids, t_cmd *cmd, int (*pipes)[2])
 {
 	int	i;
 
@@ -44,4 +44,5 @@ void	fork_loop(char *line, pid_t *pids, t_cmd *cmd, int (*pipes)[2])
 		if (pids[i] == 0)
 			children(cmd, pipes, count_pipes(line) + 1, i);
 	}
+	return (0);
 }

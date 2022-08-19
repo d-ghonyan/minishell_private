@@ -20,8 +20,6 @@ static size_t	count(char const *s, char c)
 	size_t	count;
 	size_t	i;
 
-	if (!s)
-		return (0);
 	count = 0;
 	i = 0;
 	while (s[i] == c && s[i])
@@ -89,9 +87,11 @@ char	**ft_split(char const *s, char c)
 	size_t	i;
 
 	i = 0;
-	res = (char **)malloc((count(s, c) + 1) * sizeof (*res));
-	if (!res || !s)
-		return (hello(res));
+	if (!s)
+		return (NULL);
+	res = malloc((count(s, c) + 1) * sizeof (*res));
+	if (!res)
+		return (NULL);
 	while (s[i])
 	{
 		if (s[i] != c)
@@ -106,5 +106,5 @@ char	**ft_split(char const *s, char c)
 		i++;
 	}
 	*res = NULL;
-	return (res - count(s, c));
+ 	return (res - count(s, c));
 }

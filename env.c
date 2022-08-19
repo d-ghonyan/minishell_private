@@ -12,57 +12,44 @@
 
 #include "minishell.h"
 
-int	ft_cd(char **argv)
+int	is_in_env(char **env, char *val)
 {
-	if (ptr_arr_len(argv) > 2)
-	{
-		ft_putendl_fd("Too many arguments", STDERR_FILENO);
+	int	i;
+
+	i = 0;
+	if (getenv(val))
 		return (1);
-	}
-	if (ptr_arr_len(argv) == 1)
+	while (i < ptr_arr_len(env))
 	{
-		if (chdir(getenv("HOME")) < 0)
-			return (perror_builtins("cd: ", argv[0], ": "));
+		if (!ft_strcmp(env[i], val))
+			return (1);
+		i++;
 	}
-	else if (chdir(argv[1]) < 0)
-		return (perror_builtins("cd: ", argv[1], ": "));
 	return (0);
 }
 
-int	ft_pwd(t_cmd *cmd)
+char	**env(char **old_env, char *val)
 {
-	char	*path;
+	int		i;
+	char	**new_env;
 
-	path = getcwd(NULL, 0);
-	if (!path)
-		return (perror_ret("getcwd at ft_pwd()"));
-	ft_putendl_fd(path, STDOUT_FILENO);
-	free(path);
-	return (0);
-}
-
-int	ft_export(t_cmd *cmd, int i)
-{
-	int	j;
-
-	j = 0;
-	if (ptr_arr_len(cmd[i].exec.argv) == 1)
-		return (0);
-	while (cmd[i].exec.argv[++j])
+	i = 0;
+	new_env = malloc(sizeof (*new_env) * (ptr_arr_len(old_env) + 2));
+	if (!new_env)
+		return (NULL);
+	while (i < ptr_arr_len(old_env))
 	{
-		cmd->new_env = env(cmd->new_env, cmd[i].exec.argv[j]);
+		new_env[i] = ft_strdup((old_env)[i]);
+		if (!new_env[i])
+		{
+			free_ptr_arr(new_env);
+			return (NULL);
+		}
+		i++;
 	}
-}
-
-int	call_builtins(t_cmd *cmd, int i)
-{
-	char	*s;
-
-	s = cmd[i].exec.exec;
-	if (!ft_strcmp(s, "cd"))
-		*(cmd->status) = ft_cd(cmd[i].exec.argv);
-	if (!ft_strcmp(s, "pwd"))
-		*(cmd->status) = ft_pwd(cmd);
-	if (!ft_strcmp(s, "export"))
-		*(cmd->status) = ft_export(cmd, i);
+	if (!is_in_env(old_env, val))
+		new_env[i++] = ft_strdup(val);
+	new_env[i] = NULL;
+	free_ptr_arr(old_env);
+	return (new_env);
 }
