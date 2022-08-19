@@ -12,44 +12,85 @@
 
 #include "minishell.h"
 
-int	is_in_env(char **env, char *val)
-{
-	int	i;
+// char	**env(char **old_env, char *val)
+// {
+// 	int		i;
+// 	char	**new_env;
 
-	i = 0;
-	if (getenv(val))
-		return (1);
-	while (i < ptr_arr_len(env))
-	{
-		if (!ft_strcmp(env[i], val))
-			return (1);
-		i++;
-	}
-	return (0);
-}
+// 	i = -1;
+// 	new_env = malloc(sizeof (*new_env)
+// 		* (ptr_arr_len(old_env) + 1 + !is_in_env(old_env, val)));
+// 	if (!new_env)
+// 		return (NULL);
+// 	while (++i < ptr_arr_len(old_env))
+// 	{
+// 		new_env[i] = ft_strdup((old_env)[i]);
+// 		if (!new_env[i])
+// 		{
+// 			free_ptr_arr(new_env);
+// 			return (NULL);
+// 		}
+// 	}
+// 	if (!is_in_env(old_env, val))
+// 	{
+// 		new_env[i++] = ft_strdup(val);
+// 		if (!new_env[i])
+// 		{
+// 			free_ptr_arr(new_env);
+// 			return (NULL);
+// 		}
+// 	}
+// 	new_env[i] = NULL;
+// 	free_ptr_arr(old_env);
+// 	return (new_env);
+// }
 
-char	**env(char **old_env, char *val)
+char	**env(char **old_env, char *key, char *value)
 {
 	int		i;
 	char	**new_env;
 
-	i = 0;
-	new_env = malloc(sizeof (*new_env) * (ptr_arr_len(old_env) + 2));
+	i = -1;
+	new_env = malloc(sizeof (*new_env)
+		* (ptr_arr_len(old_env) + 1 + !is_in_env(old_env, key)));
 	if (!new_env)
 		return (NULL);
-	while (i < ptr_arr_len(old_env))
+	while (++i < ptr_arr_len(old_env))
 	{
-		new_env[i] = ft_strdup((old_env)[i]);
+		new_env[i] = ft_strdup(old_env[i]);
 		if (!new_env[i])
 		{
 			free_ptr_arr(new_env);
 			return (NULL);
 		}
-		i++;
 	}
-	if (!is_in_env(old_env, val))
-		new_env[i++] = ft_strdup(val);
+	if (!is_in_env(old_env, key) && !getenv(key))
+		new_env[i++] = ft_strdup_env(key, value);
 	new_env[i] = NULL;
 	free_ptr_arr(old_env);
 	return (new_env);
+}
+
+void	replace_env(char **old_env, char *key, char *value)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	j = ptr_arr_len(old_env);
+	while (++i < ptr_arr_len(old_env))
+	{
+		if (!ft_strcmp_env(old_env[i], key))
+		{
+			free(old_env[i]);
+			old_env[i] = ft_strdup_env(key, value);
+			if (!old_env[i])
+			{
+				i = -1;
+				while (++i < j)
+					free(old_env[i]);
+				return ;
+			}
+		}
+	}
 }

@@ -12,44 +12,68 @@
 
 #include "minishell.h"
 
-int	ft_cd(char **argv)
+void	remove_env(char **envp, char *key)
 {
-	if (ptr_arr_len(argv) > 2)
+	int		i;
+	char	*_key;
+
+	i = 0;
+	_key = ft_strjoin(key, "=");
+	if (!_key)
 	{
-		ft_putendl_fd("Too many arguments", STDERR_FILENO);
-		return (1);
+		perror("malloc at change_env()");
+		return ;
 	}
-	if (ptr_arr_len(argv) == 1)
+	while (envp[i])
 	{
-		if (chdir(getenv("HOME")) < 0)
-			return (perror_builtins("cd: ", argv[0], ": "));
+		if (!ft_strncmp(envp[i], _key, ft_strlen(_key)))
+		{
+			envp[i][0] = '\0';
+			break ;
+		}
+		i++;
 	}
-	else if (chdir(argv[1]) < 0)
-		return (perror_builtins("cd: ", argv[1], ": "));
+	free(_key);
+}
+
+int	is_in_env(char **env, char *key)
+{
+	int	i;
+
+	i = 0;
+	while (i < ptr_arr_len(env))
+	{
+		if (!ft_strcmp_env(env[i], key))
+			return (1);
+		i++;
+	}
 	return (0);
 }
 
-int	ft_pwd(t_cmd *cmd)
+char	*ft_strdup_env(char *key, char *value)
 {
-	char	*path;
+	int		i;
+	int		j;
+	char	*res;
 
-	path = getcwd(NULL, 0);
-	if (!path)
-		return (perror_ret("getcwd at ft_pwd()"));
-	ft_putendl_fd(path, STDOUT_FILENO);
-	free(path);
-	return (0);
-}
-
-int	call_builtins(t_cmd *cmd, int i)
-{
-	char	*s;
-
-	s = cmd[i].exec.exec;
-	if (!ft_strcmp(s, "cd"))
-		*(cmd->status) = ft_cd(cmd[i].exec.argv);
-	if (!ft_strcmp(s, "pwd"))
-		*(cmd->status) = ft_pwd(cmd);
-	if (!ft_strcmp(s, "export"))
-		*(cmd->status) = ft_export(cmd, i);
+	i = -1;
+	j = 0;
+	res = malloc(sizeof (*res) * (ft_strlen(key)
+		+ ft_strlen(value) + 1 + (value != NULL)));
+	if (!res)
+		return (NULL);
+	while (key[++i])
+		res[i] = key[i];
+	if (value)
+	{
+		res[i++] = '=';
+		while (value[j])
+		{
+			res[i] = value[j];
+			i++;
+			j++;
+		}
+	}
+	res[i] = '\0';
+	return (res);
 }

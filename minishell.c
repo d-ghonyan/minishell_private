@@ -51,6 +51,7 @@ int main(int argc, char **argv, char **envp)
 		line = readline(GREEN "minishell" BLUE "$ " RESET);
 		if (!line)
 		{
+			free_ptr_arr(new_env);
 			free(old_line);
 			return (0);
 		}
@@ -71,18 +72,12 @@ int main(int argc, char **argv, char **envp)
 			continue;
 		cmd->status = &status;
 		cmd->new_env = new_env;
-		exec_argv(cmd, 0, 0);
-		call_builtins(cmd, 0);
+		// call_builtins(cmd, 0);
+		if (!exec_argv(cmd, 0, 0))
+		{
+			call_forks(cmd, line, &status);
+		}
 		new_env = cmd->new_env;
-		// if (!exec_argv(cmd, 0, 0))
-		// {
-		// 	// printf("%d\n", is_a_builtin(cmd->exec.exec));
-		// 	// if (command_not_found(cmd) >= 0)
-		// 	// 	printf("%s: Command not found\n",
-		// 	// 		cmd[command_not_found(cmd)].exec.exec);
-		// 	// else
-		// 		call_forks(cmd, line, &status);
-		// }
 		// printf("%s\n", (buf = getcwd(NULL, 0)));
 		// free(buf);
 		free_cmd(cmd);

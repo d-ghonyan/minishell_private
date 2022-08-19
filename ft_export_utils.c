@@ -12,44 +12,47 @@
 
 #include "minishell.h"
 
-int	ft_cd(char **argv)
+char	*_key(char *s)
 {
-	if (ptr_arr_len(argv) > 2)
+	int		i;
+	char	*res;
+
+	i = 0;
+	res = malloc(sizeof (*res) * (find_index(s, '=') + 1));
+	if (!res)
 	{
-		ft_putendl_fd("Too many arguments", STDERR_FILENO);
-		return (1);
+		perror("malloc at _key()");
+		return (NULL);
 	}
-	if (ptr_arr_len(argv) == 1)
+	while (s[i] && s[i] != '=')
 	{
-		if (chdir(getenv("HOME")) < 0)
-			return (perror_builtins("cd: ", argv[0], ": "));
+		res[i] = s[i];
+		i++;
 	}
-	else if (chdir(argv[1]) < 0)
-		return (perror_builtins("cd: ", argv[1], ": "));
-	return (0);
+	res[i] = '\0';
+	return (res);
 }
 
-int	ft_pwd(t_cmd *cmd)
+char	*_value(char *s)
 {
-	char	*path;
+	int		i;
+	int		j;
+	char	*res;
 
-	path = getcwd(NULL, 0);
-	if (!path)
-		return (perror_ret("getcwd at ft_pwd()"));
-	ft_putendl_fd(path, STDOUT_FILENO);
-	free(path);
-	return (0);
-}
-
-int	call_builtins(t_cmd *cmd, int i)
-{
-	char	*s;
-
-	s = cmd[i].exec.exec;
-	if (!ft_strcmp(s, "cd"))
-		*(cmd->status) = ft_cd(cmd[i].exec.argv);
-	if (!ft_strcmp(s, "pwd"))
-		*(cmd->status) = ft_pwd(cmd);
-	if (!ft_strcmp(s, "export"))
-		*(cmd->status) = ft_export(cmd, i);
+	j = 0;
+	i = find_index(s, '=') + 1;
+	res = malloc(sizeof (*res) * (ft_strlen(s) - find_index(s, '=')));
+	if (!res)
+	{
+		perror("malloc at _value()");
+		return (NULL);
+	}
+	while (s[i])
+	{
+		res[j] = s[i];
+		i++;
+		j++;
+	}
+	res[j] = '\0';
+	return (res);
 }

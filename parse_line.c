@@ -70,6 +70,7 @@ t_cmd	*init_cmd(int size, char **envp, char *line)
 		cmd[i].fds = NULL;
 		cmd[i].exec.exec = NULL;
 		cmd[i].exec.argv = NULL;
+		cmd[i].new_env = NULL;
 	}
 	return (cmd);
 }

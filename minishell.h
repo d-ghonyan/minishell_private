@@ -71,9 +71,16 @@ int		count_pipes(char *s);
 int		init_pipes(int (*pipes)[2], int size, int cond);
 int		dup_pipes(t_cmd *cmd, int i, int (*pipes)[2], int size);
 int		close_pipes(int (*pipes)[2], int size);
-
-char	**env(char **old_env, char *val);
-
+char	*ft_strdup_env(char *key, char *value);
+int		is_in_env(char **env, char *key);
+char	**env(char **old_env, char *key, char *value);
+void	replace_env(char **old_env, char *key, char *value);
+int		ft_strcmp_env(char *s1, char *s2);
+int		find_index(char *s, char c);
+char	*_key(char *s);
+int		ft_export(t_cmd *cmd, int i);
+char	*_value(char *s);
+void	remove_env(char **envp, char *key);
 int		children(t_cmd *cmd, int (*pipes)[2], int size, int i);
 int		redirection_count(char *cmd);
 int		last_fd(t_cmd *cmd, int i, int cond);
