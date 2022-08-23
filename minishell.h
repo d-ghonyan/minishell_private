@@ -25,8 +25,8 @@
 // # include <features.h>
 # include <sys/wait.h>
 # include <sys/types.h>
-# include "/goinfre/dghonyan/include/readline/history.h"
-# include "/goinfre/dghonyan/include/readline/readline.h"
+# include "readline/include/readline/history.h"
+# include "readline/include/readline/readline.h"
 // # include <readline/history.h>
 // # include <readline/readline.h>
 
