@@ -4,5 +4,6 @@
 		"minishell.h": "c"
 	},
 	"editor.detectIndentation": false,
-	"editor.insertSpaces": false
+	"editor.insertSpaces": false,
+	"workbench.panel.defaultLocation": "right"
 }
