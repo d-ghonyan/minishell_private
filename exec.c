@@ -113,6 +113,7 @@ int	init_argv(t_exec *exec, char *cmd, int i, int k)
 		}
 	}
 	exec->argv[k] = NULL;
+	return (0);
 }
 
 int	exec_argv(t_cmd *cmd, int i, int j)

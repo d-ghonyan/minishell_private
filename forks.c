@@ -99,6 +99,7 @@ int	single_command(t_cmd *cmd, int *status)
 	}
 	else
 		return (call_builtins(cmd, 0));
+	return (0);
 }
 
 int	call_forks(t_cmd *cmd, char *line, int *status)

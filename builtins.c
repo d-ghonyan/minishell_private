@@ -52,4 +52,5 @@ int	call_builtins(t_cmd *cmd, int i)
 		*(cmd->status) = ft_pwd(cmd);
 	if (!ft_strcmp(s, "export"))
 		*(cmd->status) = ft_export(cmd, i);
+	return (0);
 }

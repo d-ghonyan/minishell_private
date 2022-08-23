@@ -22,7 +22,7 @@
 # include <dirent.h>
 # include <stdbool.h>
 # include <termios.h>
-# include <features.h>
+// # include <features.h>
 # include <sys/wait.h>
 # include <sys/types.h>
 # include <readline/history.h>
@@ -67,6 +67,7 @@ typedef struct s_cmd
 	t_exec	exec;
 }	t_cmd;
 
+void	thing(void);
 int		count_pipes(char *s);
 int		init_pipes(int (*pipes)[2], int size, int cond);
 int		dup_pipes(t_cmd *cmd, int i, int (*pipes)[2], int size);

@@ -14,19 +14,32 @@
 
 int	g_status = 0;
 
+void	thing(void)
+{
+	struct termios	term;
+
+	if (tcgetattr(0, &term))
+		perror ("");
+	term.c_lflag &= ~ECHOCTL;
+	if (tcsetattr(0, 0, &term))
+		perror ("");
+}
+
 int empty_event(void)
 {
+	return (0);
 }
 
 void	sigint_p(int signum)
 {
-	rl_done = 1;
+	// rl_done = 1;
 	g_status = -1;
 }
 
 char	*_readline(char *prompt)
 {
 	char	*line;
+	return (0);
 }
 
 int main(int argc, char **argv, char **envp)
@@ -41,7 +54,8 @@ int main(int argc, char **argv, char **envp)
 	old_line = NULL;
 	new_env = NULL;
 	init_signals_parent();
-	rl_event_hook = &empty_event;
+	thing();
+	// rl_event_hook = &empty_event;
 	// change_env(envp);
 	while (1)
 	{
@@ -62,7 +76,7 @@ int main(int argc, char **argv, char **envp)
 			free(temp);
 			add_history(line);
 		}
-		if ((rl_done && g_status < 0) || !line[0] || count_pipes(line) < 0 || check_quotes(line))
+		if (!line[0] || count_pipes(line) < 0 || check_quotes(line))
 		{
 			free(line);
 			continue ;

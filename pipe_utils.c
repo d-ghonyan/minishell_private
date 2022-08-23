@@ -62,6 +62,7 @@ int	process_pipes(int i, t_cmd *cmd, int (*pipes)[2])
 		if (dup2(pipes[i][1], STDOUT_FILENO) < 0)
 			return (perror_ret("dup2 failed 1"));
 	}
+	return (0);
 }
 
 int	another_process_pipes(int i, t_cmd *cmd, int (*pipes)[2], int size)
@@ -89,6 +90,7 @@ int	another_process_pipes(int i, t_cmd *cmd, int (*pipes)[2], int size)
 				return (perror_ret("dup2 failed 4"));
 		}
 	}
+	return (0);
 }
 
 int	dup_pipes(t_cmd *cmd, int i, int (*pipes)[2], int size)
