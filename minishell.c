@@ -32,8 +32,9 @@ int empty_event(void)
 
 void	sigint_p(int signum)
 {
-	// rl_done = 1;
-	g_status = -1;
+	// rl_replace_line("", 0);
+	rl_done = 1;
+	g_status = signum  + 128;
 }
 
 char	*_readline(char *prompt)
@@ -55,13 +56,12 @@ int main(int argc, char **argv, char **envp)
 	new_env = NULL;
 	init_signals_parent();
 	thing();
-	// rl_event_hook = &empty_event;
+	rl_event_hook = &empty_event;
 	// change_env(envp);
 	while (1)
 	{
 		for (int i = 0; i < ptr_arr_len(new_env); i++)
 			printf("%s\n", new_env[i]);
-		g_status = 0;
 		line = readline(GREEN "minishell" BLUE "$ " RESET);
 		if (!line)
 		{
@@ -76,14 +76,17 @@ int main(int argc, char **argv, char **envp)
 			free(temp);
 			add_history(line);
 		}
-		if (!line[0] || count_pipes(line) < 0 || check_quotes(line))
+		if ((rl_done && g_status == SIGINT + 128) || !line[0] || count_pipes(line) < 0 || check_quotes(line))
 		{
+			status = g_status;
+			g_status = 0;
 			free(line);
 			continue ;
 		}
+		printf("%d\n", status);
 		cmd = parse_line(line, envp);
 		if (!cmd)
-			continue;
+			continue ;
 		cmd->status = &status;
 		cmd->new_env = new_env;
 		// call_builtins(cmd, 0);
@@ -91,6 +94,7 @@ int main(int argc, char **argv, char **envp)
 		{
 			call_forks(cmd, line, &status);
 		}
+		status = *(cmd->status);
 		new_env = cmd->new_env;
 		// printf("%s\n", (buf = getcwd(NULL, 0)));
 		// free(buf);

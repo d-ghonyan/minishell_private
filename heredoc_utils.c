@@ -91,8 +91,10 @@ void	here_child(char *limiter, int quoted, int pipes[2])
 		if (!line || !ft_strcmp(line, limiter))
 		{
 			if (!line)
-				printf("warning: heredoc terminated by EOF\n");
+				printf("\b\bwarning: heredoc terminated by EOF\n");
 			free(line);
+			close(pipes[1]);
+			exit (EXIT_SUCCESS);
 			break ;
 		}
 		if (!quoted && ft_strchr(line, '$'))

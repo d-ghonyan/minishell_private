@@ -45,6 +45,7 @@ int	parent(t_cmd *cmd, int (*pipes)[2], pid_t *pids)
 	while (i < cmd->len)
 	{
 		waitpid(pids[i], &status, 0);
+		*(cmd->status) = WEXITSTATUS(status);
 		i++;
 	}
 	return (0);
@@ -95,7 +96,11 @@ int	single_command(t_cmd *cmd, int *status)
 			exit(EXIT_FAILURE);
 		}
 		else
+		{
 			waitpid(pid, status, 0);
+			if (WIFEXITED(status))
+				*(cmd->status) = WEXITSTATUS(status);
+		}
 	}
 	else
 		return (call_builtins(cmd, 0));
