@@ -1,7 +1,7 @@
 NAME = minishell
 CC = cc
 CFLAGS = -c #-Wall -Wextra -Werror
-READLINE = -lreadline -L /goinfre/dghonyan/lib/
+READLINE = -lreadline -L ./readline/lib/
 LIBFT = -lft -L libft
 SRCS = $(wildcard *.c)
 OBJS = $(SRCS:.c=.o)

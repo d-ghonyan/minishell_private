@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   strchr.c                                           :+:      :+:    :+:   */
+/*   parse_line.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dghonyan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/03/10 20:46:54 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/26 18:34:00 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	command_not_found(t_cmd *cmd)
 	path = NULL;
 	while (i < cmd->len)
 	{
-		path = get_path(cmd[i].exec.exec);
+		path = get_path(cmd->new_env, cmd[i].exec.exec);
 		if (!path && !is_a_builtin(cmd[i].exec.exec))
 			return (i);
 		free(path);

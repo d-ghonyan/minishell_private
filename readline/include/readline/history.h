@@ -28,7 +28,7 @@ extern "C" {
 
 #include <time.h>		/* XXX - for history timestamp code */
 
-# define READLINE_LIBRARY
+#define READLINE_LIBRARY
 
 #if defined READLINE_LIBRARY
 #  include "rlstdc.h"

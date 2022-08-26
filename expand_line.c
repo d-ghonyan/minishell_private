@@ -6,27 +6,27 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/26 13:01:05 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/26 18:53:08 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	dollar_sign(int *len, int *i, char *s)
+int	dollar_sign(int *len, int *i, char *s, char **envp)
 {
 	if (var_len(s, *i + 1, 1) == 0)
 		*len += 1;
 	else
 	{
-		if (expanded_len(s, *i + 1, 1) < 0)
+		if (expanded_len(s, *i + 1, 1, envp) < 0)
 			return (-1);
-		*len += expanded_len(s, *i + 1, 1);
+		*len += expanded_len(s, *i + 1, 1, envp);
 	}
 	*i += var_len(s, *i + 1, 1);
 	return (0);
 }
 
-int	final_len(char *s)
+int	final_len(char *s, char **envp)
 {
 	int	i;
 	int	len;
@@ -51,9 +51,9 @@ int	final_len(char *s)
 						len += 1;
 					else
 					{
-						if (expanded_len(s, i + 1, 1) < 0)
+						if (expanded_len(s, i + 1, 1, envp) < 0)
 							return (-1);
-						len += expanded_len(s, i + 1, 1);
+						len += expanded_len(s, i + 1, 1, envp);
 					}
 					i += var_len(s, i + 1, 1);
 				}
@@ -68,9 +68,9 @@ int	final_len(char *s)
 				len += 1;
 			else
 			{
-				if (expanded_len(s, i + 1, 0) < 0)
+				if (expanded_len(s, i + 1, 0, envp) < 0)
 					return (-1);
-				len += expanded_len(s, i + 1, 0);
+				len += expanded_len(s, i + 1, 0, envp);
 			}
 			i += var_len(s, i + 1, 0) + 1;
 		}
@@ -88,7 +88,7 @@ char	*expand_line(char *s, char **envp)
 
 	i = 0;
 	j = 0;
-	res = ft_calloc(sizeof(*res), (final_len(s) + 1));
+	res = ft_calloc(sizeof(*res), (final_len(s, envp) + 1));
 	if (!res)
 	{
 		perror("expand_line(): ");

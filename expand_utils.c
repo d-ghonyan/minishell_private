@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/26 13:00:11 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/26 18:51:48 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	var_len(char *s, int i, int quote)
 	return (len);
 }
 
-int	expanded_len(char *cmd, int i, int quote)
+int	expanded_len(char *cmd, int i, int quote, char **envp)
 {
 	int		j;
 	char	*env;
@@ -50,7 +50,7 @@ int	expanded_len(char *cmd, int i, int quote)
 		var[j++] = cmd[i++];
 	}
 	var[j] = '\0';
-	env = getenv(var);
+	env = _getenv(envp, var);
 	free(var);
 	return (ft_strlen(env));
 }

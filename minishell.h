@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/26 13:12:31 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/26 18:52:06 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int		redirection_count(char *cmd);
 int		last_fd(t_cmd *cmd, int i, int cond);
 int		var_len(char *s, int i, int quote);
 int		is_a_valid_name(char c, int cond);
-int		expanded_len(char *cmd, int i, int quote);
+int		expanded_len(char *cmd, int i, int quote, char **envp);
 char	*expanded_env(char *cmd, int i, int quote, char **envp);
 void	strjoin_var(char *s1, char *s2);
 int		call_forks(t_cmd *cmd, char *line, int *status);

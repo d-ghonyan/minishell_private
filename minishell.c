@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/26 13:13:09 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/26 18:49:04 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int main(int argc, char **argv, char **envp)
 	// change_env(envp);
 	while (1)
 	{
+		printf("%s\n", _getenv(new_env, "barev"));
 		// for (int i = 0; i < ptr_arr_len(new_env); i++)
 		// 	printf("%s\n", new_env[i]);
 		line = readline(GREEN "minishell" BLUE "$ " RESET);
@@ -85,7 +86,6 @@ int main(int argc, char **argv, char **envp)
 			free(line);
 			continue ;
 		}
-		printf("%d\n", status);
 		cmd = parse_line(line, envp);
 		if (!cmd)
 			continue ;
