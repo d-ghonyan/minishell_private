@@ -12,39 +12,6 @@
 
 #include "minishell.h"
 
-// char	**env(char **old_env, char *val)
-// {
-// 	int		i;
-// 	char	**new_env;
-
-// 	i = -1;
-// 	new_env = malloc(sizeof (*new_env)
-// 		* (ptr_arr_len(old_env) + 1 + !is_in_env(old_env, val)));
-// 	if (!new_env)
-// 		return (NULL);
-// 	while (++i < ptr_arr_len(old_env))
-// 	{
-// 		new_env[i] = ft_strdup((old_env)[i]);
-// 		if (!new_env[i])
-// 		{
-// 			free_ptr_arr(new_env);
-// 			return (NULL);
-// 		}
-// 	}
-// 	if (!is_in_env(old_env, val))
-// 	{
-// 		new_env[i++] = ft_strdup(val);
-// 		if (!new_env[i])
-// 		{
-// 			free_ptr_arr(new_env);
-// 			return (NULL);
-// 		}
-// 	}
-// 	new_env[i] = NULL;
-// 	free_ptr_arr(old_env);
-// 	return (new_env);
-// }
-
 char	**env(char **old_env, char *key, char *value)
 {
 	int		i;

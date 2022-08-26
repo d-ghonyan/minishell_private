@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+int	ft_env(t_cmd *cmd);
+
 int	find_index(char *s, char c)
 {
 	int	i;
@@ -80,7 +82,7 @@ int	ft_export(t_cmd *cmd, int i)
 
 	j = 0;
 	if (ptr_arr_len(cmd[i].exec.argv) == 1)
-		return (0);
+		return (ft_env(cmd));
 	while (cmd[i].exec.argv[++j])
 	{
 		if (!is_valid(cmd[i].exec.argv[j]))
