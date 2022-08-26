@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   strchr.c                                           :+:      :+:    :+:   */
+/*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dghonyan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/03/10 20:46:54 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/26 13:03:51 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*here_expand(char *s, int i, int j);
+char	*here_expand(char *s, int i, int j, char **envp);
 
 int	here_final_len(char *s)
 {
@@ -78,7 +78,7 @@ char	*final_limiter(char *s)
 	return (res);
 }
 
-void	here_child(char *limiter, int quoted, int pipes[2])
+void	here_child(char *limiter, int quoted, int pipes[2], char **envp)
 {
 	char	*line;
 	char	*env;
@@ -99,7 +99,7 @@ void	here_child(char *limiter, int quoted, int pipes[2])
 		}
 		if (!quoted && ft_strchr(line, '$'))
 		{
-			env = here_expand(line, 0, 0);
+			env = here_expand(line, 0, 0, envp);
 			ft_putendl_fd(env, pipes[1]);
 			free(env);
 		}

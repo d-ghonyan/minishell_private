@@ -6,13 +6,13 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/24 15:27:56 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/26 13:11:16 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		init_fds(t_fds *fds, char c1, char c2, char *filename);
+int		init_fds(t_fds *fds, char *s, char *filename, char **envp);
 t_fds	*alloc_fds(int size);
 
 int	redirection_len(char *cmd, int i, char c)
@@ -85,7 +85,7 @@ int	redirection_index_but_like_changed(char *cmd, int i)
 	return (i);
 }
 
-t_fds	*open_files(char *s)
+t_fds	*open_files(char *s, char **envp)
 {
 	int		i;
 	int		j;
@@ -111,7 +111,7 @@ t_fds	*open_files(char *s)
 				free_fds(fds);
 				return (NULL);
 			}
-			init_fds(fds + ++j, s[i], s[i + 1], filename);
+			init_fds(fds + ++j, &s[i], filename, envp);
 			i = redirection_index_but_like_changed(s, i);
 		}
 		i += (s[i] != '\0');

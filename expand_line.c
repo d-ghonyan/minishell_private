@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   strchr.c                                           :+:      :+:    :+:   */
+/*   expand_line.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dghonyan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/03/10 20:46:54 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/26 13:01:05 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	final_len(char *s)
 	return (len);
 }
 
-char	*expand_line(char *s)
+char	*expand_line(char *s, char **envp)
 {
 	int		i;
 	int		j;
@@ -112,7 +112,7 @@ char	*expand_line(char *s)
 						res[j++] = '$';
 					else
 					{
-						strjoin_var(res, expanded_env(s, i + 1, 1));
+						strjoin_var(res, expanded_env(s, i + 1, 1, envp));
 						j = ft_strlen(res);
 					}
 					i += var_len(s, i + 1, 1);
@@ -128,7 +128,7 @@ char	*expand_line(char *s)
 				res[j++] = '$';
 			else
 			{
-				strjoin_var(res, expanded_env(s, i + 1, 0));
+				strjoin_var(res, expanded_env(s, i + 1, 0, envp));
 				j = ft_strlen(res);
 			}
 			i += var_len(s, i + 1, 0) + 1;

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   strchr.c                                           :+:      :+:    :+:   */
+/*   get_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dghonyan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/03/10 20:46:54 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/26 12:51:54 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static char	*free_ret(char **spl, char *null);
 
-char	*_get_path(char *command)
+char	*_get_path(char **envp, char *command)
 {
 	int		i;
 	char	*exec;
@@ -22,7 +22,9 @@ char	*_get_path(char *command)
 	char	**spl;
 
 	i = -1;
-	spl = ft_split(getenv("PATH"), ':');
+	exec = _getenv(envp, "PATH");
+	spl = ft_split(exec, ':');
+	free(exec);
 	if (!spl)
 		return (NULL);
 	while (spl[++i])
@@ -41,16 +43,23 @@ char	*_get_path(char *command)
 	return (free_ret(spl, NULL));
 }
 
-char	*get_path(char *command)
+char	*get_path(char **envp, char *command)
 {
 	char	*ret;
+	DIR		*dir;
 
+	dir = opendir(command);
+	if (dir)
+	{
+		stderror_putstr("minishell: ", command, ": is a directory", 1);
+		closedir(dir);
+	}
 	if (!access(command, F_OK))
 	{
 		ret = ft_strdup(command);
 		return (ret);
 	}
-	return (_get_path(command));
+	return (_get_path(envp, command));
 }
 
 static char	*free_ret(char **spl, char *null)

@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/24 15:28:08 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/26 13:13:09 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int empty_event(void)
 
 void	sigint_p(int signum)
 {
-	// rl_replace_line("", 0);
+	rl_replace_line("", 0);
 	rl_done = 1;
 	g_status = signum  + 128;
 }
@@ -53,15 +53,17 @@ int main(int argc, char **argv, char **envp)
 
 	cmd = NULL;
 	old_line = NULL;
-	new_env = NULL;
+	new_env = copy_env(envp);
+	if (!new_env)
+		return (perror_ret("malloc at copy_env()"));
 	init_signals_parent();
 	thing();
 	rl_event_hook = &empty_event;
 	// change_env(envp);
 	while (1)
 	{
-		for (int i = 0; i < ptr_arr_len(new_env); i++)
-			printf("%s\n", new_env[i]);
+		// for (int i = 0; i < ptr_arr_len(new_env); i++)
+		// 	printf("%s\n", new_env[i]);
 		line = readline(GREEN "minishell" BLUE "$ " RESET);
 		if (!line)
 		{
@@ -71,12 +73,12 @@ int main(int argc, char **argv, char **envp)
 		}
 		if (line[0] && (!old_line || ft_strcmp(line, old_line)))
 		{
-			char *temp = old_line;
+			char	*temp = old_line;
 			old_line = ft_strdup(line);
 			free(temp);
 			add_history(line);
 		}
-		if ((rl_done && g_status == SIGINT + 128) || !line[0] || count_pipes(line) < 0 || check_quotes(line))
+		if (!line[0] || count_pipes(line) < 0 || check_quotes(line))
 		{
 			status = g_status;
 			g_status = 0;

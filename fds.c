@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   strchr.c                                           :+:      :+:    :+:   */
+/*   fds.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dghonyan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/03/10 20:46:54 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/26 13:11:44 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,14 @@ void	init_flags(char c1, char c2, int *flags)
 }
 
 //need to do the heredoc right here
-int	init_fds(t_fds *fds, char c1, char c2, char *filename)
+int	init_fds(t_fds *fds, char *c, char *filename, char **envp)
 {
-	int	flags;
+	int		flags;
+	char	c1;
+	char	c2;
 
+	c1 = *c;
+	c2 = *(c + 1);
 	flags = 0;
 	init_flags(c1, c2, &(fds->flags));
 	fds->here = filename;
@@ -43,7 +47,7 @@ int	init_fds(t_fds *fds, char c1, char c2, char *filename)
 	{
 		fds->flags = -1;
 		flags = (ft_strchr(filename, '\'') || ft_strchr(filename, '"'));
-		fds->fd = heredoc(filename, flags);
+		fds->fd = heredoc(filename, flags, envp);
 	}
 	return (0);
 }
@@ -59,8 +63,8 @@ t_fds	*alloc_fds(int size)
 	fds = malloc (sizeof (*fds) * size);
 	if (!fds)
 	{
-		perror ("mallo at open_files()");
-		return (NULL);
+		perror ("malloc at open_files()");
+		exit(EXIT_FAILURE);
 	}
 	while (++i < size)
 	{

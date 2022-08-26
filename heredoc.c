@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   strchr.c                                           :+:      :+:    :+:   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dghonyan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/03/10 20:46:54 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/26 13:04:23 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 char	*final_limiter(char *s);
 int		here_final_len(char *s);
 int		limiter_quotes(char *s);
-void	here_child(char *limiter, int quoted, int pipes[2]);
+void	here_child(char *limiter, int quoted, int pipes[2], char **envp);
 
-char	*here_expand(char *s, int i, int j)
+char	*here_expand(char *s, int i, int j, char **envp)
 {
 	char	*res;
 
@@ -32,7 +32,7 @@ char	*here_expand(char *s, int i, int j)
 				res[j++] = '$';
 			else
 			{
-				strjoin_var(res, expanded_env(s, i + 1, 0));
+				strjoin_var(res, expanded_env(s, i + 1, 0, envp));
 				j = ft_strlen(res);
 			}
 			i += var_len(s, i + 1, 0) + 1;
@@ -44,7 +44,7 @@ char	*here_expand(char *s, int i, int j)
 	return (res);
 }
 
-void	call_child(char *limiter, int quoted, int pipes[2])
+void	call_child(char *limiter, int quoted, int pipes[2], char **envp)
 {
 	char	*l;
 
@@ -54,12 +54,12 @@ void	call_child(char *limiter, int quoted, int pipes[2])
 		perror("malloc at heredoc()");
 		exit (EXIT_FAILURE);
 	}
-	here_child(l, quoted, pipes);
+	here_child(l, quoted, pipes, envp);
 	free(l);
 	exit (EXIT_SUCCESS);
 }
 
-int	heredoc(char *limiter, int quoted)
+int	heredoc(char *limiter, int quoted, char **envp)
 {
 	int		a;
 	int		pipes[2];
@@ -72,7 +72,7 @@ int	heredoc(char *limiter, int quoted)
 	if (pid < 0)
 		return (perror_neg("fork at heredoc()"));
 	if (pid == 0)
-		call_child(limiter, quoted, pipes);
+		call_child(limiter, quoted, pipes, envp);
 	else
 	{
 		close(pipes[1]);

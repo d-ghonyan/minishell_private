@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   strchr.c                                           :+:      :+:    :+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dghonyan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/03/10 20:46:54 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/26 13:12:31 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,12 @@ typedef struct s_cmd
 	t_exec	exec;
 }	t_cmd;
 
+char	*_getenv(char **envp, char *s);
 void	thing(void);
 int		count_pipes(char *s);
 int		init_pipes(int (*pipes)[2], int size, int cond);
 int		dup_pipes(t_cmd *cmd, int i, int (*pipes)[2], int size);
+char	**copy_env(char **envp);
 int		close_pipes(int (*pipes)[2], int size);
 char	*ft_strdup_env(char *key, char *value);
 int		is_in_env(char **env, char *key);
@@ -90,11 +92,11 @@ int		last_fd(t_cmd *cmd, int i, int cond);
 int		var_len(char *s, int i, int quote);
 int		is_a_valid_name(char c, int cond);
 int		expanded_len(char *cmd, int i, int quote);
-char	*expanded_env(char *cmd, int i, int quote);
+char	*expanded_env(char *cmd, int i, int quote, char **envp);
 void	strjoin_var(char *s1, char *s2);
 int		call_forks(t_cmd *cmd, char *line, int *status);
 int		call_builtins(t_cmd *cmd, int i);
-int		heredoc(char *limiter, int quoted);
+int		heredoc(char *limiter, int quoted, char **envp);
 int		redirection_index(char *cmd, int i);
 int		perror_ret(char *msg);
 int		perror_neg(char *msg);
@@ -109,10 +111,10 @@ void	init_signals_child(void);
 void	init_signals_heredoc(void);
 void	free_cmd(t_cmd *cmd);
 void	free_fds(t_fds *fds);
-char	*get_path(char *command);
+char	*get_path(char **envp, char *command);
 char	*alloc_command(char *line, int i, int size, int j);
-char	*expand_line(char *cmd);
+char	*expand_line(char *cmd, char **envp);
 t_cmd	*parse_line(char *line, char **envp);
-t_fds	*open_files(char *s);
+t_fds	*open_files(char *s, char **envp);
 
 #endif

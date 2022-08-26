@@ -1,16 +1,62 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   strchr.c                                           :+:      :+:    :+:   */
+/*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dghonyan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/03/10 20:46:54 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/26 12:40:38 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*_getenv(char **envp, char *s)
+{
+	int		i;
+	char	*env;
+
+	i = -1;
+	env = NULL;
+	while (envp[++i])
+	{
+		if (!ft_strcmp_env(envp[i], s))
+		{
+			env = _value(envp[i]);
+			if (!env)
+			{
+				perror ("malloc at _getenv()");
+				exit (EXIT_FAILURE);
+			}
+			return (env);
+		}
+	}
+	return (NULL);
+}
+
+char	**copy_env(char **envp)
+{
+	int		i;
+	char	**env;
+
+	i = 0;
+	env = malloc(sizeof (*env) * (ptr_arr_len(envp) + 1));
+	if (!env)
+		return (NULL);
+	while (envp[i])
+	{
+		env[i] = ft_strdup(envp[i]);
+		if (!env[i])
+		{
+			free_ptr_arr(env);
+			return (NULL);
+		}
+		i++;
+	}
+	env[i] = NULL;
+	return (env);
+}
 
 void	remove_env(char **envp, char *key)
 {

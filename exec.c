@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   strchr.c                                           :+:      :+:    :+:   */
+/*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dghonyan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/03/10 20:46:54 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/26 13:12:47 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	init_redirections(t_cmd *cmd, int i, int j)
 	while (++i < cmd->len)
 	{
 		j = -1;
-		cmd[i].fds = open_files(cmd[i].command);
+		cmd[i].fds = open_files(cmd[i].command, cmd->new_env);
 		if (!cmd[i].fds && redirection_count(cmd[i].command) > 0)
 			return (1);
 		while (cmd[i].fds && ++j < cmd[i].fds->len)
@@ -129,14 +129,14 @@ int	exec_argv(t_cmd *cmd, int i, int j)
 			return (perror_ret("init_exec()"));
 		init_argv(&(cmd[i].exec), cmd[i].command, 0, 1);
 		temp = cmd[i].exec.exec;
-		cmd[i].exec.exec = expand_line(cmd[i].exec.exec);
+		cmd[i].exec.exec = expand_line(cmd[i].exec.exec, cmd->new_env);
 		free(temp);
 		if (!(cmd[i].exec.exec))
 			return (perror_ret("expand_line()"));
 		while (cmd[i].exec.argv[++j])
 		{
 			temp = cmd[i].exec.argv[j];
-			cmd[i].exec.argv[j] = expand_line(cmd[i].exec.argv[j]);
+			cmd[i].exec.argv[j] = expand_line(cmd[i].exec.argv[j], cmd->new_env);
 			free(temp);
 			if (!(cmd[i].exec.argv[j]))
 				return (perror_ret("expand_line()"));

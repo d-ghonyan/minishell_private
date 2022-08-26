@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   strchr.c                                           :+:      :+:    :+:   */
+/*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dghonyan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/03/10 20:46:54 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/26 13:41:47 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,9 @@ char	**_env(char **old_env, char *val, char **envp)
 	{
 		key = _key(val);
 		value = _value(val);
-		if (getenv(key) && ft_strcmp(getenv(key), value))
-		{
-			remove_env(envp, key);
-			old_env = env(old_env, key, value);
-		}
-		else if (is_in_env(old_env, key))
+		if (is_in_env(old_env, key))
 			replace_env(old_env, key, value);
-		else if (!getenv(key) && !is_in_env(old_env, key))
+		else
 			old_env = env(old_env, key, value);
 		free(key);
 		free(value);
@@ -94,4 +89,5 @@ int	ft_export(t_cmd *cmd, int i)
 		else
 			cmd->new_env = _env(cmd->new_env, cmd[i].exec.argv[j], cmd->envp);
 	}
+	return (0);
 }

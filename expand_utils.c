@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   strchr.c                                           :+:      :+:    :+:   */
+/*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dghonyan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/03/10 20:46:54 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/26 13:00:11 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	expanded_len(char *cmd, int i, int quote)
 	return (ft_strlen(env));
 }
 
-char	*expanded_env(char *cmd, int i, int quote)
+char	*expanded_env(char *cmd, int i, int quote, char **envp)
 {
 	int		j;
 	char	*env;
@@ -75,7 +75,7 @@ char	*expanded_env(char *cmd, int i, int quote)
 		var[j++] = cmd[i++];
 	}
 	var[j] = '\0';
-	env = ft_strdup(getenv(var));
+	env = _getenv(envp, var);
 	free(var);
 	return (env);
 }
