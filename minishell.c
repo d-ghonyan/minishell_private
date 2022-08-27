@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/27 19:14:13 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/27 19:38:33 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,7 @@ int	main(int argc, char **argv, char **envp)
 		cmd->status = &status;
 		cmd->new_env = new_env;
 		if (!exec_argv(cmd, 0, 0))
-		{
 			call_forks(cmd, line, &status);
-		}
 		status = *(cmd->status);
 		new_env = cmd->new_env;
 		free_cmd(cmd);
