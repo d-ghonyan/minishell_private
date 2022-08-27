@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/27 18:57:59 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/27 19:14:13 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ int	main(int argc, char **argv, char **envp)
 			free(old_line);
 			return (0);
 		}
+		if (line[0])
+			add_history(line);
 		if (!line[0] || count_pipes(line) < 0 || check_quotes(line))
 		{
 			status = g_status;
@@ -76,7 +78,6 @@ int	main(int argc, char **argv, char **envp)
 			free(line);
 			continue ;
 		}
-		add_history(line);
 		cmd = parse_line(line, envp);
 		if (!cmd)
 			continue ;

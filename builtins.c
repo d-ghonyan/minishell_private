@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/27 17:34:07 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/27 19:33:00 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ int	ft_env(t_cmd *cmd)
 	i = -1;
 	while (cmd->new_env[++i])
 		printf("%s\n", cmd->new_env[i]);
+	*(cmd->status) = 0;
 	return (0);
 }
 
@@ -86,16 +87,16 @@ int	call_builtins(t_cmd *cmd, int i)
 
 	s = cmd[i].exec.exec;
 	if (!ft_strcmp(s, "cd"))
-		*(cmd->status) = ft_cd(cmd, cmd[i].exec.argv);
+		ft_cd(cmd, cmd[i].exec.argv);
 	if (!ft_strcmp(s, "pwd"))
-		*(cmd->status) = ft_pwd(cmd, i);
+		ft_pwd(cmd, i);
 	if (!ft_strcmp(s, "export"))
-		*(cmd->status) = ft_export(cmd, i);
+		ft_export(cmd, i);
 	if (!ft_strcmp(s, "unset"))
-		*(cmd->status) = ft_unset(cmd, i);
+		ft_unset(cmd, i);
 	if (!ft_strcmp(s, "env"))
-		*(cmd->status) = ft_env(cmd);
+		ft_env(cmd);
 	if (!ft_strcmp(s, "echo"))
-		*(cmd->status) = ft_echo(cmd, i);
+		ft_echo(cmd, i);
 	return (0);
 }

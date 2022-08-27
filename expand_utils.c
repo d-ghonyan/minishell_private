@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/27 16:07:00 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/27 19:20:16 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ int	var_len(char *s, int i, int quote)
 	int		len;
 
 	len = 0;
+	if (s[i] == '?')
+		return (1);
 	while (s[i] && is_a_valid_name(s[i], i > 0 && s[i - 1] == '$'))
 	{
 		i++;
@@ -39,6 +41,13 @@ int	expanded_len(char *cmd, int i, int quote, t_cmd *cmd1)
 	char	*var;
 
 	j = 0;
+	if (cmd[i] == '?')
+	{
+		var = ft_itoa(*(cmd1->status));
+		j = ft_strlen(var);
+		free(var);
+		return (j);		
+	}
 	var = malloc(sizeof (*var) * (var_len(cmd, i, quote) + 1));
 	perror_exit(cmd1, "malloc at expanded_len", !var);
 	while (cmd[i] && is_a_valid_name(cmd[i], i > 0 && cmd[i - 1] == '$'))
@@ -58,6 +67,8 @@ char	*expanded_env(char *cmd, int i, int quote, t_cmd *cmd1)
 	char	*var;
 
 	j = 0;
+	if (cmd[i] == '?')
+		return (ft_itoa(*(cmd1->status)));
 	var = malloc(sizeof (*var) * (var_len(cmd, i, quote) + 1));
 	perror_exit(cmd1, "malloc at expanded_env", !var);
 	while (cmd[i] && is_a_valid_name(cmd[i], i > 0 && cmd[i - 1] == '$'))

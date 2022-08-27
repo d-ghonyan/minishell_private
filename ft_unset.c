@@ -48,14 +48,21 @@ char	**delete_env(char **envp, char *del)
 int	ft_unset(t_cmd *cmd, int k)
 {
 	int	j;
+	int	err;
 
 	j = 0;
+	err = 0;
 	while (cmd[k].exec.argv[++j])
 	{
 		if (!is_valid(cmd[k].exec.argv[j]))
+		{
 			stderror_putstr("export: `", cmd[k].exec.argv[j],
 				"': not a valid identifier", 1);
+			err = 1;
+		}
 		else
 			cmd->new_env = delete_env(cmd->new_env, cmd[k].exec.argv[j]);
 	}
+	*(cmd->status) = err;
+	return (0);
 }

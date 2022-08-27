@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/26 13:41:47 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/27 19:33:41 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,17 +79,23 @@ char	**_env(char **old_env, char *val, char **envp)
 int	ft_export(t_cmd *cmd, int i)
 {
 	int	j;
+	int	err;
 
 	j = 0;
+	err = 0;
 	if (ptr_arr_len(cmd[i].exec.argv) == 1)
 		return (ft_env(cmd));
 	while (cmd[i].exec.argv[++j])
 	{
 		if (!is_valid(cmd[i].exec.argv[j]))
+		{
+			err = 1;
 			stderror_putstr("export: `", cmd[i].exec.argv[j],
 				"': not a valid identifier", 1);
+		}
 		else
 			cmd->new_env = _env(cmd->new_env, cmd[i].exec.argv[j], cmd->envp);
 	}
+	*(cmd->status) = err;
 	return (0);
 }
