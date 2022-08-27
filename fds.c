@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/26 13:11:44 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/27 18:53:29 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	init_flags(char c1, char c2, int *flags)
 }
 
 //need to do the heredoc right here
-int	init_fds(t_fds *fds, char *c, char *filename, char **envp)
+int	init_fds(t_fds *fds, char *c, char *filename, t_cmd *cmd)
 {
 	int		flags;
 	char	c1;
@@ -47,7 +47,7 @@ int	init_fds(t_fds *fds, char *c, char *filename, char **envp)
 	{
 		fds->flags = -1;
 		flags = (ft_strchr(filename, '\'') || ft_strchr(filename, '"'));
-		fds->fd = heredoc(filename, flags, envp);
+		fds->fd = heredoc(filename, flags, cmd);
 	}
 	return (0);
 }

@@ -6,14 +6,11 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/26 13:11:16 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/27 18:54:26 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int		init_fds(t_fds *fds, char *s, char *filename, char **envp);
-t_fds	*alloc_fds(int size);
 
 int	redirection_len(char *cmd, int i, char c)
 {
@@ -85,7 +82,7 @@ int	redirection_index_but_like_changed(char *cmd, int i)
 	return (i);
 }
 
-t_fds	*open_files(char *s, char **envp)
+t_fds	*open_files(t_cmd *cmd, char *s, char **envp)
 {
 	int		i;
 	int		j;
@@ -94,13 +91,8 @@ t_fds	*open_files(char *s, char **envp)
 
 	i = 0;
 	j = -1;
-	filename = NULL;
 	fds = alloc_fds(redirection_count(s));
-	if (!fds && redirection_count(s) > 0)
-	{
-		perror("malloc at alloc_fds");
-		return (NULL);
-	}
+	perror_exit(cmd, "malloc at alloc_fds()", !fds && redirection_count(s));
 	while (fds && s[i])
 	{
 		if (s[i] == '<' || s[i] == '>')
@@ -111,7 +103,7 @@ t_fds	*open_files(char *s, char **envp)
 				free_fds(fds);
 				return (NULL);
 			}
-			init_fds(fds + ++j, &s[i], filename, envp);
+			init_fds(fds + ++j, &s[i], filename, cmd);
 			i = redirection_index_but_like_changed(s, i);
 		}
 		i += (s[i] != '\0');

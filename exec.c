@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/26 13:12:47 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/27 18:52:41 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	init_redirections(t_cmd *cmd, int i, int j)
 	while (++i < cmd->len)
 	{
 		j = -1;
-		cmd[i].fds = open_files(cmd[i].command, cmd->new_env);
+		cmd[i].fds = open_files(cmd, cmd[i].command, cmd->new_env);
 		if (!cmd[i].fds && redirection_count(cmd[i].command) > 0)
 			return (1);
 		while (cmd[i].fds && ++j < cmd[i].fds->len)
@@ -61,7 +61,7 @@ void	exec_quotes(char *cmd, t_exec *exec, int *i, int *j)
 	}
 }
 
-void	init_exec(t_exec *exec, char *cmd)
+int	init_exec(t_exec *exec, char *cmd)
 {
 	int	i;
 	int	j;
@@ -69,7 +69,9 @@ void	init_exec(t_exec *exec, char *cmd)
 	j = 0;
 	i = ft_isspace_index(cmd);
 	exec->exec = malloc (sizeof (*cmd) * (exec_len(cmd, 0, 1) + 1));
-	while (exec->exec && cmd[i])
+	if (!exec->exec)
+		return (1);
+	while (cmd[i])
 	{
 		if (cmd[i] == '<' || cmd[i] == '>')
 			i = redirection_index(cmd, i);
@@ -83,8 +85,8 @@ void	init_exec(t_exec *exec, char *cmd)
 					|| ft_isspace(cmd[i])) && j))
 			break ;
 	}
-	if (exec->exec)
-		exec->exec[j] = '\0';
+	exec->exec[j] = '\0';
+	return (0);
 }
 
 //TODO error handling
@@ -93,10 +95,10 @@ int	init_argv(t_exec *exec, char *cmd, int i, int k)
 	i = exec_len(cmd, 0, 0);
 	exec->argv = malloc(sizeof (*(exec->argv)) * (argv_count(cmd) + 2));
 	if (!exec->argv)
-		return (perror_ret("init_argv() 1: "));
+		return (1);
 	exec->argv[0] = ft_strdup(exec->exec);
 	if (!exec->argv[0])
-		return (perror_ret("init_argv() 2: "));
+		return (1);
 	while (cmd[i])
 	{
 		while (cmd[i] && ft_isspace(cmd[i]))
@@ -107,7 +109,7 @@ int	init_argv(t_exec *exec, char *cmd, int i, int k)
 		{
 			exec->argv[k] = argv_dup(cmd, i);
 			if (!exec->argv[k])
-				return (perror_ret("init_argv() 3: "));
+				return (1);
 			i += argv_len(cmd, i);
 			k++;
 		}
@@ -124,22 +126,22 @@ int	exec_argv(t_cmd *cmd, int i, int j)
 	while (++i < cmd->len)
 	{
 		j = -1;
-		init_exec(&(cmd[i].exec), cmd[i].command);
-		if (!(cmd[i].exec.exec))
-			return (perror_ret("init_exec()"));
-		init_argv(&(cmd[i].exec), cmd[i].command, 0, 1);
+		if (init_exec(&(cmd[i].exec), cmd[i].command))
+			perror_exit(cmd, "malloc at init_exec", 1);
+		if (init_argv(&(cmd[i].exec), cmd[i].command, 0, 1))
+			perror_exit(cmd, "malloc at init_argv", 1);
 		temp = cmd[i].exec.exec;
-		cmd[i].exec.exec = expand_line(cmd[i].exec.exec, cmd->new_env);
+		cmd[i].exec.exec = expand_line(cmd[i].exec.exec, cmd);
 		free(temp);
 		if (!(cmd[i].exec.exec))
-			return (perror_ret("expand_line()"));
+			perror_exit(cmd, "malloc at expand_line", 1);
 		while (cmd[i].exec.argv[++j])
 		{
 			temp = cmd[i].exec.argv[j];
-			cmd[i].exec.argv[j] = expand_line(cmd[i].exec.argv[j], cmd->new_env);
+			cmd[i].exec.argv[j] = expand_line(cmd[i].exec.argv[j], cmd);
 			free(temp);
 			if (!(cmd[i].exec.argv[j]))
-				return (perror_ret("expand_line()"));
+				perror_exit(cmd, "malloc at expand_line", 1);
 		}
 	}
 	return (init_redirections(cmd, 0, 0));

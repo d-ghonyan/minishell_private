@@ -6,29 +6,11 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/26 18:34:00 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/27 18:55:59 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	command_not_found(t_cmd *cmd)
-{
-	int		i;
-	char	*path;
-
-	i = 0;
-	path = NULL;
-	while (i < cmd->len)
-	{
-		path = get_path(cmd->new_env, cmd[i].exec.exec);
-		if (!path && !is_a_builtin(cmd[i].exec.exec))
-			return (i);
-		free(path);
-		i++;
-	}
-	return (-1);
-}
 
 int	command_len(char *s, int i)
 {

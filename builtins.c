@@ -1,45 +1,74 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   strchr.c                                           :+:      :+:    :+:   */
+/*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dghonyan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/03/10 20:46:54 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/27 17:34:07 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_cd(char **argv)
-{
-	if (ptr_arr_len(argv) > 2)
-	{
-		ft_putendl_fd("Too many arguments", STDERR_FILENO);
-		return (1);
-	}
-	if (ptr_arr_len(argv) == 1)
-	{
-		if (chdir(getenv("HOME")) < 0)
-			return (perror_builtins("cd: ", argv[0], ": "));
-	}
-	else if (chdir(argv[1]) < 0)
-		return (perror_builtins("cd: ", argv[1], ": "));
-	return (0);
-}
+int	ft_echo(t_cmd *cmd, int i);
+int	ft_unset(t_cmd *cmd, int k);
+int	ft_cd(t_cmd *cmd, char **argv);
 
-int	ft_pwd(t_cmd *cmd)
+int	ft_pwd(t_cmd *cmd, int i)
 {
 	char	*path;
 
 	path = getcwd(NULL, 0);
 	if (!path)
-		return (perror_ret("getcwd at ft_pwd()"));
+	{
+		*(cmd->status) = 1;
+		return (perror_ret("getcwd"));
+	}
 	ft_putendl_fd(path, STDOUT_FILENO);
 	free(path);
+	*(cmd->status) = 0;
 	return (0);
 }
+
+// int	ft_cd(t_cmd *cmd, char **argv)
+// {
+// 	char	*pwd;
+// 	char	*home;
+
+		
+// 	// if (ptr_arr_len(argv) > 2)
+// 	// {
+// 	// 	*(cmd->status) = 1;
+// 	// 	return (stderror_putstr("Too many arguments", "", "", 1));
+// 	// }
+// 	// pwd = _getenv(cmd->new_env, "PWD");
+// 	// if (ptr_arr_len(argv) == 1)
+// 	// {
+// 	// 	if (chdir(_getenv(cmd->new_env, "HOME")) < 0)
+// 	// 	{
+// 	// 		*(cmd->status) = 1;
+// 	// 		free(pwd);
+// 	// 		return (perror_builtins("cd: ", argv[0], ": "));
+// 	// 	}
+// 	// 	replace_env(cmd->new_env, "OLDPWD", pwd);
+// 	// 	free(pwd);
+// 	// 	*(cmd->status) = 0;
+// 	// 	return (0);
+// 	// }
+// 	// if (chdir(argv[1]) < 0)
+// 	// {
+// 	// 	*(cmd->status) = 1;
+// 	// 	free(pwd);
+// 	// 	return (perror_builtins("cd: ", argv[1], ": "));
+// 	// }
+// 	// replace_env(cmd->new_env, "OLDPWD", pwd);
+// 	// free(pwd);
+// 	// *(cmd->status) = 0;
+// 	// return (0);
+// }
+
 
 int	ft_env(t_cmd *cmd)
 {
@@ -51,36 +80,15 @@ int	ft_env(t_cmd *cmd)
 	return (0);
 }
 
-int	ft_echo(t_cmd *cmd, int i)
-{
-	int	j;
-	int	nl;
-
-	j = 1;
-	nl = 0;
-	while (!ft_strcmp(cmd[i].exec.argv[j++], "-n"))
-		nl = 1;
-	while (cmd[i].exec.argv[j])
-	{
-		printf("%s", cmd[i].exec.argv[j]);
-		if (j != ptr_arr_len(cmd[i].exec.argv))
-			printf(" ");
-		j++;
-	}
-	if (!nl)
-		printf("\n");
-	return (0)
-}
-
 int	call_builtins(t_cmd *cmd, int i)
 {
 	char	*s;
 
 	s = cmd[i].exec.exec;
 	if (!ft_strcmp(s, "cd"))
-		*(cmd->status) = ft_cd(cmd[i].exec.argv);
+		*(cmd->status) = ft_cd(cmd, cmd[i].exec.argv);
 	if (!ft_strcmp(s, "pwd"))
-		*(cmd->status) = ft_pwd(cmd);
+		*(cmd->status) = ft_pwd(cmd, i);
 	if (!ft_strcmp(s, "export"))
 		*(cmd->status) = ft_export(cmd, i);
 	if (!ft_strcmp(s, "unset"))

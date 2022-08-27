@@ -1,16 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   strchr.c                                           :+:      :+:    :+:   */
+/*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dghonyan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/03/10 20:46:54 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/27 17:23:52 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	perror_exit(t_cmd *cmd, char *msg, int cond)
+{
+	if (cond)
+	{
+		perror(msg);
+		free_cmd(cmd);
+		free_ptr_arr(cmd->new_env);
+		exit(EXIT_FAILURE);
+	}
+}
 
 int	perror_ret(char *msg)
 {
@@ -32,7 +43,7 @@ int	stderror_putstr(char *s1, char *s2, char *s3, int cond)
 		ft_putstr_fd(s2, 2);
 		ft_putendl_fd(s3, 2);
 	}
-	return (0);
+	return (1);
 }
 
 int	perror_builtins(char *s1, char *s2, char *s3)

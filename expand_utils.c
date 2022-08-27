@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/26 18:51:48 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/27 16:07:00 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	var_len(char *s, int i, int quote)
 	return (len);
 }
 
-int	expanded_len(char *cmd, int i, int quote, char **envp)
+int	expanded_len(char *cmd, int i, int quote, t_cmd *cmd1)
 {
 	int		j;
 	char	*env;
@@ -40,22 +40,18 @@ int	expanded_len(char *cmd, int i, int quote, char **envp)
 
 	j = 0;
 	var = malloc(sizeof (*var) * (var_len(cmd, i, quote) + 1));
-	if (!var)
-	{
-		perror("expanded_len(): ");
-		return (-1);
-	}
+	perror_exit(cmd1, "malloc at expanded_len", !var);
 	while (cmd[i] && is_a_valid_name(cmd[i], i > 0 && cmd[i - 1] == '$'))
 	{
 		var[j++] = cmd[i++];
 	}
 	var[j] = '\0';
-	env = _getenv(envp, var);
+	env = _getenv(cmd1->new_env, var);
 	free(var);
 	return (ft_strlen(env));
 }
 
-char	*expanded_env(char *cmd, int i, int quote, char **envp)
+char	*expanded_env(char *cmd, int i, int quote, t_cmd *cmd1)
 {
 	int		j;
 	char	*env;
@@ -63,11 +59,7 @@ char	*expanded_env(char *cmd, int i, int quote, char **envp)
 
 	j = 0;
 	var = malloc(sizeof (*var) * (var_len(cmd, i, quote) + 1));
-	if (!var)
-	{
-		perror("expanded_env(): ");
-		return (NULL);
-	}
+	perror_exit(cmd1, "malloc at expanded_env", !var);
 	while (cmd[i] && is_a_valid_name(cmd[i], i > 0 && cmd[i - 1] == '$'))
 	{
 		if (quote && cmd[i] == '"')
@@ -75,7 +67,7 @@ char	*expanded_env(char *cmd, int i, int quote, char **envp)
 		var[j++] = cmd[i++];
 	}
 	var[j] = '\0';
-	env = _getenv(envp, var);
+	env = _getenv(cmd1->new_env, var);
 	free(var);
 	return (env);
 }

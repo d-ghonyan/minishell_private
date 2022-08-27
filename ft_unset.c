@@ -56,6 +56,6 @@ int	ft_unset(t_cmd *cmd, int k)
 			stderror_putstr("export: `", cmd[k].exec.argv[j],
 				"': not a valid identifier", 1);
 		else
-			cmd->new_env = delete_env(cmd->new_env, cmd[k].exec.argv[j]);			
+			cmd->new_env = delete_env(cmd->new_env, cmd[k].exec.argv[j]);
 	}
 }

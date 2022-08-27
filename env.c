@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   strchr.c                                           :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dghonyan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/03/10 20:46:54 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/27 15:38:19 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	**env(char **old_env, char *key, char *value)
 
 	i = -1;
 	new_env = malloc(sizeof (*new_env)
-		* (ptr_arr_len(old_env) + 1 + !is_in_env(old_env, key)));
+			* (ptr_arr_len(old_env) + 1 + !is_in_env(old_env, key)));
 	if (!new_env)
 		return (NULL);
 	while (++i < ptr_arr_len(old_env))

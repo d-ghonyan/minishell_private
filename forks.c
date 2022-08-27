@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/26 12:55:07 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/27 18:54:56 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	children(t_cmd *cmd, int (*pipes)[2], int size, int i)
 	init_signals_child();
 	if (!is_a_builtin(cmd[i].exec.exec))
 	{
-		path = get_path(cmd->new_env, cmd[i].exec.exec);
+		path = get_path(cmd, cmd[i].exec.exec);
 		stderror_putstr("minishell: ", cmd[i].exec.exec,
 			": command not found", !path);
 		if (path && !has_an_error(cmd, i))
@@ -88,7 +88,7 @@ int	single_command(t_cmd *cmd, int *status)
 		{
 			to_from(cmd);
 			init_signals_child();
-			path = get_path(cmd->new_env, cmd[0].exec.exec);
+			path = get_path(cmd, cmd[0].exec.exec);
 			stderror_putstr("minishell: ", cmd[0].exec.exec,
 				": command not found", !path);
 			if (path && !has_an_error(cmd, 0))

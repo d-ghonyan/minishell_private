@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/26 12:51:54 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/27 18:50:08 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char	*_get_path(char **envp, char *command)
 	return (free_ret(spl, NULL));
 }
 
-char	*get_path(char **envp, char *command)
+char	*get_path(t_cmd *cmd, char *command)
 {
 	char	*ret;
 	DIR		*dir;
@@ -59,7 +59,7 @@ char	*get_path(char **envp, char *command)
 		ret = ft_strdup(command);
 		return (ret);
 	}
-	return (_get_path(envp, command));
+	return (_get_path(cmd->new_env, command));
 }
 
 static char	*free_ret(char **spl, char *null)

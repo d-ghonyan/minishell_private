@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/26 18:49:04 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/27 18:57:59 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	thing(void)
 		perror ("");
 }
 
-int empty_event(void)
+int	empty_event(void)
 {
 	return (0);
 }
@@ -34,16 +34,17 @@ void	sigint_p(int signum)
 {
 	rl_replace_line("", 0);
 	rl_done = 1;
-	g_status = signum  + 128;
+	g_status = signum + 128;
 }
 
 char	*_readline(char *prompt)
 {
 	char	*line;
+
 	return (0);
 }
 
-int main(int argc, char **argv, char **envp)
+int	main(int argc, char **argv, char **envp)
 {
 	int		status;
 	char	*old_line;
@@ -59,25 +60,14 @@ int main(int argc, char **argv, char **envp)
 	init_signals_parent();
 	thing();
 	rl_event_hook = &empty_event;
-	// change_env(envp);
 	while (1)
 	{
-		printf("%s\n", _getenv(new_env, "barev"));
-		// for (int i = 0; i < ptr_arr_len(new_env); i++)
-		// 	printf("%s\n", new_env[i]);
 		line = readline(GREEN "minishell" BLUE "$ " RESET);
 		if (!line)
 		{
 			free_ptr_arr(new_env);
 			free(old_line);
 			return (0);
-		}
-		if (line[0] && (!old_line || ft_strcmp(line, old_line)))
-		{
-			char	*temp = old_line;
-			old_line = ft_strdup(line);
-			free(temp);
-			add_history(line);
 		}
 		if (!line[0] || count_pipes(line) < 0 || check_quotes(line))
 		{
@@ -86,22 +76,20 @@ int main(int argc, char **argv, char **envp)
 			free(line);
 			continue ;
 		}
+		add_history(line);
 		cmd = parse_line(line, envp);
 		if (!cmd)
 			continue ;
+		cmd->line = line;
 		cmd->status = &status;
 		cmd->new_env = new_env;
-		// call_builtins(cmd, 0);
 		if (!exec_argv(cmd, 0, 0))
 		{
 			call_forks(cmd, line, &status);
 		}
 		status = *(cmd->status);
 		new_env = cmd->new_env;
-		// printf("%s\n", (buf = getcwd(NULL, 0)));
-		// free(buf);
 		free_cmd(cmd);
-		free(line);
 	}
 }
 

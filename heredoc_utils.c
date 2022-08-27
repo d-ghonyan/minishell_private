@@ -6,15 +6,15 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/26 13:03:51 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/27 18:55:37 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*here_expand(char *s, int i, int j, char **envp);
+char	*here_expand(char *s, int i, int j, t_cmd *cmd);
 
-int	here_final_len(char *s)
+int	here_final_len(char *s, t_cmd *cmd)
 {
 	int	i;
 	int	len;
@@ -29,9 +29,9 @@ int	here_final_len(char *s)
 				len += 1;
 			else
 			{
-				if (expanded_len(s, i + 1, 0) < 0)
+				if (expanded_len(s, i + 1, 0, cmd) < 0)
 					return (-1);
-				len += expanded_len(s, i + 1, 0);
+				len += expanded_len(s, i + 1, 0, cmd);
 			}
 			i += var_len(s, i + 1, 0) + 1;
 		}
@@ -78,7 +78,7 @@ char	*final_limiter(char *s)
 	return (res);
 }
 
-void	here_child(char *limiter, int quoted, int pipes[2], char **envp)
+void	here_child(char *limiter, int quoted, int pipes[2], t_cmd *cmd)
 {
 	char	*line;
 	char	*env;
@@ -99,7 +99,7 @@ void	here_child(char *limiter, int quoted, int pipes[2], char **envp)
 		}
 		if (!quoted && ft_strchr(line, '$'))
 		{
-			env = here_expand(line, 0, 0, envp);
+			env = here_expand(line, 0, 0, cmd);
 			ft_putendl_fd(env, pipes[1]);
 			free(env);
 		}

@@ -6,27 +6,27 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/26 18:53:08 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/27 18:32:07 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	dollar_sign(int *len, int *i, char *s, char **envp)
+int	dollar_sign(int *len, int *i, char *s, t_cmd *cmd)
 {
 	if (var_len(s, *i + 1, 1) == 0)
 		*len += 1;
 	else
 	{
-		if (expanded_len(s, *i + 1, 1, envp) < 0)
+		if (expanded_len(s, *i + 1, 1, cmd) < 0)
 			return (-1);
-		*len += expanded_len(s, *i + 1, 1, envp);
+		*len += expanded_len(s, *i + 1, 1, cmd);
 	}
 	*i += var_len(s, *i + 1, 1);
 	return (0);
 }
 
-int	final_len(char *s, char **envp)
+int	final_len(char *s, t_cmd *cmd)
 {
 	int	i;
 	int	len;
@@ -51,9 +51,9 @@ int	final_len(char *s, char **envp)
 						len += 1;
 					else
 					{
-						if (expanded_len(s, i + 1, 1, envp) < 0)
+						if (expanded_len(s, i + 1, 1, cmd) < 0)
 							return (-1);
-						len += expanded_len(s, i + 1, 1, envp);
+						len += expanded_len(s, i + 1, 1, cmd);
 					}
 					i += var_len(s, i + 1, 1);
 				}
@@ -68,9 +68,9 @@ int	final_len(char *s, char **envp)
 				len += 1;
 			else
 			{
-				if (expanded_len(s, i + 1, 0, envp) < 0)
+				if (expanded_len(s, i + 1, 0, cmd) < 0)
 					return (-1);
-				len += expanded_len(s, i + 1, 0, envp);
+				len += expanded_len(s, i + 1, 0, cmd);
 			}
 			i += var_len(s, i + 1, 0) + 1;
 		}
@@ -80,7 +80,7 @@ int	final_len(char *s, char **envp)
 	return (len);
 }
 
-char	*expand_line(char *s, char **envp)
+char	*expand_line(char *s, t_cmd *cmd)
 {
 	int		i;
 	int		j;
@@ -88,12 +88,9 @@ char	*expand_line(char *s, char **envp)
 
 	i = 0;
 	j = 0;
-	res = ft_calloc(sizeof(*res), (final_len(s, envp) + 1));
+	res = ft_calloc(sizeof(*res), (final_len(s, cmd) + 1));
 	if (!res)
-	{
-		perror("expand_line(): ");
 		return (NULL);
-	}
 	while (s[i])
 	{
 		if (s[i] == '\'')
@@ -112,7 +109,7 @@ char	*expand_line(char *s, char **envp)
 						res[j++] = '$';
 					else
 					{
-						strjoin_var(res, expanded_env(s, i + 1, 1, envp));
+						strjoin_var(res, expanded_env(s, i + 1, 1, cmd));
 						j = ft_strlen(res);
 					}
 					i += var_len(s, i + 1, 1);
@@ -128,7 +125,7 @@ char	*expand_line(char *s, char **envp)
 				res[j++] = '$';
 			else
 			{
-				strjoin_var(res, expanded_env(s, i + 1, 0, envp));
+				strjoin_var(res, expanded_env(s, i + 1, 0, cmd));
 				j = ft_strlen(res);
 			}
 			i += var_len(s, i + 1, 0) + 1;

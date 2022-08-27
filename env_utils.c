@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/26 12:40:38 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/27 15:40:46 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ char	*ft_strdup_env(char *key, char *value)
 	i = -1;
 	j = 0;
 	res = malloc(sizeof (*res) * (ft_strlen(key)
-		+ ft_strlen(value) + 1 + (value != NULL)));
+				+ ft_strlen(value) + 1 + (value != NULL)));
 	if (!res)
 		return (NULL);
 	while (key[++i])

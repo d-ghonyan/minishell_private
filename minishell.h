@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/26 18:52:06 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/27 18:56:16 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef struct s_cmd
 {
 	int		len;
 	int		*status;
+	char	*line;
 	char	*command;
 	char	**envp;
 	char	**new_env;
@@ -91,16 +92,16 @@ int		redirection_count(char *cmd);
 int		last_fd(t_cmd *cmd, int i, int cond);
 int		var_len(char *s, int i, int quote);
 int		is_a_valid_name(char c, int cond);
-int		expanded_len(char *cmd, int i, int quote, char **envp);
-char	*expanded_env(char *cmd, int i, int quote, char **envp);
+int		expanded_len(char *cmd, int i, int quote, t_cmd *cmd1);
+char	*expanded_env(char *cmd, int i, int quote, t_cmd *cmd1);
 void	strjoin_var(char *s1, char *s2);
 int		call_forks(t_cmd *cmd, char *line, int *status);
 int		call_builtins(t_cmd *cmd, int i);
-int		heredoc(char *limiter, int quoted, char **envp);
+int		heredoc(char *limiter, int quoted, t_cmd *cmd);
 int		redirection_index(char *cmd, int i);
 int		perror_ret(char *msg);
+void	perror_exit(t_cmd *cmd, char *msg, int cond);
 int		perror_neg(char *msg);
-int		command_not_found(t_cmd *cmd);
 int		check_quotes(char *s);
 int		is_a_builtin(char *s);
 int		exec_argv(t_cmd *cmd, int i, int j);
@@ -111,10 +112,12 @@ void	init_signals_child(void);
 void	init_signals_heredoc(void);
 void	free_cmd(t_cmd *cmd);
 void	free_fds(t_fds *fds);
-char	*get_path(char **envp, char *command);
+int		init_fds(t_fds *fds, char *s, char *filename, t_cmd *cmd);
+char	*get_path(t_cmd *cmd, char *command);
 char	*alloc_command(char *line, int i, int size, int j);
-char	*expand_line(char *cmd, char **envp);
+char	*expand_line(char *cmd, t_cmd *cmd1);
 t_cmd	*parse_line(char *line, char **envp);
-t_fds	*open_files(char *s, char **envp);
+t_fds	*open_files(t_cmd *cmd, char *s, char **envp);
+t_fds	*alloc_fds(int size);
 
 #endif

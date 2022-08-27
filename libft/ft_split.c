@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dghonyan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 20:11:34 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/03/16 20:53:45 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/27 15:37:02 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,5 +106,5 @@ char	**ft_split(char const *s, char c)
 		i++;
 	}
 	*res = NULL;
- 	return (res - count(s, c));
+	return (res - count(s, c));
 }
