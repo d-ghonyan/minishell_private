@@ -37,50 +37,43 @@ void	sigint_p(int signum)
 	g_status = signum + 128;
 }
 
-char	*_readline(char *prompt)
+int	_readline(char **line, char **new_env, int *status)
 {
-	char	*line;
-
+	*line = readline(GREEN "minishell" BLUE "$ " RESET);
+	if (!(*line))
+	{
+		free_ptr_arr(new_env);
+		exit(EXIT_SUCCESS);
+	}
+	if (*line[0])
+		add_history(*line);
+	if (!(*line[0]) || count_pipes(*line) < 0 || check_quotes(*line))
+	{
+		*status = g_status;
+		g_status = 0;
+		free(*line);
+		return (1);
+	}
 	return (0);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
 	int		status;
-	char	*old_line;
 	char	*line;
 	char	**new_env;
 	t_cmd	*cmd;
 
 	cmd = NULL;
-	old_line = NULL;
 	new_env = copy_env(envp);
-	if (!new_env)
-		return (perror_ret("malloc at copy_env()"));
 	init_signals_parent();
 	thing();
 	rl_event_hook = &empty_event;
 	while (1)
 	{
-		line = readline(GREEN "minishell" BLUE "$ " RESET);
-		if (!line)
-		{
-			free_ptr_arr(new_env);
-			free(old_line);
-			return (0);
-		}
-		if (line[0])
-			add_history(line);
-		if (!line[0] || count_pipes(line) < 0 || check_quotes(line))
-		{
-			status = g_status;
-			g_status = 0;
-			free(line);
+		if (_readline(&line, new_env, &status))
 			continue ;
-		}
 		cmd = parse_line(line, envp);
-		if (!cmd)
-			continue ;
 		cmd->line = line;
 		cmd->status = &status;
 		cmd->new_env = new_env;
@@ -103,3 +96,19 @@ int	main(int argc, char **argv, char **envp)
 	// c[a] = '\0';
 	// write(1, c, 10);
 	// return (0);
+		// line = readline(GREEN "minishell" BLUE "$ " RESET);
+		// if (!line)
+		// {
+		// 	free_ptr_arr(new_env);
+		// 	free(old_line);
+		// 	return (0);
+		// }
+		// if (line[0])
+		// 	add_history(line);
+		// if (!line[0] || count_pipes(line) < 0 || check_quotes(line))
+		// {
+		// 	status = g_status;
+		// 	g_status = 0;
+		// 	free(line);
+		// 	continue ;
+		// }

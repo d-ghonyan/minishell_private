@@ -17,8 +17,9 @@ void	perror_exit(t_cmd *cmd, char *msg, int cond)
 	if (cond)
 	{
 		perror(msg);
+		if (cmd)
+			free_ptr_arr(cmd->new_env);
 		free_cmd(cmd);
-		free_ptr_arr(cmd->new_env);
 		exit(EXIT_FAILURE);
 	}
 }

@@ -78,6 +78,15 @@ char	*final_limiter(char *s)
 	return (res);
 }
 
+void	exit_heredoc(char *line, char *limiter, int pipes)
+{
+	if (!line)
+		printf("\b\bwarning: heredoc terminated by EOF\n");
+	free(line);
+	close(pipes[1]);
+	exit (EXIT_SUCCESS);
+}
+
 void	here_child(char *limiter, int quoted, int pipes[2], t_cmd *cmd)
 {
 	char	*line;
@@ -89,14 +98,7 @@ void	here_child(char *limiter, int quoted, int pipes[2], t_cmd *cmd)
 	{
 		line = readline(MAGENTA "> " RESET);
 		if (!line || !ft_strcmp(line, limiter))
-		{
-			if (!line)
-				printf("\b\bwarning: heredoc terminated by EOF\n");
-			free(line);
-			close(pipes[1]);
-			exit (EXIT_SUCCESS);
-			break ;
-		}
+			exit_heredoc(line, limiter, pipes);
 		if (!quoted && ft_strchr(line, '$'))
 		{
 			env = here_expand(line, 0, 0, cmd);

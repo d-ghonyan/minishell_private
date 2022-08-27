@@ -14,8 +14,8 @@
 
 int		exec_len(char *s, int i, int cond);
 int		argv_len(char *cmd, int i);
-int		argv_count(char *cmd);
-char	*argv_dup(char *cmd, int i);
+int		argv_count(char *cmd, int i, int count);
+char	*argv_dup(char *cmd, int i, t_cmd *cmd1, int j);
 
 int	init_redirections(t_cmd *cmd, int i, int j)
 {
@@ -90,15 +90,17 @@ int	init_exec(t_exec *exec, char *cmd)
 }
 
 //TODO error handling
-int	init_argv(t_exec *exec, char *cmd, int i, int k)
+void	init_argv(t_exec *exec, char *cmd, int i, t_cmd *cmd1)
 {
+	int	k;
+
+	k = 1;
 	i = exec_len(cmd, 0, 0);
-	exec->argv = malloc(sizeof (*(exec->argv)) * (argv_count(cmd) + 2));
-	if (!exec->argv)
-		return (1);
+	exec->argv = malloc(sizeof(*(exec->argv))
+			* (argv_count(cmd, exec_len(cmd, 0, 0, 0), 0) + 2));
+	perror_exit(cmd1, "malloc at init_argv", !exec->argv);
 	exec->argv[0] = ft_strdup(exec->exec);
-	if (!exec->argv[0])
-		return (1);
+	perror_exit(cmd1, "malloc at init_argv", !exec->argv[0]);
 	while (cmd[i])
 	{
 		while (cmd[i] && ft_isspace(cmd[i]))
@@ -107,15 +109,12 @@ int	init_argv(t_exec *exec, char *cmd, int i, int k)
 			i = redirection_index(cmd, i);
 		if (cmd[i] && cmd[i] != '<' && cmd[i] != '>' && !ft_isspace(cmd[i]))
 		{
-			exec->argv[k] = argv_dup(cmd, i);
-			if (!exec->argv[k])
-				return (1);
+			exec->argv[k] = argv_dup(cmd, i, cmd1, 0);
 			i += argv_len(cmd, i);
 			k++;
 		}
 	}
 	exec->argv[k] = NULL;
-	return (0);
 }
 
 int	exec_argv(t_cmd *cmd, int i, int j)
@@ -128,8 +127,7 @@ int	exec_argv(t_cmd *cmd, int i, int j)
 		j = -1;
 		if (init_exec(&(cmd[i].exec), cmd[i].command))
 			perror_exit(cmd, "malloc at init_exec", 1);
-		if (init_argv(&(cmd[i].exec), cmd[i].command, 0, 1))
-			perror_exit(cmd, "malloc at init_argv", 1);
+		init_argv(&(cmd[i].exec), cmd[i].command, 0, cmd);
 		temp = cmd[i].exec.exec;
 		cmd[i].exec.exec = expand_line(cmd[i].exec.exec, cmd);
 		free(temp);

@@ -53,6 +53,7 @@ t_cmd	*init_cmd(int size, char **envp, char *line)
 		cmd[i].exec.exec = NULL;
 		cmd[i].exec.argv = NULL;
 		cmd[i].new_env = NULL;
+		cmd[i].line = NULL;
 	}
 	return (cmd);
 }
@@ -65,21 +66,13 @@ t_cmd	*parse_line(char *line, char **envp)
 	t_cmd	*cmd;
 
 	cmd = init_cmd(count_pipes(line) + 1, envp, line);
-	if (!cmd)
-	{
-		perror("Malloc failed at parse_line(): ");
-		return (NULL);
-	}
+	perror_exit_free(cmd, line, "malloc at parse_line", !cmd);
 	i = 0;
 	j = 0;
 	while (line[i])
 	{
 		cmd[j].command = alloc_command(line, i, command_len(line, i) + 1, 0);
-		if (!cmd[j].command)
-		{
-			perror("Malloc failed at alloc_command(): ");
-			return (NULL);
-		}
+		perror_exit_free(cmd, line, "malloc at parse_line", !cmd[j].command);
 		i += command_len(line, i);
 		i += (line[i] != '\0');
 		j++;

@@ -32,44 +32,6 @@ int	ft_pwd(t_cmd *cmd, int i)
 	return (0);
 }
 
-// int	ft_cd(t_cmd *cmd, char **argv)
-// {
-// 	char	*pwd;
-// 	char	*home;
-
-		
-// 	// if (ptr_arr_len(argv) > 2)
-// 	// {
-// 	// 	*(cmd->status) = 1;
-// 	// 	return (stderror_putstr("Too many arguments", "", "", 1));
-// 	// }
-// 	// pwd = _getenv(cmd->new_env, "PWD");
-// 	// if (ptr_arr_len(argv) == 1)
-// 	// {
-// 	// 	if (chdir(_getenv(cmd->new_env, "HOME")) < 0)
-// 	// 	{
-// 	// 		*(cmd->status) = 1;
-// 	// 		free(pwd);
-// 	// 		return (perror_builtins("cd: ", argv[0], ": "));
-// 	// 	}
-// 	// 	replace_env(cmd->new_env, "OLDPWD", pwd);
-// 	// 	free(pwd);
-// 	// 	*(cmd->status) = 0;
-// 	// 	return (0);
-// 	// }
-// 	// if (chdir(argv[1]) < 0)
-// 	// {
-// 	// 	*(cmd->status) = 1;
-// 	// 	free(pwd);
-// 	// 	return (perror_builtins("cd: ", argv[1], ": "));
-// 	// }
-// 	// replace_env(cmd->new_env, "OLDPWD", pwd);
-// 	// free(pwd);
-// 	// *(cmd->status) = 0;
-// 	// return (0);
-// }
-
-
 int	ft_env(t_cmd *cmd)
 {
 	int	i;

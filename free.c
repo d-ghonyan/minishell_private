@@ -47,11 +47,12 @@ void	free_cmd(t_cmd *cmd)
 	{
 		free(cmd[i].command);
 		free(cmd[i].exec.exec);
-		free_fds(cmd[i].fds);
 		free_ptr_arr(cmd[i].exec.argv);
+		free_fds(cmd[i].fds);
 		cmd[i].command = NULL;
 		cmd[i].exec.exec = NULL;
 		cmd[i].exec.argv = NULL;
+		cmd[i].fds = NULL;
 	}
 	free(cmd->line);
 	free(cmd);

@@ -22,11 +22,7 @@ char	*here_expand(char *s, int i, int j, t_cmd *cmd)
 	char	*res;
 
 	res = ft_calloc(sizeof(*res), (here_final_len(s, cmd) + 1));
-	if (!res)
-	{
-		free(s);
-		perror_exit(cmd, "malloc at here_expand", 1);
-	}
+	perror_exit_free(cmd, s, "malloc at here_expand", !res);
 	while (s[i])
 	{
 		if (s[i] == '$')
@@ -55,6 +51,7 @@ void	call_child(char *limiter, int quoted, int pipes[2], t_cmd *cmd)
 	perror_exit(cmd, "malloc at final_limiter", !l);
 	here_child(l, quoted, pipes, cmd);
 	free(l);
+	free_cmd(cmd);
 	exit (EXIT_SUCCESS);
 }
 

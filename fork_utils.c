@@ -12,6 +12,23 @@
 
 #include "minishell.h"
 
+void	single_child(t_cmd *cmd)
+{
+	char	*path;
+
+	to_from(cmd);
+	init_signals_child();
+	path = get_path(cmd, cmd[0].exec.exec);
+	stderror_putstr("minishell: ", cmd[0].exec.exec,
+		": command not found", !path);
+	if (path && !has_an_error(cmd, 0))
+		execve(path, cmd[0].exec.argv, cmd->new_env);
+	free(path);
+	free_ptr_arr(cmd->new_env);
+	free_cmd(cmd);
+	exit(EXIT_FAILURE);
+}
+
 void	to_from(t_cmd *cmd)
 {
 	int	to;

@@ -26,10 +26,10 @@ int	_home(t_cmd *cmd)
 	}
 	else
 		*(cmd->status) = 0;
-	// replace_env()
 	free(home);
 	free(pwd);
 }
+	// replace_env()
 
 int	ft_cd(t_cmd *cmd, char **argv)
 {

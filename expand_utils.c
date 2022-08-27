@@ -46,7 +46,7 @@ int	expanded_len(char *cmd, int i, int quote, t_cmd *cmd1)
 		var = ft_itoa(*(cmd1->status));
 		j = ft_strlen(var);
 		free(var);
-		return (j);		
+		return (j);
 	}
 	var = malloc(sizeof (*var) * (var_len(cmd, i, quote) + 1));
 	perror_exit(cmd1, "malloc at expanded_len", !var);

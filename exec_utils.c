@@ -87,13 +87,8 @@ int	argv_len(char *cmd, int i)
 	return (i - len);
 }
 
-int	argv_count(char *cmd)
+int	argv_count(char *cmd, int i, int count)
 {
-	int	i;
-	int	count;
-
-	i = exec_len(cmd, 0, 0, 0);
-	count = 0;
 	while (cmd[i])
 	{
 		while (cmd[i] && ft_isspace(cmd[i]))
@@ -121,18 +116,12 @@ int	argv_count(char *cmd)
 	return (count);
 }
 
-char	*argv_dup(char *cmd, int i)
+char	*argv_dup(char *cmd, int i, t_cmd *cmd1, int j)
 {
-	int		j;
 	char	*res;
 
-	j = 0;
 	res = malloc(sizeof (*res) * (argv_len(cmd, i) + 1));
-	if (!res)
-	{
-		perror("argv_dup(): ");
-		return (NULL);
-	}
+	perror_exit(cmd, "malloc at argv_dup", !res);
 	while (cmd[i] && cmd[i] != '<' && cmd[i] != '>' && !ft_isspace(cmd[i]))
 	{
 		if (cmd[i] == '\'')

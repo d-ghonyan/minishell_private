@@ -70,6 +70,7 @@ typedef struct s_cmd
 	t_exec	exec;
 }	t_cmd;
 
+void	perror_exit_free(t_cmd *cmd, char *s, char *msg, int cond);
 char	*_getenv(char **envp, char *s);
 void	thing(void);
 int		count_pipes(char *s);

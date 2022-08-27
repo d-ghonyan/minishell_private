@@ -14,7 +14,7 @@
 
 int	is_valid(char *s);
 
-char	**delete_env(char **envp, char *del)
+char	**delete_env(t_cmd *cmd, char **envp, char *del)
 {
 	int		i;
 	int		j;
@@ -23,11 +23,7 @@ char	**delete_env(char **envp, char *del)
 	i = -1;
 	j = 0;
 	new_env = malloc(sizeof (*new_env) * ptr_arr_len(envp));
-	if (!new_env)
-	{
-		perror("malloc at delete_env");
-		exit(EXIT_FAILURE);
-	}
+	perror_exit(cmd, "malloc at delete_env", !new_env);
 	while (envp[++i])
 	{
 		if (ft_strcmp_env(envp[i], del))
@@ -35,8 +31,8 @@ char	**delete_env(char **envp, char *del)
 			new_env[j++] = ft_strdup(envp[i]);
 			if (!new_env[j])
 			{
-				perror("malloc at delete_env");
-				exit(EXIT_FAILURE);
+				free_ptr_arr(new_env);
+				perror_exit(cmd, "malloc at delete_env", 1);
 			}
 		}
 	}
@@ -61,7 +57,7 @@ int	ft_unset(t_cmd *cmd, int k)
 			err = 1;
 		}
 		else
-			cmd->new_env = delete_env(cmd->new_env, cmd[k].exec.argv[j]);
+			cmd->new_env = delete_env(cmd, cmd->new_env, cmd[k].exec.argv[j]);
 	}
 	*(cmd->status) = err;
 	return (0);

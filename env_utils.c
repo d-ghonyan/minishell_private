@@ -42,15 +42,14 @@ char	**copy_env(char **envp)
 
 	i = 0;
 	env = malloc(sizeof (*env) * (ptr_arr_len(envp) + 1));
-	if (!env)
-		return (NULL);
+	perror_exit(NULL, "malloc at copy_env", !env);
 	while (envp[i])
 	{
 		env[i] = ft_strdup(envp[i]);
 		if (!env[i])
 		{
 			free_ptr_arr(env);
-			return (NULL);
+			perror_exit(NULL, "malloc at copy_env", 1);
 		}
 		i++;
 	}

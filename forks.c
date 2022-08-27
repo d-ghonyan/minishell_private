@@ -14,6 +14,7 @@
 
 void	to_from(t_cmd *cmd);
 void	fork_loop(char *line, pid_t *pids, t_cmd *cmd, int (*pipes)[2]);
+void	single_child(t_cmd *cmd);
 
 int	has_an_error(t_cmd *cmd, int i)
 {
@@ -84,19 +85,10 @@ int	single_command(t_cmd *cmd, int *status)
 	if (!is_a_builtin(cmd[0].exec.exec))
 	{
 		pid = fork();
+		if (pid < 0)
+			return (perror_ret("fork at single_command"));
 		if (pid == 0)
-		{
-			to_from(cmd);
-			init_signals_child();
-			path = get_path(cmd, cmd[0].exec.exec);
-			stderror_putstr("minishell: ", cmd[0].exec.exec,
-				": command not found", !path);
-			if (path && !has_an_error(cmd, 0))
-				execve(path, cmd[0].exec.argv, cmd->envp);
-			free(path);
-			free_cmd(cmd);
-			exit(EXIT_FAILURE);
-		}
+			single_child(cmd);
 		else
 		{
 			waitpid(pid, status, 0);
@@ -104,11 +96,10 @@ int	single_command(t_cmd *cmd, int *status)
 				*(cmd->status) = WEXITSTATUS(status);
 			else if (WIFSIGNALED(status))
 				*(cmd->status) = WTERMSIG(status) + 2;
+			return (0);
 		}
 	}
-	else
-		return (call_builtins(cmd, 0));
-	return (0);
+	return (call_builtins(cmd, 0));
 }
 
 int	call_forks(t_cmd *cmd, char *line, int *status)
