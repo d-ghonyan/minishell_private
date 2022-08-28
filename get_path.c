@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/27 18:50:08 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/28 20:29:19 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*get_path(t_cmd *cmd, char *command)
 		stderror_putstr("minishell: ", command, ": is a directory", 1);
 		closedir(dir);
 	}
-	if (!access(command, F_OK))
+	if (ft_strchr(command, '/') && !access(command, F_OK))
 	{
 		ret = ft_strdup(command);
 		return (ret);

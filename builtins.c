@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/27 19:33:00 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/28 17:54:39 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int	ft_pwd(t_cmd *cmd, int i)
 {
 	char	*path;
 
+	(void)i;
 	path = getcwd(NULL, 0);
 	if (!path)
 	{
@@ -49,16 +50,16 @@ int	call_builtins(t_cmd *cmd, int i)
 
 	s = cmd[i].exec.exec;
 	if (!ft_strcmp(s, "cd"))
-		ft_cd(cmd, cmd[i].exec.argv);
+		return (ft_cd(cmd, cmd[i].exec.argv));
 	if (!ft_strcmp(s, "pwd"))
-		ft_pwd(cmd, i);
+		return (ft_pwd(cmd, i));
 	if (!ft_strcmp(s, "export"))
-		ft_export(cmd, i);
+		return (ft_export(cmd, i));
 	if (!ft_strcmp(s, "unset"))
-		ft_unset(cmd, i);
+		return (ft_unset(cmd, i));
 	if (!ft_strcmp(s, "env"))
-		ft_env(cmd);
+		return (ft_env(cmd));
 	if (!ft_strcmp(s, "echo"))
-		ft_echo(cmd, i);
+		return (ft_echo(cmd, i));
 	return (0);
 }

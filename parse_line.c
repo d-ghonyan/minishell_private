@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/27 18:55:59 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/28 17:55:48 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ t_cmd	*init_cmd(int size, char **envp, char *line)
 	t_cmd	*cmd;
 
 	i = -1;
+	(void)line;
 	cmd = malloc(sizeof (*cmd) * size);
 	if (!cmd)
 		return (NULL);

@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/27 19:33:41 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/28 19:28:18 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	ft_strcmp_env(char *s1, char *s2)
 	int	i;
 
 	i = 0;
-	while (s1[i] && s2[i] && s1[i] != '=' && s2[i] != '=' && s1 != s2)
+	while (s1[i] && s2[i] && s1[i] != '=' && s2[i] != '=' && s1[i] == s2[i])
 		i++;
 	if ((s1[i] == '=' && s2[i] == '=') || (!s1[i] && s2[i] == '=')
 		|| (s1[i] == '=' && !s2[i]))
@@ -55,7 +55,7 @@ int	ft_strcmp_env(char *s1, char *s2)
 	return (s1[i] - s2[i]);
 }
 
-char	**_env(char **old_env, char *val, char **envp)
+char	**_env(char **old_env, char *val, t_cmd *cmd)
 {
 	char	*key;
 	char	*value;
@@ -67,12 +67,12 @@ char	**_env(char **old_env, char *val, char **envp)
 		if (is_in_env(old_env, key))
 			replace_env(old_env, key, value);
 		else
-			old_env = env(old_env, key, value);
+			old_env = env(old_env, key, value, cmd);
 		free(key);
 		free(value);
 	}
 	else
-		old_env = env(old_env, val, NULL);
+		old_env = env(old_env, val, NULL, cmd);
 	return (old_env);
 }
 
@@ -94,8 +94,8 @@ int	ft_export(t_cmd *cmd, int i)
 				"': not a valid identifier", 1);
 		}
 		else
-			cmd->new_env = _env(cmd->new_env, cmd[i].exec.argv[j], cmd->envp);
+			cmd->new_env = _env(cmd->new_env, cmd[i].exec.argv[j], cmd);
 	}
 	*(cmd->status) = err;
-	return (0);
+	return (err);
 }

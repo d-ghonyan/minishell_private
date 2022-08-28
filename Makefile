@@ -1,6 +1,6 @@
 NAME = minishell
 CC = cc
-CFLAGS = -c #-Wall -Wextra -Werror
+CFLAGS = -c -Wall -Wextra# -Werror
 READLINE = -lreadline -L ./readline/lib/
 LIBFT = -lft -L libft
 SRCS = $(wildcard *.c)

@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/27 19:20:16 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/28 17:54:49 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	var_len(char *s, int i, int quote)
 	int		len;
 
 	len = 0;
+	(void)quote;
 	if (s[i] == '?')
 		return (1);
 	while (s[i] && is_a_valid_name(s[i], i > 0 && s[i - 1] == '$'))

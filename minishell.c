@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/28 14:54:24 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/28 20:30:49 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	empty_event(void)
 
 void	sigint_p(int signum)
 {
-	write(1, "\b\b", 2);
+	write(0, "\b\b", 2);
 	rl_replace_line("", 0);
 	rl_done = 1;
 	g_status = signum + 128;
@@ -68,12 +68,12 @@ int	main(int argc, char **argv, char **envp)
 	char	**new_env;
 	t_cmd	*cmd;
 
+	(void)argv;
 	cmd = NULL;
 	new_env = copy_env(envp);
 	init_signals_parent();
-	thing(1);
 	rl_event_hook = &empty_event;
-	while (1)
+	while (argc)
 	{
 		if (_readline(&line, new_env, &status))
 			continue ;
@@ -88,6 +88,7 @@ int	main(int argc, char **argv, char **envp)
 		free_cmd(cmd);
 	}
 }
+	// thing(1);
 
 	// int pipes[2];
 	// pipe(pipes);

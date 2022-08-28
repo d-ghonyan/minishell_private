@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 17:32:59 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/27 18:23:00 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/28 20:16:34 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 int	_home(t_cmd *cmd)
 {
+	char	*cwd;
 	char	*pwd;
 	char	*home;
 
-	pwd = _getenv(cmd->new_env, "PWD");
 	home = _getenv(cmd->new_env, "HOME");
 	if (chdir(home) < 0)
 	{
@@ -25,11 +25,26 @@ int	_home(t_cmd *cmd)
 		*(cmd->status) = 1;
 	}
 	else
+	{
+		cwd = getcwd(NULL, 1);
+		if (!cwd)
+		{
+			free(home);
+			perror("getcwd at ft_cd");
+			*(cmd->status) = 1;
+			return (1);
+		}
+		pwd = _getenv(cmd->new_env, "PWD");
+		if (!pwd)
+			cmd->new_env = env(cmd->new_env, "PWD", cwd, cmd);
+		else
+			replace_env(cmd->new_env, "PWD", cwd);
 		*(cmd->status) = 0;
+	}
 	free(home);
 	free(pwd);
+	return (0);
 }
-	// replace_env()
 
 int	ft_cd(t_cmd *cmd, char **argv)
 {
@@ -51,4 +66,5 @@ int	ft_cd(t_cmd *cmd, char **argv)
 			return (1);
 		}
 	}
+	return (0);
 }

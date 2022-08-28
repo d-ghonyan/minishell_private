@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/28 14:55:00 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/28 18:37:38 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ typedef struct s_cmd
 	t_exec	exec;
 }	t_cmd;
 
+int		strcmp_minishell(char *s);
+char	**_env(char **old_env, char *val, t_cmd *cmd);
 void	perror_exit_free(t_cmd *cmd, char *s, char *msg, int cond);
 char	*_getenv(char **envp, char *s);
 void	thing(int parent);
@@ -80,7 +82,7 @@ char	**copy_env(char **envp);
 int		close_pipes(int (*pipes)[2], int size);
 char	*ft_strdup_env(char *key, char *value);
 int		is_in_env(char **env, char *key);
-char	**env(char **old_env, char *key, char *value);
+char	**env(char **old_env, char *key, char *value, t_cmd *cmd);
 void	replace_env(char **old_env, char *key, char *value);
 int		ft_strcmp_env(char *s1, char *s2);
 int		find_index(char *s, char c);
@@ -118,7 +120,7 @@ char	*get_path(t_cmd *cmd, char *command);
 char	*alloc_command(char *line, int i, int size, int j);
 char	*expand_line(char *cmd, t_cmd *cmd1);
 t_cmd	*parse_line(char *line, char **envp);
-t_fds	*open_files(t_cmd *cmd, char *s, char **envp);
+t_fds	*open_files(t_cmd *cmd, char *s);
 t_fds	*alloc_fds(int size);
 
 #endif

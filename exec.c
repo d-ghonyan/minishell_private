@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/28 14:20:29 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/28 17:56:33 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	init_redirections(t_cmd *cmd, int i, int j)
 	while (++i < cmd->len)
 	{
 		j = -1;
-		cmd[i].fds = open_files(cmd, cmd[i].command, cmd->new_env);
+		cmd[i].fds = open_files(cmd, cmd[i].command);
 		if (!cmd[i].fds && redirection_count(cmd[i].command) > 0)
 			return (1);
 		while (cmd[i].fds && ++j < cmd[i].fds->len)

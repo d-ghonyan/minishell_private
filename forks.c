@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/28 14:57:04 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/28 20:27:08 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 void	to_from(t_cmd *cmd);
 void	fork_loop(char *line, pid_t *pids, t_cmd *cmd, int (*pipes)[2]);
 void	single_child(t_cmd *cmd);
+void	free_stuff(t_cmd *cmd, char *path, int (*pipes)[2]);
+void	update_env(t_cmd *cmd, int i);
 
 int	has_an_error(t_cmd *cmd, int i)
 {
@@ -46,7 +48,10 @@ int	parent(t_cmd *cmd, int (*pipes)[2], pid_t *pids)
 	while (i < cmd->len)
 	{
 		waitpid(pids[i], &status, 0);
-		*(cmd->status) = WEXITSTATUS(status);
+		if (WIFEXITED(status))
+			*(cmd->status) = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+				*(cmd->status) = 128 + WTERMSIG(status);
 		i++;
 	}
 	return (0);
@@ -55,36 +60,40 @@ int	parent(t_cmd *cmd, int (*pipes)[2], pid_t *pids)
 int	children(t_cmd *cmd, int (*pipes)[2], int size, int i)
 {
 	char	*path;
+	int		status;
 
-	if (dup_pipes(cmd, i, pipes, size - 1))
-	{
-		free(pipes);
-		exit(EXIT_FAILURE);
-	}
+	path = NULL;
+	status = EXIT_FAILURE;
+	if (!cmd[i].exec.exec[0])
+		status = EXIT_SUCCESS;
+	perror_exit(cmd, "", dup_pipes(cmd, i, pipes, size - 1));
 	init_signals_child();
-	thing(0);
 	if (!is_a_builtin(cmd[i].exec.exec))
 	{
 		path = get_path(cmd, cmd[i].exec.exec);
 		stderror_putstr("minishell: ", cmd[i].exec.exec,
 			": command not found", !path);
 		if (path && !has_an_error(cmd, i))
-			execve(path, cmd[i].exec.argv, cmd->envp);
+			update_env(cmd, i);
 		if (path && !has_an_error(cmd, i))
+			execve(path, cmd[i].exec.argv, cmd->envp);
+		if (path && !has_an_error(cmd, i) && cmd[i].exec.exec[0])
 			perror_builtins("minishell: ", cmd[i].exec.exec, ": ");
-		free(path);
-		free(pipes);
-		free_cmd(cmd);
-		exit(EXIT_FAILURE);
+		free_stuff(cmd, path, pipes);
+		exit(status);
 	}
-	exit(call_builtins(cmd, i));
+	if (!call_builtins(cmd, i))
+		status = EXIT_SUCCESS;
+	free_stuff(cmd, path, pipes);
+	exit(status);
 }
 
 int	single_command(t_cmd *cmd, int *status)
 {
-	char	*path;
+	int		a;
 	pid_t	pid;
 
+	(void)status;
 	if (!is_a_builtin(cmd[0].exec.exec))
 	{
 		pid = fork();
@@ -94,11 +103,11 @@ int	single_command(t_cmd *cmd, int *status)
 			single_child(cmd);
 		else
 		{
-			waitpid(pid, status, 0);
-			if (WIFEXITED(status))
-				*(cmd->status) = WEXITSTATUS(status);
-			else if (WIFSIGNALED(status))
-				*(cmd->status) = WTERMSIG(status) + 2;
+			waitpid(pid, &a, 0);
+			if (WIFEXITED(a))
+				*(cmd->status) = WEXITSTATUS(a);
+			else if (WIFSIGNALED(a))
+				*(cmd->status) = 128 + WTERMSIG(a);
 			return (0);
 		}
 	}
@@ -109,7 +118,6 @@ int	call_forks(t_cmd *cmd, char *line, int *status)
 {
 	int		(*pipes)[2];
 	pid_t	*pids;
-	char	*path;
 
 	pids = malloc(sizeof (*pids) * (count_pipes(line) + 1));
 	if (!pids)

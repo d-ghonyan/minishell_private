@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/27 18:32:07 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/28 15:28:16 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ char	*expand_line(char *s, t_cmd *cmd)
 			{
 				if (s[i] == '$')
 				{
-					if (var_len(s, i + 1, 1) == 0)
+					if (var_len(s, i + 1, 1) == 0 && !s[i + 1])
 						res[j++] = '$';
 					else
 					{
@@ -121,7 +121,7 @@ char	*expand_line(char *s, t_cmd *cmd)
 		}
 		if (s[i] == '$')
 		{
-			if (var_len(s, i + 1, 0) == 0)
+			if (var_len(s, i + 1, 0) == 0 && !s[i + 1])
 				res[j++] = '$';
 			else
 			{

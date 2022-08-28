@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/28 14:21:41 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/28 17:56:47 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ char	*final_limiter(char *s)
 
 void	exit_heredoc(char *line, char *limiter, int pipes[2])
 {
+	(void)limiter;
 	if (!line)
 		printf("\b\bwarning: heredoc terminated by EOF\n");
 	free(line);

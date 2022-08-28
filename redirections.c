@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/27 18:54:26 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/28 17:56:00 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	redirection_index_but_like_changed(char *cmd, int i)
 	return (i);
 }
 
-t_fds	*open_files(t_cmd *cmd, char *s, char **envp)
+t_fds	*open_files(t_cmd *cmd, char *s)
 {
 	int		i;
 	int		j;

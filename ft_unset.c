@@ -23,17 +23,18 @@ char	**delete_env(t_cmd *cmd, char **envp, char *del)
 	i = -1;
 	j = 0;
 	new_env = malloc(sizeof (*new_env) * ptr_arr_len(envp));
-	perror_exit(cmd, "malloc at delete_env", !new_env);
+	perror_exit(cmd, "malloc at delete_env 1", !new_env);
 	while (envp[++i])
 	{
 		if (ft_strcmp_env(envp[i], del))
 		{
-			new_env[j++] = ft_strdup(envp[i]);
+			new_env[j] = ft_strdup(envp[i]);
 			if (!new_env[j])
 			{
 				free_ptr_arr(new_env);
-				perror_exit(cmd, "malloc at delete_env", 1);
+				perror_exit(cmd, "malloc at delete_env 2", 1);
 			}
+			j++;
 		}
 	}
 	new_env[j] = NULL;
@@ -60,5 +61,5 @@ int	ft_unset(t_cmd *cmd, int k)
 			cmd->new_env = delete_env(cmd, cmd->new_env, cmd[k].exec.argv[j]);
 	}
 	*(cmd->status) = err;
-	return (0);
+	return (err);
 }
