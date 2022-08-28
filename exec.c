@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/27 19:38:24 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/28 14:20:29 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	init_argv(t_exec *exec, char *cmd, int i, t_cmd *cmd1)
 	k = 1;
 	i = exec_len(cmd, 0, 0);
 	exec->argv = malloc(sizeof(*(exec->argv))
-			* (argv_count(cmd, exec_len(cmd, 0, 0, 0), 0) + 2));
+			* (argv_count(cmd, exec_len(cmd, 0, 0), 0) + 2));
 	perror_exit(cmd1, "malloc at init_argv", !exec->argv);
 	exec->argv[0] = ft_strdup(exec->exec);
 	perror_exit(cmd1, "malloc at init_argv", !exec->argv[0]);

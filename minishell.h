@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/27 18:56:16 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/28 14:55:00 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ typedef struct s_cmd
 
 void	perror_exit_free(t_cmd *cmd, char *s, char *msg, int cond);
 char	*_getenv(char **envp, char *s);
-void	thing(void);
+void	thing(int parent);
 int		count_pipes(char *s);
 int		init_pipes(int (*pipes)[2], int size, int cond);
 int		dup_pipes(t_cmd *cmd, int i, int (*pipes)[2], int size);

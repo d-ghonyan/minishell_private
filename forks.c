@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/27 19:30:39 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/28 14:57:04 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	children(t_cmd *cmd, int (*pipes)[2], int size, int i)
 		exit(EXIT_FAILURE);
 	}
 	init_signals_child();
+	thing(0);
 	if (!is_a_builtin(cmd[i].exec.exec))
 	{
 		path = get_path(cmd, cmd[i].exec.exec);
@@ -69,6 +70,8 @@ int	children(t_cmd *cmd, int (*pipes)[2], int size, int i)
 			": command not found", !path);
 		if (path && !has_an_error(cmd, i))
 			execve(path, cmd[i].exec.argv, cmd->envp);
+		if (path && !has_an_error(cmd, i))
+			perror_builtins("minishell: ", cmd[i].exec.exec, ": ");
 		free(path);
 		free(pipes);
 		free_cmd(cmd);

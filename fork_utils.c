@@ -1,33 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   strchr.c                                           :+:      :+:    :+:   */
+/*   fork_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dghonyan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/03/10 20:46:54 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/28 15:01:09 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	single_child(t_cmd *cmd)
-{
-	char	*path;
-
-	to_from(cmd);
-	init_signals_child();
-	path = get_path(cmd, cmd[0].exec.exec);
-	stderror_putstr("minishell: ", cmd[0].exec.exec,
-		": command not found", !path);
-	if (path && !has_an_error(cmd, 0))
-		execve(path, cmd[0].exec.argv, cmd->new_env);
-	free(path);
-	free_ptr_arr(cmd->new_env);
-	free_cmd(cmd);
-	exit(EXIT_FAILURE);
-}
+int	has_an_error(t_cmd *cmd, int i);
 
 void	to_from(t_cmd *cmd)
 {
@@ -47,6 +32,26 @@ void	to_from(t_cmd *cmd)
 		close(from);
 	}
 }
+
+void	single_child(t_cmd *cmd)
+{
+	char	*path;
+
+	to_from(cmd);
+	init_signals_child();
+	path = get_path(cmd, cmd[0].exec.exec);
+	stderror_putstr("minishell: ", cmd[0].exec.exec,
+		": command not found", !path);
+	if (path && !has_an_error(cmd, 0))
+		execve(path, cmd[0].exec.argv, cmd->new_env);
+	if (path && !has_an_error(cmd, 0))
+		perror_builtins("minishell: ", cmd[0].exec.exec, ": ");
+	free(path);
+	free_ptr_arr(cmd->new_env);
+	free_cmd(cmd);
+	exit(EXIT_FAILURE);
+}
+
 
 int	fork_loop(char *line, pid_t *pids, t_cmd *cmd, int (*pipes)[2])
 {
