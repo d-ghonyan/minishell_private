@@ -16,9 +16,7 @@ int	strcmp_minishell(char *s)
 {
 	int	i;
 	int	j;
-	int	len;
 
-	len = 10;
 	i = ft_strlen(s);
 	j = ft_strlen("minishell");
 	i--;

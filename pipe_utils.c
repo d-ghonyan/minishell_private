@@ -95,11 +95,6 @@ int	another_process_pipes(int i, t_cmd *cmd, int (*pipes)[2], int size)
 
 int	dup_pipes(t_cmd *cmd, int i, int (*pipes)[2], int size)
 {
-	int	to;
-	int	from;
-
-	to = last_fd(cmd, i, 1);
-	from = last_fd(cmd, i, 0);
 	process_pipes(i, cmd, pipes);
 	another_process_pipes(i, cmd, pipes, size);
 	i = -1;

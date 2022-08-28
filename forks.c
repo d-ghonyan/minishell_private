@@ -77,7 +77,7 @@ int	children(t_cmd *cmd, int (*pipes)[2], int size, int i)
 			update_env(cmd, i);
 		if (path && !has_an_error(cmd, i))
 			execve(path, cmd[i].exec.argv, cmd->envp);
-		if (path && !has_an_error(cmd, i) && cmd[i].exec.exec[0])
+		if (path && !dir(path) && !has_an_error(cmd, i) && cmd[i].exec.exec[0])
 			perror_builtins("minishell: ", cmd[i].exec.exec, ": ");
 		free_stuff(cmd, path, pipes);
 		exit(status);

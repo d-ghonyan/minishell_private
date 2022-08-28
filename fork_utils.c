@@ -32,10 +32,7 @@ void	update_env(t_cmd *cmd, int i)
 	{
 		shlvl = _getenv(cmd->new_env, "SHLVL");
 		if (!shlvl)
-		{
-			write(1, "HELLO", 5);
 			cmd->new_env = _env(cmd->new_env, "SHLVL=1", cmd);
-		}
 		else
 		{
 			lvl = ft_atoi(shlvl) + 1;
@@ -81,7 +78,7 @@ void	single_child(t_cmd *cmd)
 		": command not found", !path);
 	if (path && !has_an_error(cmd, 0))
 		execve(path, cmd[0].exec.argv, cmd->new_env);
-	if (path && !has_an_error(cmd, 0) && cmd[0].exec.exec[0])
+	if (path && !dir(path) && !has_an_error(cmd, 0) && cmd[0].exec.exec[0])
 		perror_builtins("minishell: ", cmd[0].exec.exec, ": ");
 	free(path);
 	free_ptr_arr(cmd->new_env);

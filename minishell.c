@@ -14,19 +14,19 @@
 
 int	g_status = 0;
 
-void	thing(int parent)
-{
-	struct termios	term;
+// void	thing(int parent)
+// {
+// 	struct termios	term;
 
-	if (tcgetattr(0, &term))
-		perror ("");
-	if (parent)
-		term.c_lflag &= ~ECHOCTL;
-	else
-		term.c_lflag &= ECHOCTL;
-	if (tcsetattr(0, 0, &term))
-		perror ("");
-}
+// 	if (tcgetattr(0, &term))
+// 		perror ("");
+// 	if (parent)
+// 		term.c_lflag &= ~ECHOCTL;
+// 	else
+// 		term.c_lflag &= ECHOCTL;
+// 	if (tcsetattr(0, 0, &term))
+// 		perror ("");
+// }
 
 int	empty_event(void)
 {
@@ -35,7 +35,9 @@ int	empty_event(void)
 
 void	sigint_p(int signum)
 {
-	write(0, "\b\b", 2);
+	printf("%s", GREEN "minishell" BLUE "$ " RESET);
+	printf("%s  \b\b", rl_line_buffer);
+	// write(1, "minishell$     ", 15);
 	rl_replace_line("", 0);
 	rl_done = 1;
 	g_status = signum + 128;

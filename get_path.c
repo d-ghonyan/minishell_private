@@ -14,6 +14,23 @@
 
 static char	*free_ret(char **spl, char *null);
 
+int	dir(char *s)
+{
+	int		old_errno;
+	DIR		*dir;
+
+	old_errno = errno;
+	dir = opendir(s);
+	if (dir)
+	{
+		closedir(dir);
+		errno = old_errno;
+		return (1);
+	}
+	errno = old_errno;
+	return (0);
+}
+
 char	*_get_path(char **envp, char *command)
 {
 	int		i;

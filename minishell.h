@@ -13,8 +13,10 @@
 #ifndef MINISHELL_H
 
 # define MINISHELL_H
+# define LINUX
 
 # include <stdio.h>
+# include <errno.h>
 # include <fcntl.h>
 # include <stdlib.h>
 # include <unistd.h>
@@ -25,10 +27,14 @@
 // # include <features.h>
 # include <sys/wait.h>
 # include <sys/types.h>
-# include "readline/include/readline/history.h"
-# include "readline/include/readline/readline.h"
-// # include <readline/history.h>
-// # include <readline/readline.h>
+
+# ifdef LINUX
+#  include <readline/history.h>
+#  include <readline/readline.h>
+# else
+#  include "readline/include/readline/history.h"
+#  include "readline/include/readline/readline.h"
+# endif
 
 # include "colors.h"
 # include "libft/libft.h"
@@ -70,6 +76,7 @@ typedef struct s_cmd
 	t_exec	exec;
 }	t_cmd;
 
+int		dir(char *s);
 int		strcmp_minishell(char *s);
 char	**_env(char **old_env, char *val, t_cmd *cmd);
 void	perror_exit_free(t_cmd *cmd, char *s, char *msg, int cond);
