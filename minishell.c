@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/28 20:30:49 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/29 16:28:42 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,6 @@ int	empty_event(void)
 
 void	sigint_p(int signum)
 {
-	printf("%s", GREEN "minishell" BLUE "$ " RESET);
-	printf("%s  \b\b", rl_line_buffer);
-	// write(1, "minishell$     ", 15);
 	rl_replace_line("", 0);
 	rl_done = 1;
 	g_status = signum + 128;

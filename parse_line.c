@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/28 17:55:48 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/29 16:34:04 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ t_cmd	*init_cmd(int size, char **envp, char *line)
 		return (NULL);
 	while (++i < size)
 	{
+		cmd[i].envp_count = ptr_arr_len(envp);
 		cmd[i].fds = NULL;
 		cmd[i].envp = envp;
 		cmd[i].len = size;

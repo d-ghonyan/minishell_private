@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/28 20:27:08 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/29 17:06:00 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	children(t_cmd *cmd, int (*pipes)[2], int size, int i)
 		free_stuff(cmd, path, pipes);
 		exit(status);
 	}
-	if (!call_builtins(cmd, i))
+	if (!call_builtins(cmd, i, 0))
 		status = EXIT_SUCCESS;
 	free_stuff(cmd, path, pipes);
 	exit(status);
@@ -111,7 +111,7 @@ int	single_command(t_cmd *cmd, int *status)
 			return (0);
 		}
 	}
-	return (call_builtins(cmd, 0));
+	return (call_builtins(cmd, 0, 1));
 }
 
 int	call_forks(t_cmd *cmd, char *line, int *status)

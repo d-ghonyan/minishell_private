@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/27 18:53:29 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/29 18:12:47 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,11 @@ void	init_flags(char c1, char c2, int *flags)
 {
 	if (c1 == '>')
 	{
-		*flags = O_WRONLY | O_CREAT;
+		*flags = O_WRONLY | O_CREAT | O_CLOEXEC;
 		if (c2 == '>')
 			*flags = *flags | O_APPEND;
+		else
+			*flags = *flags | O_TRUNC;
 	}
 	else if (c1 == '<' && c2 != '<')
 	{
@@ -26,7 +28,6 @@ void	init_flags(char c1, char c2, int *flags)
 	}
 }
 
-//need to do the heredoc right here
 int	init_fds(t_fds *fds, char *c, char *filename, t_cmd *cmd)
 {
 	int		flags;

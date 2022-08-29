@@ -6,13 +6,13 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/28 19:28:18 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/29 17:02:17 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_env(t_cmd *cmd);
+int	ft_env(t_cmd *cmd, int i, int envp, int single);
 
 int	find_index(char *s, char c)
 {
@@ -76,7 +76,7 @@ char	**_env(char **old_env, char *val, t_cmd *cmd)
 	return (old_env);
 }
 
-int	ft_export(t_cmd *cmd, int i)
+int	ft_export(t_cmd *cmd, int i, int single)
 {
 	int	j;
 	int	err;
@@ -84,7 +84,7 @@ int	ft_export(t_cmd *cmd, int i)
 	j = 0;
 	err = 0;
 	if (ptr_arr_len(cmd[i].exec.argv) == 1)
-		return (ft_env(cmd));
+		return (ft_env(cmd, i, 0, single));
 	while (cmd[i].exec.argv[++j])
 	{
 		if (!is_valid(cmd[i].exec.argv[j]))
