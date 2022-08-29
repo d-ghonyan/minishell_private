@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/29 17:06:00 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/29 19:33:19 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	to_from(t_cmd *cmd);
 void	fork_loop(char *line, pid_t *pids, t_cmd *cmd, int (*pipes)[2]);
 void	single_child(t_cmd *cmd);
-void	free_stuff(t_cmd *cmd, char *path, int (*pipes)[2]);
+int		free_stuff(t_cmd *cmd, char *path, int (*pipes)[2], int status);
 void	update_env(t_cmd *cmd, int i);
 
 int	has_an_error(t_cmd *cmd, int i)
@@ -79,13 +79,11 @@ int	children(t_cmd *cmd, int (*pipes)[2], int size, int i)
 			execve(path, cmd[i].exec.argv, cmd->envp);
 		if (path && !dir(path) && !has_an_error(cmd, i) && cmd[i].exec.exec[0])
 			perror_builtins("minishell: ", cmd[i].exec.exec, ": ");
-		free_stuff(cmd, path, pipes);
-		exit(status);
+		free_stuff(cmd, path, pipes, status);
 	}
 	if (!call_builtins(cmd, i, 0))
 		status = EXIT_SUCCESS;
-	free_stuff(cmd, path, pipes);
-	exit(status);
+	return (free_stuff(cmd, path, pipes, status));
 }
 
 int	single_command(t_cmd *cmd, int *status)

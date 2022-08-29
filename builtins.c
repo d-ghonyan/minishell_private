@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/29 18:24:14 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/29 19:33:52 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	ft_echo(t_cmd *cmd, int i, int single);
 int	ft_unset(t_cmd *cmd, int k);
 int	ft_cd(t_cmd *cmd, char **argv);
-int	ft_export(t_cmd *cmd, int i, int single);;
+int	ft_export(t_cmd *cmd, int i, int single);
 
 int	ft_pwd(t_cmd *cmd, int i, int single)
 {
@@ -24,7 +24,7 @@ int	ft_pwd(t_cmd *cmd, int i, int single)
 
 	to = last_fd(cmd, i, 1);
 	if (to < 0 || !single)
-		to = STDOUT_FILENO;	
+		to = STDOUT_FILENO;
 	path = getcwd(NULL, 0);
 	if (!path)
 	{

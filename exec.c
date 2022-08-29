@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/29 18:25:11 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/29 19:32:29 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	init_redirections(t_cmd *cmd, int i, int j)
 						cmd[i].fds[j].flags, 0644);
 				if (cmd[i].fds[j].fd < 0)
 				{
-					ft_putstr_fd("bash: ", STDERR_FILENO);
+					ft_putstr_fd("minishell: ", STDERR_FILENO);
 					ft_putstr_fd(cmd[i].fds[j].here, STDERR_FILENO);
 					perror ("\02");
 					break ;

@@ -13,7 +13,7 @@ OBJS = $(SRCS:.c=.o)
 all: lib $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(OBJS) $(READLINE) $(LIBFT) -o $(NAME)
+	$(CC) $(OBJS) $(READLINE) $(LIBFT) -o $(NAME) -g
 
 lib:
 	cd libft && make 

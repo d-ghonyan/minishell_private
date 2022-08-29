@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/28 20:30:42 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/29 19:33:05 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,13 @@
 
 int	has_an_error(t_cmd *cmd, int i);
 
-void	free_stuff(t_cmd *cmd, char *path, int (*pipes)[2])
+int	free_stuff(t_cmd *cmd, char *path, int (*pipes)[2], int status)
 {
 	free(path);
 	free(pipes);
 	free_ptr_arr(cmd->new_env);
 	free_cmd(cmd);
+	exit(status);
 }
 
 void	update_env(t_cmd *cmd, int i)
@@ -80,10 +81,7 @@ void	single_child(t_cmd *cmd)
 		execve(path, cmd[0].exec.argv, cmd->new_env);
 	if (path && !dir(path) && !has_an_error(cmd, 0) && cmd[0].exec.exec[0])
 		perror_builtins("minishell: ", cmd[0].exec.exec, ": ");
-	free(path);
-	free_ptr_arr(cmd->new_env);
-	free_cmd(cmd);
-	exit(status);
+	free_stuff(cmd, path, NULL, status);
 }
 
 int	fork_loop(char *line, pid_t *pids, t_cmd *cmd, int (*pipes)[2])

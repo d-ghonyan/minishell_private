@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 13:49:18 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/29 19:25:49 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/29 19:27:41 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	ft_echo(t_cmd *cmd, int i, int single)
 	nl = 0;
 	to = last_fd(cmd, i, 1);
 	if (to < 0 || !single)
-		to = STDOUT_FILENO;	
+		to = STDOUT_FILENO;
 	while (cmd[i].exec.argv[j] && newline(cmd[i].exec.argv[j]))
 	{
 		nl = 1;
