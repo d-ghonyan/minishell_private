@@ -76,6 +76,8 @@ char	*get_path(t_cmd *cmd, char *command)
 		ret = ft_strdup(command);
 		return (ret);
 	}
+	else if (ft_strchr(command, '/') && access(command, F_OK))
+		return (NULL);
 	return (_get_path(cmd->new_env, command));
 }
 

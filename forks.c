@@ -71,8 +71,8 @@ int	children(t_cmd *cmd, int (*pipes)[2], int size, int i)
 	if (!is_a_builtin(cmd[i].exec.exec))
 	{
 		path = get_path(cmd, cmd[i].exec.exec);
-		stderror_putstr("minishell: ", cmd[i].exec.exec,
-			": command not found", !path);
+		if (!path)
+			not_found(cmd[i].exec.exec);
 		if (path && !has_an_error(cmd, i))
 			update_env(cmd, i);
 		if (path && !has_an_error(cmd, i))
