@@ -1,7 +1,7 @@
 NAME = minishell
 CC = cc
 CFLAGS = -c -Wall -Wextra# -Werror
-READLINE = -lreadline -L ./readline/lib/
+READLINE = -lreadline -L readline-dghonyan/lib/
 PREFIX = "${shell find /Users/${USER} -name readline-dghonyan 2>/dev/null}"
 # READLINE = -lreadline
 LIBFT = -lft -L libft
@@ -29,6 +29,6 @@ re: fclean all
 
 readline:
 	rm -rf readline-dghonyan/*
-	cd readline-master && ./configure --prefix=$(PREFIX) && make && make install
+	cd readline-master && make clean && ./configure --prefix=$(PREFIX)/ && make && make install
 
 .PHONY: all clean fclean re lib readline
