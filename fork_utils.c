@@ -75,8 +75,8 @@ void	single_child(t_cmd *cmd)
 	to_from(cmd);
 	init_signals_child();
 	path = get_path(cmd, cmd[0].exec.exec);
-	stderror_putstr("minishell: ", cmd[0].exec.exec,
-		": command not found", !path);
+	if (!path)
+		not_found(cmd[0].exec.exec);
 	if (path && !has_an_error(cmd, 0))
 		execve(path, cmd[0].exec.argv, cmd->new_env);
 	if (path && !dir(path) && !has_an_error(cmd, 0) && cmd[0].exec.exec[0])

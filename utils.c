@@ -12,6 +12,16 @@
 
 #include "minishell.h"
 
+void	not_found(char *exec)
+{
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(exec, STDERR_FILENO);
+	if (ft_strchr(exec, '/'))
+		ft_putstr_fd(": no such file or directory\n", STDERR_FILENO);
+	else
+		ft_putstr_fd(": command not found\n", STDERR_FILENO);
+}
+
 int	strcmp_minishell(char *s)
 {
 	int	i;

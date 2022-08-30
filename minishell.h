@@ -13,7 +13,7 @@
 #ifndef MINISHELL_H
 
 # define MINISHELL_H
-// # define LINUX
+# define LINUX
 
 # include <stdio.h>
 # include <errno.h>
@@ -105,6 +105,7 @@ int		stderror_putstr(char *s1, char *s2, char *s3, int cond);
 int		perror_builtins(char *s1, char *s2, char *s3);
 int		init_fds(t_fds *fds, char *s, char *filename, t_cmd *cmd);
 void	to_from(t_cmd *cmd);
+void	not_found(char *exec);
 void	perror_exit_free(t_cmd *cmd, char *s, char *msg, int cond);
 void	thing(int parent);
 void	replace_env(char **old_env, char *key, char *value);
