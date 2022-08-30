@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/29 18:23:42 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/30 17:28:04 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 # include <dirent.h>
 # include <stdbool.h>
 # include <termios.h>
-// # include <features.h>
 # include <sys/wait.h>
 # include <sys/types.h>
 
@@ -32,8 +31,8 @@
 #  include <readline/history.h>
 #  include <readline/readline.h>
 # else
-#  include "readline/include/readline/history.h"
-#  include "readline/include/readline/readline.h"
+#  include "readline-dghonyan/include/readline/history.h"
+#  include "readline-dghonyan/include/readline/readline.h"
 # endif
 
 # include "colors.h"

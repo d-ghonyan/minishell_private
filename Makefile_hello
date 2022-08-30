@@ -12,7 +12,7 @@ OBJS = $(SRCS:.c=.o)
 	$(CC) $(CFLAGS) $(SRCS)
 
 all: lib $(NAME)
-
+	echo $(PREFIX)
 $(NAME): $(OBJS)
 	$(CC) $(OBJS) $(READLINE) $(LIBFT) -o $(NAME) -g
 
@@ -27,8 +27,4 @@ fclean: clean
 
 re: fclean all
 
-readline:
-	rm -rf readline-dghonyan/*
-	cd readline-master && ./configure --prefix=$(PREFIX) && make && make install
-
-.PHONY: all clean fclean re lib readline
+.PHONY: all clean fclean re lib
