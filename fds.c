@@ -72,6 +72,7 @@ int	init_fds(t_fds *fds, char *c, char *filename, t_cmd *cmd)
 		fds->flags = -1;
 		flags = (ft_strchr(filename, '\'') || ft_strchr(filename, '"'));
 		fds->fd = heredoc(filename, flags, cmd);
+		return (fds->fd == -130);
 	}
 	return (0);
 }

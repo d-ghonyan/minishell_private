@@ -56,7 +56,7 @@ int	count_pipes(char *s)
 			count++;
 			if (!after_pipe(s, i + 1) || s[i + 1] == '|' || !before_pipe(s, i))
 			{
-				printf("Syntax error near %d\n", i);
+				printf("Syntax error near `|'\n");
 				return (-1);
 			}
 		}

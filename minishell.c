@@ -47,7 +47,8 @@ int	_readline(char **line, char **new_env, int *status)
 	}
 	if (*line[0])
 		add_history(*line);
-	if (!(*line[0]) || count_pipes(*line) < 0 || check_quotes(*line))
+	if (!(*line[0]) || count_pipes(*line) < 0
+		|| check_quotes(*line) || valid_red(*line))
 	{
 		*status = (g_status == 130);
 		g_status = 0;

@@ -21,7 +21,7 @@ int	is_signaled(t_cmd *cmd)
 	while (++i < cmd->len)
 	{
 		j = 0;
-		while (j < cmd[i].fds->len)
+		while (cmd[i].fds && j < cmd[i].fds->len)
 		{
 			if (cmd[i].fds[j].fd == -130)
 			{

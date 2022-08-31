@@ -13,7 +13,8 @@
 #ifndef MINISHELL_H
 
 # define MINISHELL_H
-// # define LINUX
+
+# define LINUX
 
 # include <stdio.h>
 # include <errno.h>
@@ -77,7 +78,8 @@ typedef struct s_cmd
 }	t_cmd;
 
 int		dir(char *s);
-int		has_an_error(t_cmd *cmd, int i);;
+int		valid_red(char *line);
+int		has_an_error(t_cmd *cmd, int i);
 int		is_signaled(t_cmd *cmd);
 int		has_an_error(t_cmd *cmd, int i);
 int		strcmp_minishell(char *s);

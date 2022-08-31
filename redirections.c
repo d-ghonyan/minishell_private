@@ -103,7 +103,8 @@ t_fds	*open_files(t_cmd *cmd, char *s)
 				free_fds(fds);
 				return (NULL);
 			}
-			init_fds(fds + ++j, &s[i], filename, cmd);
+			if (init_fds(fds + ++j, &s[i], filename, cmd))
+				return (fds);
 			i = redirection_index_but_like_changed(s, i);
 		}
 		i += (s[i] != '\0');
