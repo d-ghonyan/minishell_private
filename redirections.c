@@ -41,10 +41,7 @@ char	*get_filename(char *s, int i, char c)
 	j = 0;
 	name = malloc(sizeof (*name) * (redirection_len(s, i, c) + 1));
 	if (!name)
-	{
-		perror ("malloc at get_filename()");
 		return (NULL);
-	}
 	while (s[i] && s[i] == c)
 		i++;
 	while (s[i] && ft_isspace(s[i]))
@@ -98,11 +95,7 @@ t_fds	*open_files(t_cmd *cmd, char *s)
 		if (s[i] == '<' || s[i] == '>')
 		{
 			filename = get_filename(s, i, s[i]);
-			if (!filename)
-			{
-				free_fds(fds);
-				return (NULL);
-			}
+			perror_exit(cmd, "malloc at get_filename", !filename);
 			if (init_fds(fds + ++j, &s[i], filename, cmd))
 				return (fds);
 			i = redirection_index_but_like_changed(s, i);

@@ -55,6 +55,12 @@ void	call_child(char *limiter, int quoted, int pipes[2], t_cmd *cmd)
 	exit (EXIT_SUCCESS);
 }
 
+void	norm_heredoc(int *a)
+{
+	*a = -130;
+	ft_putendl_fd("", STDOUT_FILENO);
+}
+
 int	heredoc(char *limiter, int quoted, t_cmd *cmd)
 {
 	int		a;
@@ -74,12 +80,9 @@ int	heredoc(char *limiter, int quoted, t_cmd *cmd)
 		close(pipes[1]);
 		waitpid(pid, &a, 0);
 		if (!WIFSIGNALED(a))
-			a = dup(pipes[0]);		
+			a = dup(pipes[0]);
 		else
-		{
-			ft_putendl_fd("", STDOUT_FILENO);
-			a = -130;
-		}
+			norm_heredoc(&a);
 		close(pipes[0]);
 	}
 	return (a);

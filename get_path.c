@@ -63,9 +63,7 @@ char	*_get_path(char **envp, char *command)
 char	*get_path(t_cmd *cmd, char *command)
 {
 	char	*ret;
-	// DIR		*dir;
 
-	// dir = opendir(command);
 	if (dir(command))
 		stderror_putstr("minishell: ", command, ": is a directory", 1);
 	if (ft_strchr(command, '/') && !access(command, F_OK))

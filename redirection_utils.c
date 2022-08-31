@@ -12,6 +12,14 @@
 
 #include "minishell.h"
 
+int	print_err(char c)
+{
+	ft_putstr_fd("Syntax error near ", STDERR_FILENO);
+	write(1, &c, STDERR_FILENO);
+	write(1, "\n", STDERR_FILENO);
+	return (1);
+}
+
 int	after_red(char *line, int i)
 {
 	while (line[i])
@@ -42,12 +50,7 @@ int	valid_red(char *line)
 				count++;
 			}
 			if (count > 2 || !after_red(line, i))
-			{
-				ft_putstr_fd("Syntax error near ", STDERR_FILENO);
-				write(1, &c, STDERR_FILENO);
-				write(1, "\n", STDERR_FILENO);
-				return (1);
-			}
+				return (print_err(c));
 		}
 		i += (line[i] != '\0');
 	}

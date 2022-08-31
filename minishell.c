@@ -14,22 +14,6 @@
 
 int	g_status = 0;
 
-void	thing(int parent)
-{
-	static struct termios	old;
-	struct termios			term;
-
-	if (tcgetattr(0, &old))
-		perror ("");
-	if (tcsetattr(0, 0, &old))
-		perror ("");
-}
-
-int	empty_event(void)
-{
-	return (0);
-}
-
 void	sigint_p(int signum)
 {
 	rl_replace_line("", 0);
@@ -45,8 +29,6 @@ int	_readline(char **line, char **new_env, int *status)
 		free_ptr_arr(new_env);
 		exit(EXIT_SUCCESS);
 	}
-	if (*line[0])
-		add_history(*line);
 	if (!(*line[0]) || count_pipes(*line) < 0
 		|| check_quotes(*line) || valid_red(*line))
 	{
@@ -55,6 +37,7 @@ int	_readline(char **line, char **new_env, int *status)
 		free(*line);
 		return (1);
 	}
+	add_history(*line);
 	return (0);
 }
 
@@ -66,22 +49,15 @@ int	main(int argc, char **argv, char **envp)
 	t_cmd			*cmd;
 	struct termios	old;
 
-	(void)argv;
 	if (tcgetattr(0, &old))
 		perror("");
-	cmd = NULL;
-	new_env = copy_env(envp);
-	init_signals_parent();
-	rl_event_hook = &empty_event;
-	rl_catch_signals = 0;
+	new_env = init_main(envp, argv);
 	while (argc)
 	{
 		if (_readline(&line, new_env, &status))
 			continue ;
 		cmd = parse_line(line, envp);
-		cmd->line = line;
-		cmd->status = &status;
-		cmd->new_env = new_env;
+		set_cmd(cmd, line, &status, new_env);
 		if (!exec_argv(cmd, 0, 0) || is_signaled(cmd))
 			call_forks(cmd, line, &status);
 		if (tcsetattr(0, 0, &old))
