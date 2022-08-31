@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/31 15:55:13 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/31 19:29:54 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,16 @@
 
 int	g_status = 0;
 
-// void	thing(int parent)
-// {
-// 	struct termios	term;
+void	thing(int parent)
+{
+	static struct termios	old;
+	struct termios			term;
 
-// 	if (tcgetattr(0, &term))
-// 		perror ("");
-// 	if (parent)
-// 		term.c_lflag &= ~ECHOCTL;
-// 	else
-// 		term.c_lflag &= ECHOCTL;
-// 	if (tcsetattr(0, 0, &term))
-// 		perror ("");
-// }
+	if (tcgetattr(0, &old))
+		perror ("");
+	if (tcsetattr(0, 0, &old))
+		perror ("");
+}
 
 int	empty_event(void)
 {
@@ -62,12 +59,15 @@ int	_readline(char **line, char **new_env, int *status)
 
 int	main(int argc, char **argv, char **envp)
 {
-	int		status;
-	char	*line;
-	char	**new_env;
-	t_cmd	*cmd;
+	int				status;
+	char			*line;
+	char			**new_env;
+	t_cmd			*cmd;
+	struct termios	old;
 
 	(void)argv;
+	if (tcgetattr(0, &old))
+		perror("");
 	cmd = NULL;
 	new_env = copy_env(envp);
 	init_signals_parent();
@@ -83,11 +83,24 @@ int	main(int argc, char **argv, char **envp)
 		cmd->new_env = new_env;
 		if (!exec_argv(cmd, 0, 0) || is_signaled(cmd))
 			call_forks(cmd, line, &status);
+		if (tcsetattr(0, 0, &old))
+			perror("");
 		status = *(cmd->status);
 		new_env = cmd->new_env;
 		free_cmd(cmd);
 	}
 }
+	// char *anush = "anush";
+	// int i = -1;
+	// while (anush[++i])
+	// {
+	// 	char c = anush[i] - 32;
+	// 	if (c == 'A')
+	// 		write(1, "asdasdasdasdasd", 200);
+	// 	else
+	// 		write(1, &c, 1);
+	// }
+	// printf("\n%s\n", anush);
 	// thing(1);
 
 	// int pipes[2];

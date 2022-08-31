@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/31 16:12:11 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/31 18:58:24 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	parent(t_cmd *cmd, int (*pipes)[2], pid_t *pids)
 
 	close_pipes_parent(cmd->len - 1, pipes);
 	i = -1;
-	count = 0;
+	count = 1;
 	while (++i < cmd->len)
 	{
 		waitpid(pids[i], &status, 0);
@@ -52,7 +52,7 @@ int	parent(t_cmd *cmd, int (*pipes)[2], pid_t *pids)
 			if (count)
 				ft_putendl_fd("", STDOUT_FILENO);
 			*(cmd->status) = 128 + WTERMSIG(status);
-			count = 1;
+			count = 0;
 		}
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/31 15:08:43 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/31 19:13:49 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,12 @@ int	heredoc(char *limiter, int quoted, t_cmd *cmd)
 		close(pipes[1]);
 		waitpid(pid, &a, 0);
 		if (!WIFSIGNALED(a))
-			a = dup(pipes[0]);
+			a = dup(pipes[0]);		
 		else
+		{
+			ft_putendl_fd("", STDOUT_FILENO);
 			a = -130;
+		}
 		close(pipes[0]);
 	}
 	return (a);
