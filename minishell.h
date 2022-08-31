@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/30 18:03:28 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/31 15:13:23 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ typedef struct s_cmd
 	t_exec	exec;
 }	t_cmd;
 
+int		is_signaled(t_cmd *cmd);
 int		has_an_error(t_cmd *cmd, int i);
 int		dir(char *s);
 int		strcmp_minishell(char *s);

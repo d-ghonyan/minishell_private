@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/29 19:33:52 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/31 15:52:51 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,21 +40,24 @@ int	ft_pwd(t_cmd *cmd, int i, int single)
 int	ft_env(t_cmd *cmd, int i, int envp, int single)
 {
 	int	j;
-	int	len;
 	int	to;
 
 	to = last_fd(cmd, i, 1);
 	if (to < 0 || !single)
 		to = STDOUT_FILENO;
-	len = ptr_arr_len(cmd->new_env);
-	if (envp)
-		len = cmd->envp_count;
 	j = -1;
-	while (++j < len)
+	while (cmd->new_env[++j])
 	{
 		if (!envp)
+		{
 			ft_putstr_fd("declare -x ", to);
-		ft_putendl_fd(cmd->new_env[j], to);
+			ft_putendl_fd(cmd->new_env[j], to);
+		}
+		else
+		{
+			if (ft_strchr(cmd->new_env[j], '='))
+				ft_putendl_fd(cmd->new_env[j], to);
+		}
 	}
 	*(cmd->status) = 0;
 	return (0);

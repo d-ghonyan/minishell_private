@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/29 16:28:42 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/31 15:14:42 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	_readline(char **line, char **new_env, int *status)
 		add_history(*line);
 	if (!(*line[0]) || count_pipes(*line) < 0 || check_quotes(*line))
 	{
-		*status = g_status;
+		*status = (g_status == 130);
 		g_status = 0;
 		free(*line);
 		return (1);
@@ -80,7 +80,7 @@ int	main(int argc, char **argv, char **envp)
 		cmd->line = line;
 		cmd->status = &status;
 		cmd->new_env = new_env;
-		if (!exec_argv(cmd, 0, 0))
+		if (!exec_argv(cmd, 0, 0) || is_signaled(cmd))
 			call_forks(cmd, line, &status);
 		status = *(cmd->status);
 		new_env = cmd->new_env;

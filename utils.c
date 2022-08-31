@@ -6,11 +6,30 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/28 20:31:03 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/31 15:13:06 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	is_signaled(t_cmd *cmd)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	while (++i < cmd->len)
+	{
+		j = 0;
+		while (j < cmd[i].fds->len)
+		{
+			if (cmd[i].fds[j].fd == -130)
+				return (1);
+			j++;
+		}
+	}
+	return (0);
+}
 
 void	not_found(char *exec)
 {
