@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/29 19:33:19 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/31 16:12:11 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,23 +36,24 @@ int	has_an_error(t_cmd *cmd, int i)
 int	parent(t_cmd *cmd, int (*pipes)[2], pid_t *pids)
 {
 	int	i;
+	int	count;
 	int	status;
 
+	close_pipes_parent(cmd->len - 1, pipes);
 	i = -1;
-	while (++i < cmd->len - 1)
-	{
-		close(pipes[i][0]);
-		close(pipes[i][1]);
-	}
-	i = 0;
-	while (i < cmd->len)
+	count = 0;
+	while (++i < cmd->len)
 	{
 		waitpid(pids[i], &status, 0);
 		if (WIFEXITED(status))
 			*(cmd->status) = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
-				*(cmd->status) = 128 + WTERMSIG(status);
-		i++;
+		{
+			if (count)
+				ft_putendl_fd("", STDOUT_FILENO);
+			*(cmd->status) = 128 + WTERMSIG(status);
+			count = 1;
+		}
 	}
 	return (0);
 }
@@ -105,7 +106,10 @@ int	single_command(t_cmd *cmd, int *status)
 			if (WIFEXITED(a))
 				*(cmd->status) = WEXITSTATUS(a);
 			else if (WIFSIGNALED(a))
+			{
+				ft_putendl_fd("", STDOUT_FILENO);
 				*(cmd->status) = 128 + WTERMSIG(a);
+			}
 			return (0);
 		}
 	}

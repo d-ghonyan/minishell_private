@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/31 15:13:23 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/31 16:11:43 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,10 @@ typedef struct s_cmd
 	t_exec	exec;
 }	t_cmd;
 
+int		dir(char *s);
+int		has_an_error(t_cmd *cmd, int i);;
 int		is_signaled(t_cmd *cmd);
 int		has_an_error(t_cmd *cmd, int i);
-int		dir(char *s);
 int		strcmp_minishell(char *s);
 int		count_pipes(char *s);
 int		init_pipes(int (*pipes)[2], int size, int cond);
@@ -105,6 +106,7 @@ int		exec_argv(t_cmd *cmd, int i, int j);
 int		stderror_putstr(char *s1, char *s2, char *s3, int cond);
 int		perror_builtins(char *s1, char *s2, char *s3);
 int		init_fds(t_fds *fds, char *s, char *filename, t_cmd *cmd);
+void	close_pipes_parent(int len, int (*pipes)[2]);
 void	to_from(t_cmd *cmd);
 void	not_found(char *exec);
 void	perror_exit_free(t_cmd *cmd, char *s, char *msg, int cond);

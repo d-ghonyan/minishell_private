@@ -12,6 +12,29 @@
 
 #include "minishell.h"
 
+int	last_fd(t_cmd *cmd, int i, int cond)
+{
+	int	to;
+	int	from;
+	int	j;
+
+	j = -1;
+	to = -1;
+	from = -1;
+	if (!cmd[i].fds)
+		return (-1);
+	while (++j < cmd[i].fds->len)
+	{
+		if (cmd[i].fds[j].to)
+			to = cmd[i].fds[j].fd;
+		if (cmd[i].fds[j].from || cmd[i].fds[j].flags < 0)
+			from = cmd[i].fds[j].fd;
+	}
+	if (cond)
+		return (to);
+	return (from);
+}
+
 void	init_flags(char c1, char c2, int *flags)
 {
 	if (c1 == '>')

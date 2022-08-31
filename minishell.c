@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/31 15:14:42 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/31 15:55:13 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ int	main(int argc, char **argv, char **envp)
 	new_env = copy_env(envp);
 	init_signals_parent();
 	rl_event_hook = &empty_event;
+	rl_catch_signals = 0;
 	while (argc)
 	{
 		if (_readline(&line, new_env, &status))

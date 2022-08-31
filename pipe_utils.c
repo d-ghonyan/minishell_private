@@ -1,40 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   strchr.c                                           :+:      :+:    :+:   */
+/*   pipe_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dghonyan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/03/10 20:46:54 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/31 16:11:35 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	has_an_error(t_cmd *cmd, int i);
-
-int	last_fd(t_cmd *cmd, int i, int cond)
+void	close_pipes_parent(int len, int (*pipes)[2])
 {
-	int	to;
-	int	from;
-	int	j;
+	int	i;
 
-	j = -1;
-	to = -1;
-	from = -1;
-	if (!cmd[i].fds)
-		return (-1);
-	while (++j < cmd[i].fds->len)
+	i = 0;
+	while (i < len)
 	{
-		if (cmd[i].fds[j].to)
-			to = cmd[i].fds[j].fd;
-		if (cmd[i].fds[j].from || cmd[i].fds[j].flags < 0)
-			from = cmd[i].fds[j].fd;
+		close(pipes[i][0]);
+		close(pipes[i][1]);
+		i++;
 	}
-	if (cond)
-		return (to);
-	return (from);
 }
 
 int	process_pipes(int i, t_cmd *cmd, int (*pipes)[2])

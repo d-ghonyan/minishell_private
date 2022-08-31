@@ -6,13 +6,11 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/29 19:33:05 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/08/31 16:08:34 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	has_an_error(t_cmd *cmd, int i);
 
 int	free_stuff(t_cmd *cmd, char *path, int (*pipes)[2], int status)
 {
