@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 13:07:17 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/01 14:08:28 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/01 14:10:50 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,41 @@ int	exp_dollar_sign(t_exp *exp, char *res, char *s, int cond)
 	}
 	else if (s[i] != '$' && !cond)
 		res[exp->j++] = s[exp->i];
+	return (0);
+}
+
+int	dollar_sign(int *len, int *i, char *s, t_cmd *cmd)
+{
+	if (s[*i] == '$')
+	{
+		if (var_len(s, *i + 1, 1) == 0)
+			*len += 1;
+		else
+		{
+			if (expanded_len(s, *i + 1, 1, cmd) < 0)
+				return (-1);
+			*len += expanded_len(s, *i + 1, 1, cmd);
+		}
+		*i += var_len(s, *i + 1, 1);
+		return (1);
+	}
+	return (0);
+}
+
+int	dollar_sign_2(int *len, int *i, char *s, t_cmd *cmd)
+{
+	if (s[*i] == '$')
+	{
+		if (var_len(s, *i + 1, 0) == 0)
+			*len += 1;
+		else
+		{
+			if (expanded_len(s, *i + 1, 0, cmd) < 0)
+				return (-1);
+			*len += expanded_len(s, *i + 1, 0, cmd);
+		}
+		*i += var_len(s, *i + 1, 0) + 1;
+		return (1);
+	}
 	return (0);
 }
