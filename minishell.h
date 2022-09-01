@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/01 11:58:55 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/01 13:46:15 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,6 @@
 # include "colors.h"
 # include "libft/libft.h"
 
-typedef struct s_env
-{
-	char	*key;
-	char	*value;
-}	t_env;
-
 typedef struct s_exec
 {
 	char	*exec;
@@ -76,6 +70,15 @@ typedef struct s_cmd
 	t_fds	*fds;
 	t_exec	exec;
 }	t_cmd;
+
+typedef struct s_exp
+{
+	int		i;
+	int		j;
+	char	*s;
+	char	*res;
+	t_cmd	*cmd;
+}	t_exp;
 
 int		dir(char *s);
 int		valid_red(char *line);

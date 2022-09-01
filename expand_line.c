@@ -6,33 +6,53 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/28 15:28:16 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/01 14:08:34 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	init_exp(t_cmd *cmd, char *s, char **res, t_exp *exp);
+int		exp_dollar_sign(t_exp *exp, char *res, char *s, int cond);
+
 int	dollar_sign(int *len, int *i, char *s, t_cmd *cmd)
 {
-	if (var_len(s, *i + 1, 1) == 0)
-		*len += 1;
-	else
+	if (s[*i] == '$')
 	{
-		if (expanded_len(s, *i + 1, 1, cmd) < 0)
-			return (-1);
-		*len += expanded_len(s, *i + 1, 1, cmd);
+		if (var_len(s, *i + 1, 1) == 0)
+			*len += 1;
+		else
+		{
+			if (expanded_len(s, *i + 1, 1, cmd) < 0)
+				return (-1);
+			*len += expanded_len(s, *i + 1, 1, cmd);
+		}
+		*i += var_len(s, *i + 1, 1);
+		return (1);
 	}
-	*i += var_len(s, *i + 1, 1);
 	return (0);
 }
 
-int	final_len(char *s, t_cmd *cmd)
+int	dollar_sign_2(int *len, int *i, char *s, t_cmd *cmd)
 {
-	int	i;
-	int	len;
+	if (s[*i] == '$')
+	{
+		if (var_len(s, *i + 1, 0) == 0)
+			*len += 1;
+		else
+		{
+			if (expanded_len(s, *i + 1, 0, cmd) < 0)
+				return (-1);
+			*len += expanded_len(s, *i + 1, 0, cmd);
+		}
+		*i += var_len(s, *i + 1, 0) + 1;
+		return (1);
+	}
+	return (0);
+}
 
-	i = 0;
-	len = 0;
+int	final_len(char *s, t_cmd *cmd, int i, int len)
+{
 	while (s[i])
 	{
 		if (s[i] == '\'')
@@ -45,35 +65,14 @@ int	final_len(char *s, t_cmd *cmd)
 		{
 			while (s[++i] && s[i] != '"')
 			{
-				if (s[i] == '$')
-				{
-					if (var_len(s, i + 1, 1) == 0)
-						len += 1;
-					else
-					{
-						if (expanded_len(s, i + 1, 1, cmd) < 0)
-							return (-1);
-						len += expanded_len(s, i + 1, 1, cmd);
-					}
-					i += var_len(s, i + 1, 1);
-				}
+				if (dollar_sign(&len, &i, s, cmd))
+					;
 				else
 					len++;
 			}
 			i += (s[i] != '\0');
 		}
-		if (s[i] == '$')
-		{
-			if (var_len(s, i + 1, 0) == 0)
-				len += 1;
-			else
-			{
-				if (expanded_len(s, i + 1, 0, cmd) < 0)
-					return (-1);
-				len += expanded_len(s, i + 1, 0, cmd);
-			}
-			i += var_len(s, i + 1, 0) + 1;
-		}
+		dollar_sign_2(&len, &i, s, cmd);
 		len += (s[i] != '\0' && s[i] != '"' && s[i] != '\'' && s[i] != '$');
 		i += (s[i] != '\0' && s[i] != '"' && s[i] != '\'' && s[i] != '$');
 	}
@@ -82,57 +81,29 @@ int	final_len(char *s, t_cmd *cmd)
 
 char	*expand_line(char *s, t_cmd *cmd)
 {
-	int		i;
-	int		j;
+	t_exp	exp;
 	char	*res;
 
-	i = 0;
-	j = 0;
-	res = ft_calloc(sizeof(*res), (final_len(s, cmd) + 1));
-	if (!res)
-		return (NULL);
-	while (s[i])
+	init_exp(cmd, s, &res, &exp);
+	while (s[exp.i])
 	{
-		if (s[i] == '\'')
+		if (s[exp.i] == '\'')
 		{
-			while (s[++i] && s[i] != '\'')
-				res[j++] = s[i];
-			i += (s[i] != '\0');
+			while (s[++exp.i] && s[exp.i] != '\'')
+				res[exp.j++] = s[exp.i];
+			exp.i += (s[exp.i] != '\0');
 		}
-		if (s[i] == '"')
+		if (s[exp.i] == '"')
 		{
-			while (s[++i] && s[i] != '"')
-			{
-				if (s[i] == '$')
-				{
-					if (var_len(s, i + 1, 1) == 0 && !s[i + 1])
-						res[j++] = '$';
-					else
-					{
-						strjoin_var(res, expanded_env(s, i + 1, 1, cmd));
-						j = ft_strlen(res);
-					}
-					i += var_len(s, i + 1, 1);
-				}
-				else
-					res[j++] = s[i];
-			}
-			i += (s[i] != '\0');
+			while (s[++exp.i] && s[exp.i] != '"')
+				exp_dollar_sign(&exp, res, s, 0);
+			exp.i += (s[exp.i] != '\0');
 		}
-		if (s[i] == '$')
-		{
-			if (var_len(s, i + 1, 0) == 0 && !s[i + 1])
-				res[j++] = '$';
-			else
-			{
-				strjoin_var(res, expanded_env(s, i + 1, 0, cmd));
-				j = ft_strlen(res);
-			}
-			i += var_len(s, i + 1, 0) + 1;
-		}
-		if (s[i] != '\0' && s[i] != '"' && s[i] != '\'' && s[i] != '$')
-			res[j++] = s[i++];
+		exp_dollar_sign(&exp, res, s, 1);
+		if (s[exp.i] != '\0' && s[exp.i] != '"'
+			&& s[exp.i] != '\'' && s[exp.i] != '$')
+			res[exp.j++] = s[exp.i++];
 	}
-	res[j] = '\0';
+	res[exp.j] = '\0';
 	return (res);
 }
