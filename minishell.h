@@ -14,7 +14,7 @@
 
 # define MINISHELL_H
 
-// # define LINUX
+# define LINUX
 
 # include <stdio.h>
 # include <errno.h>

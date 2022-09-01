@@ -22,7 +22,7 @@ char	**delete_env(t_cmd *cmd, char **envp, char *del)
 
 	i = -1;
 	j = 0;
-	new_env = malloc(sizeof (*new_env) * ptr_arr_len(envp));
+	new_env = malloc(sizeof (*new_env) * (ptr_arr_len(envp) + 1));
 	perror_exit(cmd, "malloc at delete_env 1", !new_env);
 	while (envp[++i])
 	{

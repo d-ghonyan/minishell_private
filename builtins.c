@@ -65,6 +65,7 @@ int	ft_env(t_cmd *cmd, int i, int envp, int single)
 
 int	ft_exit(t_cmd *cmd)
 {
+	free_ptr_arr(cmd->new_env);
 	free_cmd(cmd);
 	exit(EXIT_SUCCESS);
 }

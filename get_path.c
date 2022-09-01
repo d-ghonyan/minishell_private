@@ -31,6 +31,22 @@ int	dir(char *s)
 	return (0);
 }
 
+char	*ft_strdup_free(char *s)
+{
+	char	*dup;
+
+	if (!s)
+		return (ft_strdup("."));
+	else if (!s[0])
+	{
+		dup = ft_strdup(s);
+		free(s);
+		return (dup);
+	}
+	else
+		return (s);
+}
+
 char	*_get_path(char **envp, char *command)
 {
 	int		i;
@@ -40,11 +56,10 @@ char	*_get_path(char **envp, char *command)
 
 	i = -1;
 	exec = _getenv(envp, "PATH");
+	exec = ft_strdup_free(exec);
 	spl = ft_split(exec, ':');
 	free(exec);
-	if (!spl)
-		return (NULL);
-	while (spl[++i])
+	while (spl && spl[++i])
 	{
 		slash = ft_strjoin(spl[i], "/");
 		if (!slash)

@@ -58,7 +58,7 @@ int	strcmp_minishell(char *s)
 		i--;
 		j--;
 	}
-	if (j == -1 && (s[i] == '/' || i == -1))
+	if (j == -1 && (i == -1 || s[i] == '/'))
 		return (0);
 	return (s[i] - "minishell"[j]);
 }

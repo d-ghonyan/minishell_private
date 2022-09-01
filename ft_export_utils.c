@@ -39,14 +39,15 @@ char	*_value(char *s)
 	int		j;
 	char	*res;
 
-	j = 0;
+	j = ft_strlen(s) - find_index(s, '=');
 	i = find_index(s, '=') + 1;
-	res = malloc(sizeof (*res) * (ft_strlen(s) - find_index(s, '=')));
+	res = malloc(sizeof (*res) * (j + (j == 0)));
 	if (!res)
 	{
 		perror("malloc at _value()");
 		return (NULL);
 	}
+	j = 0;
 	while (s[i])
 	{
 		res[j] = s[i];
