@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/31 19:13:49 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/01 12:23:58 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void	call_child(char *limiter, int quoted, int pipes[2], t_cmd *cmd)
 
 	l = final_limiter(limiter);
 	perror_exit(cmd, "malloc at final_limiter", !l);
-	ft_putendl_fd(l, 1);
 	here_child(l, quoted, pipes, cmd);
 	free(l);
 	free_cmd(cmd);
