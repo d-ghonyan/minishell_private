@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/01 12:05:18 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/01 12:28:11 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	limiter_quotes(char *s)
 	return (len);
 }
 
-char	*final_limiter(char *s)
+char	*final_limiter(char *s, t_cmd *cmd)
 {
 	int		i;
 	int		j;
@@ -78,8 +78,7 @@ char	*final_limiter(char *s)
 	i = 0;
 	j = 0;
 	res = malloc(sizeof (*res) * (limiter_quotes(s) + 1));
-	if (!res)
-		return (NULL);
+	perror_exit(cmd, "malloc at final_limiter", !res);
 	while (s[i])
 	{
 		if (s[i] == '\'')

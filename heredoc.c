@@ -6,13 +6,13 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/01 12:23:58 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/01 12:27:22 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*final_limiter(char *s);
+char	*final_limiter(char *s, t_cmd *cmd);
 int		here_final_len(char *s, t_cmd *cmd);
 int		limiter_quotes(char *s);
 void	here_child(char *limiter, int quoted, int pipes[2], t_cmd *cmd);
@@ -47,7 +47,7 @@ void	call_child(char *limiter, int quoted, int pipes[2], t_cmd *cmd)
 {
 	char	*l;
 
-	l = final_limiter(limiter);
+	l = final_limiter(limiter, cmd);
 	perror_exit(cmd, "malloc at final_limiter", !l);
 	here_child(l, quoted, pipes, cmd);
 	free(l);
