@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/01 12:09:49 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/01 18:17:43 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	print_err(char c)
 
 int	after_red(char *line, int i)
 {
-	while (line[i])
+	while (line[i] && line[i] != '<' && line[i] != '>' && line[i] != '|')
 	{
 		if (!ft_isspace(line[i]))
 			return (1);

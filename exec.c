@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/01 12:00:55 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/01 19:07:40 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,9 +137,9 @@ int	exec_argv(t_cmd *cmd, int i, int j)
 		{
 			temp = cmd[i].exec.argv[j];
 			cmd[i].exec.argv[j] = expand_line(cmd[i].exec.argv[j], cmd);
+			if (!ft_strchr(temp, '"') && !ft_strchr(temp, '\'') && !cmd[i].exec.argv[j][0])
+				cmd[i].exec.argv = filter_argv(cmd[i].exec.argv, cmd, j--);
 			free(temp);
-			if (!(cmd[i].exec.argv[j]))
-				perror_exit(cmd, "malloc at expand_line", 1);
 		}
 	}
 	return (init_redirections(cmd, 0, 0));
