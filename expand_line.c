@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/01 14:10:52 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/01 19:15:45 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,11 @@ void	init_exp(t_cmd *cmd, char *s, char **res, t_exp *exp);
 int		exp_dollar_sign(t_exp *exp, char *res, char *s, int cond);
 int		dollar_sign(int *len, int *i, char *s, t_cmd *cmd);
 int		dollar_sign_2(int *len, int *i, char *s, t_cmd *cmd);
+
+int	not_a_quote(char c)
+{
+	return (c != '\'' && c != '"');
+}
 
 int	final_len(char *s, t_cmd *cmd, int i, int len)
 {

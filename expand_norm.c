@@ -6,13 +6,14 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 13:07:17 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/01 18:44:46 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/01 19:19:58 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int	final_len(char *s, t_cmd *cmd, int i, int len);
+int	not_a_quote(char c);
 
 void	init_exp(t_cmd *cmd, char *s, char **res, t_exp *exp)
 {
@@ -31,7 +32,7 @@ int	exp_dollar_sign(t_exp *exp, char *res, char *s, int cond)
 	i = exp->i;
 	if (s[exp->i] == '$')
 	{
-		if (var_len(s, exp->i + 1, 1) == 0 && !s[exp->i + 1])
+		if (var_len(s, exp->i + 1, 1) == 0 && not_a_quote(s[exp->i + 1]))
 			res[exp->j++] = '$';
 		else
 		{
@@ -50,7 +51,7 @@ int	dollar_sign(int *len, int *i, char *s, t_cmd *cmd)
 {
 	if (s[*i] == '$')
 	{
-		if (var_len(s, *i + 1, 1) == 0)
+		if (var_len(s, *i + 1, 1) == 0 && not_a_quote(s[*i + 1]))
 			*len += 1;
 		else
 		{
@@ -68,7 +69,7 @@ int	dollar_sign_2(int *len, int *i, char *s, t_cmd *cmd)
 {
 	if (s[*i] == '$')
 	{
-		if (var_len(s, *i + 1, 0) == 0)
+		if (var_len(s, *i + 1, 0) == 0 && not_a_quote(s[*i + 1]))
 			*len += 1;
 		else
 		{
