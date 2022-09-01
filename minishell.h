@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/01 13:46:15 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/01 14:16:26 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ typedef struct s_cmd
 {
 	int		len;
 	int		envp_count;
+	char	*pwd;
+	char	*oldpwd;
 	int		*status;
 	char	*line;
 	char	*command;
