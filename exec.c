@@ -24,6 +24,7 @@ int	init_redirections(t_cmd *cmd, int i, int j)
 	{
 		j = -1;
 		cmd[i].fds = open_files(cmd, cmd[i].command);
+		printf("%s\n", cmd[0].fds[0].here);
 		if (!cmd[i].fds && redirection_count(cmd[i].command) > 0)
 			return (1);
 		while (!is_signaled(cmd) && cmd[i].fds && ++j < cmd[i].fds->len)

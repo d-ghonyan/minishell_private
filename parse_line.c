@@ -60,7 +60,6 @@ t_cmd	*init_cmd(int size, char **envp, char *line)
 	return (cmd);
 }
 
-//TODO HANDLING
 t_cmd	*parse_line(char *line, char **envp)
 {
 	int		i;

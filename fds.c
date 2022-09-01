@@ -53,25 +53,25 @@ void	init_flags(char c1, char c2, int *flags)
 
 int	init_fds(t_fds *fds, char *c, char *filename, t_cmd *cmd)
 {
-	int		flags;
 	char	c1;
 	char	c2;
 
 	c1 = *c;
 	c2 = *(c + 1);
-	flags = 0;
 	init_flags(c1, c2, &(fds->flags));
-	fds->here = filename;
 	if (c1 == '>' || (c1 == '<' && c2 != '<'))
 	{
 		fds->from = (c1 == '<');
 		fds->to = (c1 == '>');
+		fds->here =  expand_line(filename, cmd);
+		free(filename);
 	}
 	else if (c1 == '<' && c2 == '<')
 	{
 		fds->flags = -1;
-		flags = (ft_strchr(filename, '\'') || ft_strchr(filename, '"'));
-		fds->fd = heredoc(filename, flags, cmd);
+		fds->quoted = (ft_strchr(filename, '\'') || ft_strchr(filename, '"'));
+		fds->fd = heredoc(filename, fds->quoted, cmd);
+		fds->here = filename;
 		return (fds->fd == -130);
 	}
 	return (0);
@@ -87,10 +87,7 @@ t_fds	*alloc_fds(int size)
 		return (NULL);
 	fds = malloc (sizeof (*fds) * size);
 	if (!fds)
-	{
-		perror ("malloc at open_files()");
-		exit(EXIT_FAILURE);
-	}
+		return (NULL);
 	while (++i < size)
 	{
 		fds[i].append = 0;

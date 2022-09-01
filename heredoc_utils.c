@@ -50,9 +50,18 @@ int	limiter_quotes(char *s)
 	len = 0;
 	while (s[i])
 	{
-		if (s[i] != '\'' && s[i] != '"')
-			len++;
-		i++;
+		if (s[i] == '\'')
+		{
+			while (s[++i] && s[i] != '\'')
+				;
+		}
+		if (s[i] == '"')
+		{
+			while (s[++i] && s[i] != '"')
+				;
+		}
+		len += (s[i] && s[i] != '"' && s[i] != '\'');
+		i += (s[i] != '\0');
 	}
 	return (len);
 }
@@ -70,11 +79,20 @@ char	*final_limiter(char *s)
 		return (NULL);
 	while (s[i])
 	{
-		if (s[i] != '\'' && s[i] != '"')
-			res[j++] = s[i];
-		i++;
+		if (s[i] == '\'')
+		{
+			while (s[++i] && s[i] != '\'')
+				res[j++] = s[i];
+		}
+		if (s[i] == '"')
+		{
+			while (s[++i] && s[i] != '"')
+				res[j++] = s[i];
+		}
+		if (s[i] && s[i] != '"' && s[i] != '\'')
+			res[j++] = s[i++];
 	}
-	res[i] = '\0';
+	res[j] = '\0';
 	return (res);
 }
 

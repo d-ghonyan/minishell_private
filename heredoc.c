@@ -49,6 +49,7 @@ void	call_child(char *limiter, int quoted, int pipes[2], t_cmd *cmd)
 
 	l = final_limiter(limiter);
 	perror_exit(cmd, "malloc at final_limiter", !l);
+	ft_putendl_fd(l, 1);
 	here_child(l, quoted, pipes, cmd);
 	free(l);
 	free_cmd(cmd);
