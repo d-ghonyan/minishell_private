@@ -41,6 +41,8 @@ char	*_value(char *s)
 
 	j = ft_strlen(s) - find_index(s, '=');
 	i = find_index(s, '=') + 1;
+	if (i > ft_strlen(s))
+		i = ft_strlen(s);
 	res = malloc(sizeof (*res) * (j + (j == 0)));
 	if (!res)
 	{
