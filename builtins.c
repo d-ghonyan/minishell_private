@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/31 15:52:51 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/01 12:32:07 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,12 @@ int	ft_env(t_cmd *cmd, int i, int envp, int single)
 	return (0);
 }
 
+int	ft_exit(t_cmd *cmd)
+{
+	free_cmd(cmd);
+	exit(EXIT_SUCCESS);
+}
+
 int	call_builtins(t_cmd *cmd, int i, int single)
 {
 	char	*s;
@@ -82,5 +88,7 @@ int	call_builtins(t_cmd *cmd, int i, int single)
 		return (ft_env(cmd, i, 1, single));
 	if (!ft_strcmp(s, "echo"))
 		return (ft_echo(cmd, i, single));
+	if (!ft_strcmp(s, "exit"))
+		return (ft_exit(cmd));
 	return (0);
 }
