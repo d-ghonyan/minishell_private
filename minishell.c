@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/31 19:29:54 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/01 12:14:50 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,12 @@ void	sigint_p(int signum)
 	g_status = signum + 128;
 }
 
+void	_add_history(char *line)
+{
+	if (line[0])
+		add_history(line);
+}
+
 int	_readline(char **line, char **new_env, int *status)
 {
 	*line = readline(GREEN "minishell" BLUE "$ " RESET);
@@ -29,6 +35,7 @@ int	_readline(char **line, char **new_env, int *status)
 		free_ptr_arr(new_env);
 		exit(EXIT_SUCCESS);
 	}
+	_add_history(*line);
 	if (!(*line[0]) || count_pipes(*line) < 0
 		|| check_quotes(*line) || valid_red(*line))
 	{
@@ -37,7 +44,6 @@ int	_readline(char **line, char **new_env, int *status)
 		free(*line);
 		return (1);
 	}
-	add_history(*line);
 	return (0);
 }
 
@@ -67,43 +73,3 @@ int	main(int argc, char **argv, char **envp)
 		free_cmd(cmd);
 	}
 }
-	// char *anush = "anush";
-	// int i = -1;
-	// while (anush[++i])
-	// {
-	// 	char c = anush[i] - 32;
-	// 	if (c == 'A')
-	// 		write(1, "asdasdasdasdasd", 200);
-	// 	else
-	// 		write(1, &c, 1);
-	// }
-	// printf("\n%s\n", anush);
-	// thing(1);
-
-	// int pipes[2];
-	// pipe(pipes);
-	// write(pipes[1], "asdasdadsasd", 100);
-	// int fd = dup(pipes[0]);
-	// close(pipes[0]);
-	// close(pipes[1]);
-	// char c[100];
-	// int a = read(fd, c, 10);
-	// c[a] = '\0';
-	// write(1, c, 10);
-	// return (0);
-		// line = readline(GREEN "minishell" BLUE "$ " RESET);
-		// if (!line)
-		// {
-		// 	free_ptr_arr(new_env);
-		// 	free(old_line);
-		// 	return (0);
-		// }
-		// if (line[0])
-		// 	add_history(line);
-		// if (!line[0] || count_pipes(line) < 0 || check_quotes(line))
-		// {
-		// 	status = g_status;
-		// 	g_status = 0;
-		// 	free(line);
-		// 	continue ;
-		// }

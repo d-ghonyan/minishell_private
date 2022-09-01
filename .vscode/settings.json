@@ -2,7 +2,8 @@
 	"files.associations": {
 		"readline.h": "c",
 		"minishell.h": "c",
-		"sstream": "c"
+		"sstream": "c",
+		"locale": "c"
 	},
 	"editor.detectIndentation": false,
 	"editor.insertSpaces": false,

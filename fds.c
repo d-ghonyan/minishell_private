@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/29 18:12:47 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/01 12:05:32 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	init_fds(t_fds *fds, char *c, char *filename, t_cmd *cmd)
 	{
 		fds->from = (c1 == '<');
 		fds->to = (c1 == '>');
-		fds->here =  expand_line(filename, cmd);
+		fds->here = expand_line(filename, cmd);
 		free(filename);
 	}
 	else if (c1 == '<' && c2 == '<')

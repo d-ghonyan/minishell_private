@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/31 19:17:27 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/01 12:06:37 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	not_found(char *exec)
 	if (ft_strchr(exec, '/'))
 		ft_putstr_fd(": no such file or directory\n", STDERR_FILENO);
 	else
-		ft_putstr_fd(": command not found", STDERR_FILENO);
+		ft_putstr_fd(": command not found\n", STDERR_FILENO);
 }
 
 int	strcmp_minishell(char *s)

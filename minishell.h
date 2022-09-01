@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/31 16:11:43 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/01 11:58:55 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 # define MINISHELL_H
 
-# define LINUX
+// # define LINUX
 
 # include <stdio.h>
 # include <errno.h>

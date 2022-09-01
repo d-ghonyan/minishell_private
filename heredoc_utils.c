@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/28 17:56:47 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/01 12:05:18 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,18 @@ int	limiter_quotes(char *s)
 		if (s[i] == '\'')
 		{
 			while (s[++i] && s[i] != '\'')
-				;
+				len++;
 		}
 		if (s[i] == '"')
 		{
 			while (s[++i] && s[i] != '"')
-				;
+				len++;
 		}
-		len += (s[i] && s[i] != '"' && s[i] != '\'');
-		i += (s[i] != '\0');
+		i += (s[i] == '"' || s[i] == '\'');
+		if (!s[i])
+			break ;
+		len++;
+		i++;
 	}
 	return (len);
 }
@@ -80,16 +83,13 @@ char	*final_limiter(char *s)
 	while (s[i])
 	{
 		if (s[i] == '\'')
-		{
 			while (s[++i] && s[i] != '\'')
 				res[j++] = s[i];
-		}
 		if (s[i] == '"')
-		{
 			while (s[++i] && s[i] != '"')
 				res[j++] = s[i];
-		}
-		if (s[i] && s[i] != '"' && s[i] != '\'')
+		i += (s[i] == '"' || s[i] == '\'');
+		if (s[i])
 			res[j++] = s[i++];
 	}
 	res[j] = '\0';
