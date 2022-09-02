@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/01 12:32:51 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/02 15:09:04 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,28 @@ int	ft_env(t_cmd *cmd, int i, int envp, int single)
 	return (0);
 }
 
-int	ft_exit(t_cmd *cmd)
+int	ft_exit(t_cmd *cmd, int i, int single)
 {
-	free_ptr_arr(cmd->new_env);
-	free_cmd(cmd);
-	exit(EXIT_SUCCESS);
+	int	status;
+
+	status = 0;
+	if (single)
+		ft_putendl_fd("exit", STDOUT_FILENO);
+	if (ptr_arr_len(cmd[i].exec.argv) > 2)
+	{
+		*(cmd->status) = 1;
+		ft_putendl_fd("minishell: exit: Too many arguments", STDERR_FILENO);
+		return (1);
+	}
+	else
+	{
+		status = *(cmd->status);
+		if (ptr_arr_len(cmd[i].exec.argv) > 1)
+			status = (unsigned char)ft_atoi(cmd[i].exec.argv[1]);
+		free_ptr_arr(cmd->new_env);
+		free_cmd(cmd);
+		exit(status);
+	}
 }
 
 int	call_builtins(t_cmd *cmd, int i, int single)
@@ -90,6 +107,6 @@ int	call_builtins(t_cmd *cmd, int i, int single)
 	if (!ft_strcmp(s, "echo"))
 		return (ft_echo(cmd, i, single));
 	if (!ft_strcmp(s, "exit"))
-		return (ft_exit(cmd));
+		return (ft_exit(cmd, i, single));
 	return (0);
 }
