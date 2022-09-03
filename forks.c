@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/31 18:58:24 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/03 15:15:26 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,13 @@ int	children(t_cmd *cmd, int (*pipes)[2], int size, int i)
 	{
 		path = get_path(cmd, cmd[i].exec.exec);
 		if (!path && !has_an_error(cmd, i))
-			not_found(cmd[i].exec.exec);
+			status = not_found(cmd[i].exec.exec);
 		if (path && !has_an_error(cmd, i))
 			update_env(cmd, i);
 		if (path && !has_an_error(cmd, i))
 			execve(path, cmd[i].exec.argv, cmd->envp);
 		if (path && !dir(path) && !has_an_error(cmd, i) && cmd[i].exec.exec[0])
-			perror_builtins("minishell: ", cmd[i].exec.exec, ": ");
+			status = perror_builtins(127, "minishell: ", cmd[i].exec.exec, ": ");
 		free_stuff(cmd, path, pipes, status);
 	}
 	if (!call_builtins(cmd, i, 0))

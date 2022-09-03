@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/27 17:23:52 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/03 15:11:51 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,11 @@ int	stderror_putstr(char *s1, char *s2, char *s3, int cond)
 	return (1);
 }
 
-int	perror_builtins(char *s1, char *s2, char *s3)
+int	perror_builtins(int status, char *s1, char *s2, char *s3)
 {
 	ft_putstr_fd(s1, STDERR_FILENO);
 	ft_putstr_fd(s2, STDERR_FILENO);
 	ft_putstr_fd(s3, STDERR_FILENO);
 	perror("");
-	return (1);
+	return (status);
 }

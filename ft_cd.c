@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 17:32:59 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/29 21:09:30 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/03 15:13:00 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	_home(t_cmd *cmd)
 	// home = _getenv(cmd->new_env, "HOME");
 	if (chdir(home) < 0)
 	{
-		perror_builtins("cd: ", home, ": ");
+		perror_builtins(127, "cd: ", home, ": ");
 		*(cmd->status) = 1;
 	}
 	else
@@ -59,7 +59,7 @@ int	ft_cd(t_cmd *cmd, char **argv)
 		// home = _getenv(cmd->new_env, "HOME");
 		if (chdir(home) < 0)
 		{
-			perror_builtins("cd: ", home, ": ");
+			perror_builtins(127, "cd: ", home, ": ");
 			free(home);
 			free(pwd);
 			*(cmd->status) = 1;

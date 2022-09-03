@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/01 18:32:15 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/03 15:14:44 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	is_signaled(t_cmd *cmd)
 	return (0);
 }
 
-void	not_found(char *exec)
+int	not_found(char *exec)
 {
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd(exec, STDERR_FILENO);
@@ -42,6 +42,7 @@ void	not_found(char *exec)
 		ft_putstr_fd(": no such file or directory\n", STDERR_FILENO);
 	else
 		ft_putstr_fd(": command not found\n", STDERR_FILENO);
+	return (127);
 }
 
 int	strcmp_minishell(char *s)

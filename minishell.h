@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/02 14:39:03 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/03 15:15:07 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,11 +109,11 @@ int		check_quotes(char *s);
 int		is_a_builtin(char *s);
 int		exec_argv(t_cmd *cmd, int i, int j);
 int		stderror_putstr(char *s1, char *s2, char *s3, int cond);
-int		perror_builtins(char *s1, char *s2, char *s3);
+int		perror_builtins(int status, char *s1, char *s2, char *s3);
 int		init_fds(t_fds *fds, char *s, char *filename, t_cmd *cmd);
+int		not_found(char *exec);
 void	close_pipes_parent(int len, int (*pipes)[2]);
 void	to_from(t_cmd *cmd);
-void	not_found(char *exec);
 void	perror_exit_free(t_cmd *cmd, char *s, char *msg, int cond);
 void	replace_env(char **old_env, char *key, char *value);
 void	set_cmd(t_cmd *cmd, char *line, int *status, char **new_env);
