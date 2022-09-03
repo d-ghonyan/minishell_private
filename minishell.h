@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/03 15:15:07 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/03 15:22:17 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,9 @@
 
 # include "colors.h"
 # include "libft/libft.h"
+
+# define NF 127
+# define CE 126
 
 typedef struct s_exec
 {

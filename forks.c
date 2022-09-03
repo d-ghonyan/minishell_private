@@ -6,17 +6,18 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/03 15:15:26 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/03 15:28:03 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int		free_stuff(t_cmd *cmd, char *path, int (*pipes)[2], int status);
 void	to_from(t_cmd *cmd);
 void	fork_loop(char *line, pid_t *pids, t_cmd *cmd, int (*pipes)[2]);
 void	single_child(t_cmd *cmd);
-int		free_stuff(t_cmd *cmd, char *path, int (*pipes)[2], int status);
 void	update_env(t_cmd *cmd, int i);
+void	init_vars(int *status, char **path, t_cmd *cmd, int i);
 
 int	has_an_error(t_cmd *cmd, int i)
 {
@@ -63,12 +64,8 @@ int	children(t_cmd *cmd, int (*pipes)[2], int size, int i)
 	char	*path;
 	int		status;
 
-	path = NULL;
-	status = EXIT_FAILURE;
-	if (!cmd[i].exec.exec[0])
-		status = EXIT_SUCCESS;
+	init_vars(&status, &path, cmd, i);
 	perror_exit(cmd, "", dup_pipes(cmd, i, pipes, size - 1));
-	init_signals_child();
 	if (!is_a_builtin(cmd[i].exec.exec))
 	{
 		path = get_path(cmd, cmd[i].exec.exec);
@@ -79,7 +76,10 @@ int	children(t_cmd *cmd, int (*pipes)[2], int size, int i)
 		if (path && !has_an_error(cmd, i))
 			execve(path, cmd[i].exec.argv, cmd->envp);
 		if (path && !dir(path) && !has_an_error(cmd, i) && cmd[i].exec.exec[0])
-			status = perror_builtins(127, "minishell: ", cmd[i].exec.exec, ": ");
+			status = perror_builtins(CE,
+					"minishell: ", cmd[i].exec.exec, ": ");
+		if (dir(path))
+			status = CE;
 		free_stuff(cmd, path, pipes, status);
 	}
 	if (!call_builtins(cmd, i, 0))
