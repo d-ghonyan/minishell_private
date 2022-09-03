@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/29 17:02:17 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/03 19:17:59 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char	**_env(char **old_env, char *val, t_cmd *cmd)
 		key = _key(val, cmd);
 		value = _value(val, cmd);
 		if (is_in_env(old_env, key))
-			replace_env(old_env, key, value);
+			replace_env(old_env, key, value, cmd);
 		else
 			old_env = env(old_env, key, value, cmd);
 		free(key);

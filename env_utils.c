@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/27 15:40:46 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/03 19:21:40 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,39 +15,32 @@
 char	*_getenv(char **envp, char *s, t_cmd *cmd)
 {
 	int		i;
-	char	*env;
 
 	i = -1;
-	env = NULL;
 	while (envp[++i])
 	{
 		if (!ft_strcmp_env(envp[i], s))
-		{
-			env = _value(envp[i], cmd);
-			if (!env)
-			{
-				perror ("malloc at _getenv()");
-				exit (EXIT_FAILURE);
-			}
-			return (env);
-		}
+			return (_value(envp[i], cmd));
 	}
+	if (!ft_strcmp(s, "PWD"))
+		return (ft_strdup(cmd->pwd));
+	else if (!ft_strcmp(s, "OLDPWD"))
+		return (ft_strdup(cmd->oldpwd));
 	return (NULL);
 }
 
-char	**copy_env(char **envp)
+char	**copy_env(char **envp, int i)
 {
-	int		i;
 	char	**env;
 
-	i = 0;
-	env = malloc(sizeof (*env) * (ptr_arr_len(envp) + 1));
+	env = malloc(sizeof (*env) * (ptr_arr_len(envp)
+				+ 1 + !is_in_env(envp, "OLDPWD")));
 	perror_exit(NULL, "malloc at copy_env", !env);
-	while (envp[i])
+	while (envp[++i])
 	{
 		if (!ft_strcmp_env(envp[i], "OLDPWD"))
 			env[i] = ft_strdup("OLDPWD");
-		if (!ft_strcmp_env(envp[i], "PWD"))
+		else if (!ft_strcmp_env(envp[i], "PWD"))
 			env[i] = ft_strdup_env("PWD", getcwd(NULL, 0));
 		else
 			env[i] = ft_strdup(envp[i]);
@@ -56,8 +49,9 @@ char	**copy_env(char **envp)
 			free_ptr_arr(env);
 			perror_exit(NULL, "malloc at copy_env", 1);
 		}
-		i++;
 	}
+	if (!is_in_env(envp, "OLDPWD"))
+		env[i++] = ft_strdup("OLDPWD");
 	env[i] = NULL;
 	return (env);
 }

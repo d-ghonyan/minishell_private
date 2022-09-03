@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/02 15:09:04 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/03 18:13:11 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ int	ft_exit(t_cmd *cmd, int i, int single)
 		if (ptr_arr_len(cmd[i].exec.argv) > 1)
 			status = (unsigned char)ft_atoi(cmd[i].exec.argv[1]);
 		free_ptr_arr(cmd->new_env);
+		free(cmd->pwd);
+		free(cmd->oldpwd);
 		free_cmd(cmd);
 		exit(status);
 	}

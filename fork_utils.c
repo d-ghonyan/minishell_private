@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/03 15:22:56 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/03 19:16:57 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	update_env(t_cmd *cmd, int i)
 			free(shlvl);
 			shlvl = ft_itoa(lvl);
 			perror_exit(cmd, "malloc at ft_itoa", !shlvl);
-			replace_env(cmd->new_env, "SHLVL", shlvl);
+			replace_env(cmd->new_env, "SHLVL", shlvl, cmd);
 			free(shlvl);
 		}
 	}

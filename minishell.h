@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/03 16:16:50 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/03 19:16:47 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ int		not_found(char *exec);
 void	close_pipes_parent(int len, int (*pipes)[2]);
 void	to_from(t_cmd *cmd);
 void	perror_exit_free(t_cmd *cmd, char *s, char *msg, int cond);
-void	replace_env(char **old_env, char *key, char *value);
+void	replace_env(char **old_env, char *key, char *value, t_cmd *cmd);
 void	set_cmd(t_cmd *cmd, char *line, int *status, char **new_env);
 void	remove_env(char **envp, char *key);
 void	strjoin_var(char *s1, char *s2);
@@ -136,7 +136,7 @@ char	*expanded_env(char *cmd, int i, int quote, t_cmd *cmd1);
 char	*get_path(t_cmd *cmd, char *command);
 char	*alloc_command(char *line, int i, int size, int j);
 char	*expand_line(char *cmd, t_cmd *cmd1);
-char	**copy_env(char **envp);
+char	**copy_env(char **envp, int i);
 char	**filter_argv(char **argv, t_cmd *cmd, int k);
 char	**env(char **old_env, char *key, char *value, t_cmd *cmd);
 char	**_env(char **old_env, char *val, t_cmd *cmd);

@@ -6,16 +6,26 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 17:32:59 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/03 15:32:11 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/03 19:17:49 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	cd_utils(t_cmd *cmd, char *cwd)
+{
+	replace_env(cmd->new_env, "OLDPWD", cmd->pwd, cmd);
+	free(cmd->oldpwd);
+	cmd->oldpwd = ft_strdup(cmd->pwd);
+	replace_env(cmd->new_env, "PWD", cwd, cmd);
+	free(cmd->pwd);
+	cmd->pwd = cwd;
+	*(cmd->status) = 0;
+}
+
 int	_home(t_cmd *cmd)
 {
 	char	*cwd;
-	char	*pwd;
 	char	*home;
 
 	home = _getenv(cmd->new_env, "HOME", cmd);
@@ -24,37 +34,47 @@ int	_home(t_cmd *cmd)
 		perror_builtins(NF, "cd: ", home, ": ");
 		free(home);
 		*(cmd->status) = 1;
-		return(1);
+		return (1);
 	}
 	cwd = getcwd(NULL, 1);
 	if (!cwd)
 	{
+		perror("getcwd at ft_cd");
 		free(home);
+		*(cmd->status) = 1;
+		return (1);
+	}
+	cd_utils(cmd, cwd);
+	free(home);
+	return (0);
+}
+
+int	_cd(t_cmd *cmd, char *s)
+{
+	char	*cwd;
+
+	if (chdir(s) < 0)
+	{
+		perror_builtins(NF, "cd: ", s, ": ");
+		*(cmd->status) = 1;
+		return (1);
+	}
+	cwd = getcwd(NULL, 1);
+	if (!cwd)
+	{
 		perror("getcwd at ft_cd");
 		*(cmd->status) = 1;
 		return (1);
 	}
-	// pwd = _getenv(cmd->new_env, "PWD");
-	if (!pwd)
-		cmd->new_env = env(cmd->new_env, "PWD", cwd, cmd);
-	else
-		replace_env(cmd->new_env, "PWD", cwd);
-	*(cmd->status) = 0;
-	free(home);
-	free(pwd);
+	cd_utils(cmd, cwd);
 	return (0);
 }
 
 int	ft_cd(t_cmd *cmd, char **argv)
 {
-	char	*pwd;
-	char	*home;
-
 	if (ptr_arr_len(argv) > 2)
 		return (stderror_putstr("Too many arguments", "", "", 1));
 	if (ptr_arr_len(argv) == 1)
-	{
-		_home(cmd);
-	}
-	return (0);
+		return (_home(cmd));
+	return (_cd(cmd, argv[1]));
 }

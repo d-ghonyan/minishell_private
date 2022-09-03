@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/03 16:30:11 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/03 18:12:53 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	perror_exit(t_cmd *cmd, char *msg, int cond)
 		{
 			free_ptr_arr(cmd->new_env);
 			free(cmd->pwd);
+			free(cmd->oldpwd);
 		}
 		free_cmd(cmd);
 		exit(EXIT_FAILURE);

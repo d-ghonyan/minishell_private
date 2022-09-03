@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/03 16:41:57 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/03 18:07:42 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 char	**init_main(char **envp, char **argv, char **pwd, struct termios *old);
 int		*getstat(void);
+char	*getoldpwd(char *oldpwd, int mode);
 
 int	g_status = 0;
 
@@ -66,6 +67,7 @@ int	main(int argc, char **argv, char **envp)
 		cmd = parse_line(line, envp);
 		set_cmd(cmd, line, getstat(), new_env);
 		cmd->pwd = pwd;
+		cmd->oldpwd = getoldpwd(NULL, 0);
 		if (!exec_argv(cmd, 0, 0) || is_signaled(cmd))
 			call_forks(cmd, line, getstat());
 		if (tcsetattr(0, 0, &old))
@@ -73,6 +75,7 @@ int	main(int argc, char **argv, char **envp)
 		*(getstat()) = *(cmd->status);
 		new_env = cmd->new_env;
 		pwd = cmd->pwd;
+		getoldpwd(cmd->oldpwd, 1);
 		free_cmd(cmd);
 	}
 }
