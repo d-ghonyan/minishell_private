@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/03 19:16:19 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/03 19:25:14 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	replace_pwds(char *key, char *value, t_cmd *cmd)
 {
 	if (!ft_strcmp(key, "PWD"))
 	{
-		free(cmd->pwd);		
+		free(cmd->pwd);
 		cmd->pwd = ft_strdup(value);
 	}
 	if (!ft_strcmp(key, "OLDPWD"))
