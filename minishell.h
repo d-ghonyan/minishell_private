@@ -14,8 +14,6 @@
 
 # define MINISHELL_H
 
-// # define LINUX
-
 # include <stdio.h>
 # include <errno.h>
 # include <fcntl.h>
@@ -127,10 +125,10 @@ void	init_signals_child(void);
 void	init_signals_heredoc(void);
 void	free_cmd(t_cmd *cmd);
 void	free_fds(t_fds *fds);
-char	*_getenv(char **envp, char *s);
+char	*_getenv(char **envp, char *s, t_cmd *cmd);
 char	*ft_strdup_env(char *key, char *value);
-char	*_key(char *s);
-char	*_value(char *s);
+char	*_key(char *s, t_cmd *cmd);
+char	*_value(char *s, t_cmd *cmd);
 char	*expanded_env(char *cmd, int i, int quote, t_cmd *cmd1);
 char	*get_path(t_cmd *cmd, char *command);
 char	*alloc_command(char *line, int i, int size, int j);

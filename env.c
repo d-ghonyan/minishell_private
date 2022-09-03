@@ -27,7 +27,9 @@ char	**env(char **old_env, char *key, char *value, t_cmd *cmd)
 		if (!new_env[i])
 		{
 			free_ptr_arr(new_env);
-			return (NULL);
+			if (value)
+				free(key);
+			perror_exit_free(cmd, value, "malloc at env", 1);
 		}
 	}
 	if (!is_in_env(old_env, key))

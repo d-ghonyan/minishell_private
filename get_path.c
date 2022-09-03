@@ -47,7 +47,7 @@ char	*ft_strdup_free(char *s)
 		return (s);
 }
 
-char	*_get_path(char **envp, char *command)
+char	*_get_path(char **envp, char *command, t_cmd *cmd)
 {
 	int		i;
 	char	*exec;
@@ -55,7 +55,7 @@ char	*_get_path(char **envp, char *command)
 	char	**spl;
 
 	i = -1;
-	exec = _getenv(envp, "PATH");
+	exec = _getenv(envp, "PATH", cmd);
 	exec = ft_strdup_free(exec);
 	spl = ft_split(exec, ':');
 	free(exec);
@@ -88,7 +88,7 @@ char	*get_path(t_cmd *cmd, char *command)
 	}
 	else if (ft_strchr(command, '/') && access(command, F_OK))
 		return (NULL);
-	return (_get_path(cmd->new_env, command));
+	return (_get_path(cmd->new_env, command, cmd));
 }
 
 static char	*free_ret(char **spl, char *null)

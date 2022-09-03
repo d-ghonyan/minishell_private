@@ -18,7 +18,7 @@ int	_home(t_cmd *cmd)
 	char	*pwd;
 	char	*home;
 
-	home = _getenv(cmd->new_env, "HOME");
+	// home = _getenv(cmd->new_env, "HOME");
 	if (chdir(home) < 0)
 	{
 		perror_builtins("cd: ", home, ": ");
@@ -34,7 +34,7 @@ int	_home(t_cmd *cmd)
 			*(cmd->status) = 1;
 			return (1);
 		}
-		pwd = _getenv(cmd->new_env, "PWD");
+		// pwd = _getenv(cmd->new_env, "PWD");
 		if (!pwd)
 			cmd->new_env = env(cmd->new_env, "PWD", cwd, cmd);
 		else
@@ -55,8 +55,8 @@ int	ft_cd(t_cmd *cmd, char **argv)
 		return (stderror_putstr("Too many arguments", "", "", 1));
 	if (ptr_arr_len(argv) == 1)
 	{
-		pwd = _getenv(cmd->new_env, "PWD");
-		home = _getenv(cmd->new_env, "HOME");
+		// pwd = _getenv(cmd->new_env, "PWD");
+		// home = _getenv(cmd->new_env, "HOME");
 		if (chdir(home) < 0)
 		{
 			perror_builtins("cd: ", home, ": ");

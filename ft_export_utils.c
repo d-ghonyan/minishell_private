@@ -12,18 +12,14 @@
 
 #include "minishell.h"
 
-char	*_key(char *s)
+char	*_key(char *s, t_cmd *cmd)
 {
 	int		i;
 	char	*res;
 
 	i = 0;
 	res = malloc(sizeof (*res) * (find_index(s, '=') + 1));
-	if (!res)
-	{
-		perror("malloc at _key()");
-		return (NULL);
-	}
+	perror_exit(cmd, "malloc at _value", !res);
 	while (s[i] && s[i] != '=')
 	{
 		res[i] = s[i];
@@ -33,10 +29,10 @@ char	*_key(char *s)
 	return (res);
 }
 
-char	*_value(char *s)
+char	*_value(char *s, t_cmd *cmd)
 {
-	int		i;
-	int		j;
+	size_t	i;
+	size_t	j;
 	char	*res;
 
 	j = ft_strlen(s) - find_index(s, '=');
@@ -44,11 +40,7 @@ char	*_value(char *s)
 	if (i > ft_strlen(s))
 		i = ft_strlen(s);
 	res = malloc(sizeof (*res) * (j + (j == 0)));
-	if (!res)
-	{
-		perror("malloc at _value()");
-		return (NULL);
-	}
+	perror_exit(cmd, "malloc at _value", !res);
 	j = 0;
 	while (s[i])
 	{

@@ -56,7 +56,7 @@ int	expanded_len(char *cmd, int i, int quote, t_cmd *cmd1)
 		var[j++] = cmd[i++];
 	}
 	var[j] = '\0';
-	env = _getenv(cmd1->new_env, var);
+	env = _getenv(cmd1->new_env, var, cmd1);
 	free(var);
 	return (ft_strlen(env));
 }
@@ -79,7 +79,7 @@ char	*expanded_env(char *cmd, int i, int quote, t_cmd *cmd1)
 		var[j++] = cmd[i++];
 	}
 	var[j] = '\0';
-	env = _getenv(cmd1->new_env, var);
+	env = _getenv(cmd1->new_env, var, cmd1);
 	free(var);
 	return (env);
 }

@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-char	*_getenv(char **envp, char *s)
+char	*_getenv(char **envp, char *s, t_cmd *cmd)
 {
 	int		i;
 	char	*env;
@@ -23,7 +23,7 @@ char	*_getenv(char **envp, char *s)
 	{
 		if (!ft_strcmp_env(envp[i], s))
 		{
-			env = _value(envp[i]);
+			env = _value(envp[i], cmd);
 			if (!env)
 			{
 				perror ("malloc at _getenv()");
@@ -55,30 +55,6 @@ char	**copy_env(char **envp)
 	}
 	env[i] = NULL;
 	return (env);
-}
-
-void	remove_env(char **envp, char *key)
-{
-	int		i;
-	char	*_key;
-
-	i = 0;
-	_key = ft_strjoin(key, "=");
-	if (!_key)
-	{
-		perror("malloc at change_env()");
-		return ;
-	}
-	while (envp[i])
-	{
-		if (!ft_strncmp(envp[i], _key, ft_strlen(_key)))
-		{
-			envp[i][0] = '\0';
-			break ;
-		}
-		i++;
-	}
-	free(_key);
 }
 
 int	is_in_env(char **env, char *key)

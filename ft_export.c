@@ -62,8 +62,8 @@ char	**_env(char **old_env, char *val, t_cmd *cmd)
 
 	if (ft_strchr(val, '='))
 	{
-		key = _key(val);
-		value = _value(val);
+		key = _key(val, cmd);
+		value = _value(val, cmd);
 		if (is_in_env(old_env, key))
 			replace_env(old_env, key, value);
 		else

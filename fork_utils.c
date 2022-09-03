@@ -29,7 +29,7 @@ void	update_env(t_cmd *cmd, int i)
 	lvl = 0;
 	if (!strcmp_minishell(cmd[i].exec.exec))
 	{
-		shlvl = _getenv(cmd->new_env, "SHLVL");
+		shlvl = _getenv(cmd->new_env, "SHLVL", cmd);
 		if (!shlvl)
 			cmd->new_env = _env(cmd->new_env, "SHLVL=1", cmd);
 		else
@@ -73,7 +73,7 @@ void	single_child(t_cmd *cmd)
 	to_from(cmd);
 	init_signals_child();
 	path = get_path(cmd, cmd[0].exec.exec);
-	if (!path)
+	if (!path && !has_an_error(cmd, 0))
 		not_found(cmd[0].exec.exec);
 	if (path && !has_an_error(cmd, 0))
 		execve(path, cmd[0].exec.argv, cmd->new_env);
