@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/03 15:22:17 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/03 16:16:50 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ char	**copy_env(char **envp);
 char	**filter_argv(char **argv, t_cmd *cmd, int k);
 char	**env(char **old_env, char *key, char *value, t_cmd *cmd);
 char	**_env(char **old_env, char *val, t_cmd *cmd);
-char	**init_main(char **envp, char **argv);
+char	**init_main(char **envp, char **argv, char **pwd, struct termios *old);
 t_fds	*open_files(t_cmd *cmd, char *s);
 t_cmd	*parse_line(char *line, char **envp);
 t_fds	*alloc_fds(int size);

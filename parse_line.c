@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/29 16:34:04 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/03 16:28:52 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ t_cmd	*init_cmd(int size, char **envp, char *line)
 		cmd[i].exec.argv = NULL;
 		cmd[i].new_env = NULL;
 		cmd[i].line = NULL;
+		cmd[i].oldpwd = NULL;
 	}
 	return (cmd);
 }

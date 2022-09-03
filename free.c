@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/08/27 18:57:54 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/03 16:29:22 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,14 @@ void	free_cmd(t_cmd *cmd)
 	{
 		free(cmd[i].command);
 		free(cmd[i].exec.exec);
+		free(cmd[i].oldpwd);
 		free_ptr_arr(cmd[i].exec.argv);
 		free_fds(cmd[i].fds);
 		cmd[i].command = NULL;
 		cmd[i].exec.exec = NULL;
 		cmd[i].exec.argv = NULL;
 		cmd[i].fds = NULL;
+		cmd[i].oldpwd = NULL;
 	}
 	free(cmd->line);
 	free(cmd);

@@ -17,7 +17,10 @@ void	perror_exit_free(t_cmd *cmd, char *s, char *msg, int cond)
 	if (cond)
 	{
 		if (cmd)
+		{
 			free_ptr_arr(cmd->new_env);
+			free(cmd->pwd);
+		}
 		free_cmd(cmd);
 		free(s);
 		perror(msg);

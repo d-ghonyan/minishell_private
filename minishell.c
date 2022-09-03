@@ -6,11 +6,14 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/03 15:40:19 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/03 16:41:57 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	**init_main(char **envp, char **argv, char **pwd, struct termios *old);
+int		*getstat(void);
 
 int	g_status = 0;
 
@@ -47,35 +50,29 @@ int	_readline(char **line, char **new_env, int *status)
 	return (0);
 }
 
-int	*main_things(void)
-{
-	static int	status = 0;
-
-	return (&status);
-}
-
 int	main(int argc, char **argv, char **envp)
 {
+	char			*pwd;
 	char			*line;
 	char			**new_env;
 	t_cmd			*cmd;
 	struct termios	old;
 
-	if (tcgetattr(0, &old))
-		perror("");
-	new_env = init_main(envp, argv);
+	new_env = init_main(envp, argv, &pwd, &old);
 	while (argc)
 	{
-		if (_readline(&line, new_env, main_things()))
+		if (_readline(&line, new_env, getstat()))
 			continue ;
 		cmd = parse_line(line, envp);
-		set_cmd(cmd, line, main_things(), new_env);
+		set_cmd(cmd, line, getstat(), new_env);
+		cmd->pwd = pwd;
 		if (!exec_argv(cmd, 0, 0) || is_signaled(cmd))
-			call_forks(cmd, line, main_things());
+			call_forks(cmd, line, getstat());
 		if (tcsetattr(0, 0, &old))
 			perror("");
-		*(main_things()) = *(cmd->status);
+		*(getstat()) = *(cmd->status);
 		new_env = cmd->new_env;
+		pwd = cmd->pwd;
 		free_cmd(cmd);
 	}
 }
