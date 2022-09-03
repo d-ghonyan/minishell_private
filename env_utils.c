@@ -45,7 +45,12 @@ char	**copy_env(char **envp)
 	perror_exit(NULL, "malloc at copy_env", !env);
 	while (envp[i])
 	{
-		env[i] = ft_strdup(envp[i]);
+		if (!ft_strcmp_env(envp[i], "OLDPWD"))
+			env[i] = ft_strdup("OLDPWD");
+		if (!ft_strcmp_env(envp[i], "PWD"))
+			env[i] = ft_strdup_env("PWD", getcwd(NULL, 0));
+		else
+			env[i] = ft_strdup(envp[i]);
 		if (!env[i])
 		{
 			free_ptr_arr(env);

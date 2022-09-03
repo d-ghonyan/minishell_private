@@ -14,6 +14,20 @@
 
 int	is_valid(char *s);
 
+void	remove_pwds(t_cmd *cmd, char *del)
+{
+	if (!ft_strcmp("PWD", del))
+	{
+		free(cmd->pwd);
+		cmd->pwd = NULL;
+	}
+	if (!ft_strcmp("OLDPWD", del))
+	{
+		free(cmd->oldpwd);
+		cmd->oldpwd = NULL;
+	}
+}
+
 char	**delete_env(t_cmd *cmd, char **envp, char *del)
 {
 	int		i;
@@ -23,6 +37,7 @@ char	**delete_env(t_cmd *cmd, char **envp, char *del)
 	i = -1;
 	j = 0;
 	new_env = malloc(sizeof (*new_env) * (ptr_arr_len(envp) + 1));
+	remove_pwds(cmd, del);
 	perror_exit(cmd, "malloc at delete_env 1", !new_env);
 	while (envp[++i])
 	{

@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
 #include <stdlib.h>
 
 char	*ft_strdup(const char *s1)
@@ -24,7 +25,10 @@ char	*ft_strdup(const char *s1)
 		i++;
 	res = (char *)malloc((i + 1) * sizeof (*s1));
 	if (!res)
+	{
+		perror("malloc at strdup");
 		return (NULL);
+	}
 	i = 0;
 	while (s1[i])
 	{
