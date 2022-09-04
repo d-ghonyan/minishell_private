@@ -6,17 +6,13 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/04 19:34:25 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/04 19:48:16 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	empty_event(void)
-{
-	rl_redisplay();
-	return (0);
-}
+int	empty_event(void);
 
 char	**init_main(char **envp, char **argv, char **pwd, struct termios *old)
 {
@@ -35,6 +31,26 @@ char	**init_main(char **envp, char **argv, char **pwd, struct termios *old)
 	*pwd = getcwd(NULL, 0);
 	free(cwd);
 	return (new_env);
+}
+
+void	setstat(t_cmd *cmd)
+{
+	int	err;
+	int	i;
+
+	i = -1;
+	err = 0;
+	if (*(cmd->status) != 0)
+		*(getstat()) = *(cmd->status);
+	else
+	{
+		while (++i < cmd->len)
+		{
+			if (has_an_error(cmd, i))
+				err = 1;
+		}
+		*(getstat()) = err || is_signaled(cmd);
+	}
 }
 
 void	set_cmd(t_cmd *cmd, char *line, int *status, char **new_env)
