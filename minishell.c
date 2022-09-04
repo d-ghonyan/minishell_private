@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/04 19:42:11 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/04 19:44:01 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	setstat(t_cmd *cmd)
 	err = 0;
 	if (*(cmd->status) != 0)
 		*(getstat()) = *(cmd->status);
+	else
 	{
 		while (++i < cmd->len)
 		{
