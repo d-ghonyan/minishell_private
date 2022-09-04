@@ -14,6 +14,13 @@
 
 int	empty_event(void);
 
+int	*getstat(void)
+{
+	static int	status = 0;
+
+	return (&status);
+}
+
 char	**init_main(char **envp, char **argv, char **pwd, struct termios *old)
 {
 	char	**new_env;
@@ -58,13 +65,6 @@ void	set_cmd(t_cmd *cmd, char *line, int *status, char **new_env)
 	cmd->line = line;
 	cmd->status = status;
 	cmd->new_env = new_env;
-}
-
-int	*getstat(void)
-{
-	static int	status = 0;
-
-	return (&status);
 }
 
 char	*getoldpwd(char *oldpwd, int mode)

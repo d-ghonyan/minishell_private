@@ -50,10 +50,8 @@ int	strcmp_minishell(char *s)
 	int	i;
 	int	j;
 
-	i = ft_strlen(s);
-	j = ft_strlen("minishell");
-	i--;
-	j--;
+	i = ft_strlen(s) - 1;
+	j = ft_strlen("minishell") - 1;
 	while (i >= 0 && j >= 0 && s[i] == "minishell"[j])
 	{
 		i--;
@@ -61,6 +59,8 @@ int	strcmp_minishell(char *s)
 	}
 	if (j == -1 && (i == -1 || s[i] == '/'))
 		return (0);
+	if (j == -1 || i == -1)
+		return (1);
 	return (s[i] - "minishell"[j]);
 }
 
