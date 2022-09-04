@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/04 19:41:40 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/04 19:42:11 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ int	main(int argc, char **argv, char **envp)
 		if (tcsetattr(0, 0, &old))
 			perror("");
 		setstat(cmd);
-		// *(getstat()) = *(cmd->status);
 		new_env = cmd->new_env;
 		pwd = cmd->pwd;
 		getoldpwd(cmd->oldpwd, 1);
