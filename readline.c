@@ -12,38 +12,59 @@
 
 #include "minishell.h"
 
-char	**init_main(char **envp, char **argv, char **pwd, struct termios *old);
-int		*getstat(void);
-char	*getoldpwd(char *oldpwd, int mode);
-int		_readline(char **line, char **new_env, int *status, char *pwd);
 
-int	main(int argc, char **argv, char **envp)
+int	g_status = 0;
+
+void	sigint_p(int signum)
 {
-	char			*pwd;
-	char			*line;
-	char			**new_env;
-	t_cmd			*cmd;
-	struct termios	old;
+	rl_replace_line("", 0);
+	rl_done = 1;
+	g_status = signum + 128;
+}
 
-	new_env = init_main(envp, argv, &pwd, &old);
-	free_ptr_arr(new_env);
-	free(pwd);
-	while (0)
+void	_add_history(char *line)
+{
+	if (line[0])
+		add_history(line);
+}
+
+void	init_prompt(char **prompt, char *pwd)
+{
+	char	*temp;
+	
+	*prompt = ft_strdup(pwd);
+	if (!(*prompt))
+		*prompt = ft_strdup(BLUE "$ " RESET);
+	else
 	{
-		if (_readline(&line, new_env, getstat(), pwd))
-			continue ;
-		cmd = parse_line(line, envp);
-		set_cmd(cmd, line, getstat(), new_env);
-		cmd->pwd = pwd;
-		cmd->oldpwd = getoldpwd(NULL, 0);
-		if (!exec_argv(cmd, 0, 0) || is_signaled(cmd))
-			call_forks(cmd, line, getstat());
-		if (tcsetattr(0, 0, &old))
-			perror("");
-		*(getstat()) = *(cmd->status);
-		new_env = cmd->new_env;
-		pwd = cmd->pwd;
-		getoldpwd(cmd->oldpwd, 1);
-		free_cmd(cmd);
+		temp = *prompt;
+		*prompt = ft_strjoin(*prompt, BLUE "$ " RESET);
+		free(temp);
 	}
+}
+
+int	_readline(char **line, char **new_env, int *status, char *pwd)
+{
+	char		*prompt;
+
+	init_prompt(&prompt, pwd);
+	printf(GREEN);
+	*line = readline(prompt);
+	printf(RESET);
+	free(prompt);
+	if (!(*line))
+	{
+		free_ptr_arr(new_env);
+		exit(EXIT_SUCCESS);
+	}
+	_add_history(*line);
+	if (!(*line[0]) || count_pipes(*line) < 0
+		|| check_quotes(*line) || valid_red(*line))
+	{
+		*status = (g_status == 130);
+		g_status = 0;
+		free(*line);
+		return (1);
+	}
+	return (0);
 }

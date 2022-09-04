@@ -59,7 +59,7 @@ int	_cd(t_cmd *cmd, char *s)
 		*(cmd->status) = 1;
 		return (1);
 	}
-	cwd = getcwd(NULL, 1);
+	cwd = getcwd(NULL, 0);
 	if (!cwd)
 	{
 		perror("getcwd at ft_cd");

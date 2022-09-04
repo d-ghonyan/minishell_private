@@ -33,8 +33,14 @@ char	**copy_env(char **envp, int i)
 {
 	char	**env;
 
-	env = malloc(sizeof (*env) * (ptr_arr_len(envp)
-				+ 1 + !is_in_env(envp, "OLDPWD")));
+	int j = -1;
+	while (envp[++j])
+		printf("%s\n", envp[j]);
+	// printf("%s %s\n", getenv("PWD"), getenv("OLDPWD"));
+	// printf("%d\n", ptr_arr_len(envp) + 1
+	// 			+ !is_in_env(envp, "OLDPWD") + !is_in_env(envp, "PWD"));
+	env = malloc(sizeof (*env) * (ptr_arr_len(envp) + 1
+				+ !is_in_env(envp, "OLDPWD") + !is_in_env(envp, "PWD")));
 	perror_exit(NULL, "malloc at copy_env", !env);
 	while (envp[++i])
 	{
@@ -52,6 +58,8 @@ char	**copy_env(char **envp, int i)
 	}
 	if (!is_in_env(envp, "OLDPWD"))
 		env[i++] = ft_strdup("OLDPWD");
+	if (!is_in_env(envp, "PWD"))
+		env[i++] = ft_strdup_env("PWD", getcwd(NULL, 0));
 	env[i] = NULL;
 	return (env);
 }

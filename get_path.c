@@ -20,6 +20,8 @@ int	dir(char *s)
 	DIR		*dir;
 
 	old_errno = errno;
+	if (!s)
+		return (0);
 	dir = opendir(s);
 	if (dir)
 	{

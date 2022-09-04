@@ -17,6 +17,7 @@ int	free_stuff(t_cmd *cmd, char *path, int (*pipes)[2], int status)
 	free(path);
 	free(pipes);
 	free_ptr_arr(cmd->new_env);
+	free(cmd->pwd);
 	free_cmd(cmd);
 	exit(status);
 }

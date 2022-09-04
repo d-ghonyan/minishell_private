@@ -28,7 +28,7 @@ char	**init_main(char **envp, char **argv, char **pwd, struct termios *old)
 	init_signals_parent();
 	rl_event_hook = &empty_event;
 	rl_catch_signals = 0;
-	*pwd = getcwd(NULL, 1);
+	*pwd = getcwd(NULL, 0);
 	return (new_env);
 }
 
