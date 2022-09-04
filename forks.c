@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/03 15:28:03 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/04 19:24:47 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	children(t_cmd *cmd, int (*pipes)[2], int size, int i)
 		if (path && !dir(path) && !has_an_error(cmd, i) && cmd[i].exec.exec[0])
 			status = perror_builtins(CE,
 					"minishell: ", cmd[i].exec.exec, ": ");
-		if (dir(path))
+		if (cmd[0].exec.exec[0] && dir(path))
 			status = CE;
 		free_stuff(cmd, path, pipes, status);
 	}

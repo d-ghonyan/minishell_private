@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/04 13:59:07 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/04 19:41:40 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,25 @@ char	**init_main(char **envp, char **argv, char **pwd, struct termios *old);
 int		*getstat(void);
 char	*getoldpwd(char *oldpwd, int mode);
 int		_readline(char **line, char **new_env, int *status, char *pwd);
+
+void	setstat(t_cmd *cmd)
+{
+	int	err;
+	int	i;
+
+	i = -1;
+	err = 0;
+	if (*(cmd->status) != 0)
+		*(getstat()) = *(cmd->status);
+	{
+		while (++i < cmd->len)
+		{
+			if (has_an_error(cmd, i))
+				err = 1;
+		}
+		*(getstat()) = err || is_signaled(cmd);
+	}
+}
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -38,7 +57,8 @@ int	main(int argc, char **argv, char **envp)
 			call_forks(cmd, line, getstat());
 		if (tcsetattr(0, 0, &old))
 			perror("");
-		*(getstat()) = *(cmd->status);
+		setstat(cmd);
+		// *(getstat()) = *(cmd->status);
 		new_env = cmd->new_env;
 		pwd = cmd->pwd;
 		getoldpwd(cmd->oldpwd, 1);

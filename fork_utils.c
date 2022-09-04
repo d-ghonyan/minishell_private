@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/03 19:16:57 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/04 19:24:37 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	single_child(t_cmd *cmd)
 		execve(path, cmd[0].exec.argv, cmd->new_env);
 	if (path && !dir(path) && !has_an_error(cmd, 0) && cmd[0].exec.exec[0])
 		status = perror_builtins(CE, "minishell: ", cmd[0].exec.exec, ": ");
-	if (dir(path))
+	if (cmd[0].exec.exec[0] && dir(path))
 		status = CE;
 	free_stuff(cmd, path, NULL, status);
 }
