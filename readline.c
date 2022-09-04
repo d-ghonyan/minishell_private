@@ -1,17 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   readline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/03 18:07:42 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/04 14:24:25 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 int	g_status = 0;
 
@@ -31,7 +30,7 @@ void	_add_history(char *line)
 void	init_prompt(char **prompt, char *pwd)
 {
 	char	*temp;
-	
+ 
 	*prompt = ft_strdup(pwd);
 	if (!(*prompt))
 		*prompt = ft_strdup(BLUE "$ " RESET);

@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/03 19:21:40 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/04 14:14:17 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,39 +29,30 @@ char	*_getenv(char **envp, char *s, t_cmd *cmd)
 	return (NULL);
 }
 
-char	**copy_env(char **envp, int i)
+char	**copy_env(char **envp, int i, char *cwd)
 {
-	char	**env;
+	int		j;
+	char	**_env;
 
-	int j = -1;
-	while (envp[++j])
-		printf("%s\n", envp[j]);
-	// printf("%s %s\n", getenv("PWD"), getenv("OLDPWD"));
-	// printf("%d\n", ptr_arr_len(envp) + 1
-	// 			+ !is_in_env(envp, "OLDPWD") + !is_in_env(envp, "PWD"));
-	env = malloc(sizeof (*env) * (ptr_arr_len(envp) + 1
-				+ !is_in_env(envp, "OLDPWD") + !is_in_env(envp, "PWD")));
-	perror_exit(NULL, "malloc at copy_env", !env);
+	j = 0;
+	_env = malloc(sizeof (*_env) * (ptr_arr_len(envp) + 1));
+	perror_exit_free(NULL, cwd, "malloc at copy_env", !_env);
 	while (envp[++i])
 	{
-		if (!ft_strcmp_env(envp[i], "OLDPWD"))
-			env[i] = ft_strdup("OLDPWD");
-		else if (!ft_strcmp_env(envp[i], "PWD"))
-			env[i] = ft_strdup_env("PWD", getcwd(NULL, 0));
-		else
-			env[i] = ft_strdup(envp[i]);
-		if (!env[i])
-		{
-			free_ptr_arr(env);
-			perror_exit(NULL, "malloc at copy_env", 1);
+		if (ft_strcmp_env(envp[i], "OLDPWD") && ft_strcmp_env(envp[i], "PWD"))
+		{	
+			_env[j] = ft_strdup(envp[i]);
+			if (!_env[j++])
+			{
+				free_ptr_arr(_env);
+				perror_exit_free(NULL, cwd, "malloc at copy_env loop", 1);
+			}
 		}
 	}
-	if (!is_in_env(envp, "OLDPWD"))
-		env[i++] = ft_strdup("OLDPWD");
-	if (!is_in_env(envp, "PWD"))
-		env[i++] = ft_strdup_env("PWD", getcwd(NULL, 0));
-	env[i] = NULL;
-	return (env);
+	_env[j] = NULL;
+	_env = env(_env, "PWD", cwd, NULL);
+	_env = env(_env, "OLDPWD", NULL, NULL);
+	return (_env);
 }
 
 int	is_in_env(char **env, char *key)

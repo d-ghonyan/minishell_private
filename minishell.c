@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/03 18:07:42 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/04 13:59:07 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,7 @@ int	main(int argc, char **argv, char **envp)
 	struct termios	old;
 
 	new_env = init_main(envp, argv, &pwd, &old);
-	free_ptr_arr(new_env);
-	free(pwd);
-	while (0)
+	while (argc)
 	{
 		if (_readline(&line, new_env, getstat(), pwd))
 			continue ;

@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/03 19:16:47 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/04 14:14:08 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ char	*expanded_env(char *cmd, int i, int quote, t_cmd *cmd1);
 char	*get_path(t_cmd *cmd, char *command);
 char	*alloc_command(char *line, int i, int size, int j);
 char	*expand_line(char *cmd, t_cmd *cmd1);
-char	**copy_env(char **envp, int i);
+char	**copy_env(char **envp, int i, char *cwd);
 char	**filter_argv(char **argv, t_cmd *cmd, int k);
 char	**env(char **old_env, char *key, char *value, t_cmd *cmd);
 char	**_env(char **old_env, char *val, t_cmd *cmd);

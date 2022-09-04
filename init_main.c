@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/03 18:57:56 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/04 14:47:22 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,26 @@
 
 int	empty_event(void)
 {
+	rl_redisplay();
 	return (0);
 }
 
 char	**init_main(char **envp, char **argv, char **pwd, struct termios *old)
 {
 	char	**new_env;
+	char	*cwd;
 
 	(void)argv;
+	cwd = getcwd(NULL, 0);
+	perror_exit(NULL, "getcwd at init_main", !cwd);
 	if (tcgetattr(0, old))
 		perror("minishell: ");
-	new_env = copy_env(envp, -1);
+	new_env = copy_env(envp, -1, cwd);
 	init_signals_parent();
 	rl_event_hook = &empty_event;
 	rl_catch_signals = 0;
 	*pwd = getcwd(NULL, 0);
+	free(cwd);
 	return (new_env);
 }
 
