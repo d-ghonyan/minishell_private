@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/04 14:24:25 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/04 15:03:37 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	init_prompt(char **prompt, char *pwd)
 
 int	_readline(char **line, char **new_env, int *status, char *pwd)
 {
-	char		*prompt;
+	char	*prompt;
 
 	init_prompt(&prompt, pwd);
 	printf(GREEN);
