@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/04 19:24:47 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/05 13:08:21 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ int	children(t_cmd *cmd, int (*pipes)[2], int size, int i)
 	int		status;
 
 	init_vars(&status, &path, cmd, i);
-	perror_exit(cmd, "", dup_pipes(cmd, i, pipes, size - 1));
+	if (dup_pipes(cmd, i, pipes, size - 1))
+		return (1);
 	if (!is_a_builtin(cmd[i].exec.exec))
 	{
 		path = get_path(cmd, cmd[i].exec.exec);
@@ -87,12 +88,11 @@ int	children(t_cmd *cmd, int (*pipes)[2], int size, int i)
 	return (free_stuff(cmd, path, pipes, status));
 }
 
-int	single_command(t_cmd *cmd, int *status)
+int	single_command(t_cmd *cmd)
 {
 	int		a;
 	pid_t	pid;
 
-	(void)status;
 	if (!is_a_builtin(cmd[0].exec.exec))
 	{
 		pid = fork();
@@ -116,14 +116,13 @@ int	single_command(t_cmd *cmd, int *status)
 	return (call_builtins(cmd, 0, 1));
 }
 
-int	call_forks(t_cmd *cmd, char *line, int *status)
+int	call_forks(t_cmd *cmd, char *line)
 {
 	int		(*pipes)[2];
 	pid_t	*pids;
 
 	pids = malloc(sizeof (*pids) * (count_pipes(line) + 1));
-	if (!pids)
-		return (perror_ret("malloc failed at call_forks()"));
+	perror_exit(cmd, "malloc failed at call_forks()", !pids);
 	if (count_pipes(line) > 0)
 	{
 		pipes = malloc(sizeof (*pipes) * (count_pipes(line)));
@@ -134,7 +133,7 @@ int	call_forks(t_cmd *cmd, char *line, int *status)
 		free(pipes);
 	}
 	else
-		single_command(cmd, status);
+		single_command(cmd);
 	free(pids);
 	return (0);
 }
