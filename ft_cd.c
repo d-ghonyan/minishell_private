@@ -73,7 +73,7 @@ int	_cd(t_cmd *cmd, char *s)
 int	ft_cd(t_cmd *cmd, char **argv)
 {
 	if (ptr_arr_len(argv) > 2)
-		return (stderror_putstr("Too many arguments", "", "", 1));
+		return (stderror_putstr("cd: ", "Too many arguments", "", 1));
 	if (ptr_arr_len(argv) == 1)
 		return (_home(cmd));
 	return (_cd(cmd, argv[1]));
