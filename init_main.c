@@ -56,7 +56,7 @@ void	setstat(t_cmd *cmd)
 			if (has_an_error(cmd, i))
 				err = 1;
 		}
-		*(getstat()) = err || is_signaled(cmd);
+		*(getstat()) = (err || is_signaled(cmd));
 	}
 }
 

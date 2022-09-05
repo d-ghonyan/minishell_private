@@ -36,7 +36,7 @@ void	_add_history(char *line)
 void	init_prompt(char **prompt, char *pwd)
 {
 	char	*temp;
- 
+
 	*prompt = ft_strdup(pwd);
 	if (!(*prompt))
 		*prompt = ft_strdup(BLUE "$ " RESET);
