@@ -39,13 +39,19 @@ void	init_prompt(char **prompt, char *pwd)
 
 	*prompt = ft_strdup(pwd);
 	if (!(*prompt))
-		*prompt = ft_strdup(BLUE "$ " RESET);
+		*prompt = ft_strdup("\001" BLUE "\002" "$ " "\001" RESET "\002");
 	else
 	{
 		temp = *prompt;
-		*prompt = ft_strjoin(*prompt, BLUE "$ " RESET);
+		*prompt = ft_strjoin(*prompt, "\001" BLUE "\002" "$ " "\001" RESET "\002");
 		free(temp);
 	}
+	temp = *prompt;
+	*prompt = ft_strjoin("\001" GREEN "\002", *prompt);
+	free(temp);
+	temp = *prompt;
+	*prompt = ft_strjoin(*prompt, "\001" RESET "\002");
+	free(temp);
 }
 
 int	_readline(char **line, char **new_env, int *status, char *pwd)
@@ -53,9 +59,7 @@ int	_readline(char **line, char **new_env, int *status, char *pwd)
 	char	*prompt;
 
 	init_prompt(&prompt, pwd);
-	printf(GREEN);
 	*line = readline(prompt);
-	printf(RESET);
 	free(prompt);
 	if (!(*line))
 	{

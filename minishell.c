@@ -29,8 +29,14 @@ int	main(int argc, char **argv, char **envp)
 	new_env = init_main(envp, argv, &pwd, &old);
 	while (argc)
 	{
+		// line = readline("anasun$ ");
 		if (_readline(&line, new_env, getstat(), pwd))
 			continue ;
+		// if (!line)
+		// 	return (0);
+		// if (!line[0])
+		// 	continue ;
+		add_history(line);
 		cmd = parse_line(line, envp);
 		set_cmd(cmd, line, getstat(), new_env);
 		cmd->pwd = pwd;
