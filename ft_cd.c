@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 17:32:59 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/03 19:17:49 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/05 13:02:21 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,10 @@ int	_cd(t_cmd *cmd, char *s)
 int	ft_cd(t_cmd *cmd, char **argv)
 {
 	if (ptr_arr_len(argv) > 2)
+	{
+		*(cmd->status) = 1;
 		return (stderror_putstr("cd: ", "Too many arguments", "", 1));
+	}
 	if (ptr_arr_len(argv) == 1)
 		return (_home(cmd));
 	return (_cd(cmd, argv[1]));
