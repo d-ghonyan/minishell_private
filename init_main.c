@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/04 19:48:16 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/05 13:50:29 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	**init_main(char **envp, char **argv, char **pwd, struct termios *old)
 	cwd = getcwd(NULL, 0);
 	perror_exit(NULL, "getcwd at init_main", !cwd);
 	if (tcgetattr(0, old))
-		perror("minishell: ");
+		perror("tcgetattr: ");
 	new_env = copy_env(envp, -1, cwd);
 	init_signals_parent();
 	rl_event_hook = &empty_event;

@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/05 13:02:45 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/05 13:52:06 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	stderror_putstr(char *s1, char *s2, char *s3, int cond)
 	{	
 		ft_putstr_fd(s1, STDERR_FILENO);
 		ft_putstr_fd(s2, STDERR_FILENO);
-		ft_putstr_fd(s3, STDERR_FILENO);
+		ft_putendl_fd(s3, STDERR_FILENO);
 		return (1);
 	}
 	return (0);

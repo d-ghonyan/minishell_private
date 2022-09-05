@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/05 13:08:21 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/05 14:04:28 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,12 @@ int	parent(t_cmd *cmd, int (*pipes)[2], pid_t *pids)
 			*(cmd->status) = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
 		{
-			if (count)
+			if (count && WTERMSIG(status) != SIGPIPE)
+			{
+				if (WTERMSIG(status) == SIGQUIT)
+					ft_putstr_fd("Quit", STDOUT_FILENO);
 				ft_putendl_fd("", STDOUT_FILENO);
+			}
 			*(cmd->status) = 128 + WTERMSIG(status);
 			count = 0;
 		}
@@ -100,18 +104,17 @@ int	single_command(t_cmd *cmd)
 			return (perror_ret("fork at single_command"));
 		if (pid == 0)
 			single_child(cmd);
-		else
+		waitpid(pid, &a, 0);
+		if (WIFEXITED(a))
+			*(cmd->status) = WEXITSTATUS(a);
+		else if (WIFSIGNALED(a))
 		{
-			waitpid(pid, &a, 0);
-			if (WIFEXITED(a))
-				*(cmd->status) = WEXITSTATUS(a);
-			else if (WIFSIGNALED(a))
-			{
-				ft_putendl_fd("", STDOUT_FILENO);
-				*(cmd->status) = 128 + WTERMSIG(a);
-			}
-			return (0);
+			if (WTERMSIG(a) == SIGQUIT)
+				ft_putstr_fd("Quit", STDOUT_FILENO);
+			ft_putendl_fd("", STDOUT_FILENO);
+			*(cmd->status) = 128 + WTERMSIG(a);
 		}
+		return (0);
 	}
 	return (call_builtins(cmd, 0, 1));
 }

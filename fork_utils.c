@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/04 19:24:37 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/05 13:48:34 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,7 @@ void	single_child(t_cmd *cmd)
 	init_signals_child();
 	path = get_path(cmd, cmd[0].exec.exec);
 	if (!path && !has_an_error(cmd, 0))
-	{
-		status = NF;
-		not_found(cmd[0].exec.exec);
-	}
+		status = not_found(cmd[0].exec.exec);
 	if (path && !has_an_error(cmd, 0))
 		execve(path, cmd[0].exec.argv, cmd->new_env);
 	if (path && !dir(path) && !has_an_error(cmd, 0) && cmd[0].exec.exec[0])
@@ -97,7 +94,7 @@ int	fork_loop(char *line, pid_t *pids, t_cmd *cmd, int (*pipes)[2])
 	{
 		pids[i] = fork();
 		if (pids[i] < 0)
-			return (perror_ret("fork failed at call_forks()"));
+			return (perror_ret("fork at call_forks()"));
 		if (pids[i] == 0)
 			children(cmd, pipes, count_pipes(line) + 1, i);
 	}

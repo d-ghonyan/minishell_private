@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/04 19:48:13 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/05 13:49:30 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	main(int argc, char **argv, char **envp)
 		cmd->pwd = pwd;
 		cmd->oldpwd = getoldpwd(NULL, 0);
 		if (!exec_argv(cmd, 0, 0) || is_signaled(cmd))
-			call_forks(cmd, line, getstat());
+			call_forks(cmd, line);
 		if (tcsetattr(0, 0, &old))
 			perror("");
 		setstat(cmd);
