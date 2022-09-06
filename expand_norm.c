@@ -32,7 +32,9 @@ int	exp_dollar_sign(t_exp *exp, char *res, char *s, int cond)
 	i = exp->i;
 	if (s[exp->i] == '$')
 	{
-		if (var_len(s, exp->i + 1, 1) == 0 && not_a_quote(s[exp->i + 1]))
+		if (var_len(s, exp->i + 1, 1) == 0
+			&& ((not_a_quote(s[exp->i + 1]) && cond)
+				|| (!not_a_quote(s[exp->i + 1]) && !cond)))
 			res[exp->j++] = '$';
 		else
 		{
@@ -51,7 +53,7 @@ int	dollar_sign(int *len, int *i, char *s, t_cmd *cmd)
 {
 	if (s[*i] == '$')
 	{
-		if (var_len(s, *i + 1, 1) == 0 && not_a_quote(s[*i + 1]))
+		if (var_len(s, *i + 1, 1) == 0)
 			*len += 1;
 		else
 		{
