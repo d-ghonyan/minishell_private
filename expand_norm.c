@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 13:07:17 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/01 19:19:58 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/06 14:40:10 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,28 @@ void	init_exp(t_cmd *cmd, char *s, char **res, t_exp *exp)
 	exp->j = 0;
 }
 
+int	exp_dollar_sign_quote(t_exp *exp, char *res, char *s, int cond)
+{
+	int	i;
+
+	i = exp->i;
+	if (s[exp->i] == '$')
+	{
+		if (var_len(s, exp->i + 1, 1) == 0)
+			res[exp->j++] = '$';
+		else
+		{
+			strjoin_var(res, expanded_env(s, exp->i + 1, 1, exp->cmd));
+			exp->j = ft_strlen(res);
+		}
+		exp->i += var_len(s, exp->i + 1, 1);
+		return (1);
+	}
+	else if (s[i] != '$' && !cond)
+		res[exp->j++] = s[exp->i];
+	return (0);
+}
+
 int	exp_dollar_sign(t_exp *exp, char *res, char *s, int cond)
 {
 	int	i;
@@ -32,16 +54,14 @@ int	exp_dollar_sign(t_exp *exp, char *res, char *s, int cond)
 	i = exp->i;
 	if (s[exp->i] == '$')
 	{
-		if (var_len(s, exp->i + 1, 1) == 0
-			&& ((not_a_quote(s[exp->i + 1]) && cond)
-				|| (!not_a_quote(s[exp->i + 1]) && !cond)))
+		if (var_len(s, exp->i + 1, 1) == 0 && not_a_quote(s[exp->i + 1]))
 			res[exp->j++] = '$';
 		else
 		{
 			strjoin_var(res, expanded_env(s, exp->i + 1, 1, exp->cmd));
 			exp->j = ft_strlen(res);
 		}
-		exp->i += var_len(s, exp->i + 1, 1) + cond;
+		exp->i += var_len(s, exp->i + 1, 1) + 1;
 		return (1);
 	}
 	else if (s[i] != '$' && !cond)
