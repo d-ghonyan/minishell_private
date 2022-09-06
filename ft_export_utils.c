@@ -12,6 +12,29 @@
 
 #include "minishell.h"
 
+void	export_print(char *s, int fd)
+{
+	int	i;
+
+	i = 0;
+	while (s[i] && s[i] != '=')
+	{
+		write(1, s + i, fd);
+		i++;
+	}
+	if (s[i])
+	{
+		write(1, s + i++, fd);
+		write(1, "\"", fd);
+		while (s[i])
+		{
+			write(1, s + i, fd);
+			i++;
+		}
+		write(1, "\"", fd);
+	}
+}
+
 char	*_key(char *s, t_cmd *cmd)
 {
 	int		i;

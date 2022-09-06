@@ -18,6 +18,7 @@
 # include <errno.h>
 # include <fcntl.h>
 # include <stdlib.h>
+# include <limits.h>
 # include <unistd.h>
 # include <signal.h>
 # include <dirent.h>
@@ -115,6 +116,7 @@ int		stderror_putstr(char *s1, char *s2, char *s3, int cond);
 int		perror_builtins(int status, char *s1, char *s2, char *s3);
 int		init_fds(t_fds *fds, char *s, char *filename, t_cmd *cmd);
 int		not_found(char *exec);
+void	export_print(char *s, int fd);
 void	close_pipes_parent(int len, int (*pipes)[2]);
 void	to_from(t_cmd *cmd);
 void	perror_exit_free(t_cmd *cmd, char *s, char *msg, int cond);

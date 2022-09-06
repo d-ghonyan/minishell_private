@@ -12,7 +12,19 @@
 
 #include "minishell.h"
 
-int	is_valid(char *s);
+int	is_valid_unset(char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (!is_a_valid_name(s[i], i == 0))
+			return (0);
+		i++;
+	}
+	return (s[0] != '=');
+}
 
 void	remove_pwds(t_cmd *cmd, char *del)
 {
@@ -66,7 +78,7 @@ int	ft_unset(t_cmd *cmd, int k)
 	err = 0;
 	while (cmd[k].exec.argv[++j])
 	{
-		if (!is_valid(cmd[k].exec.argv[j]))
+		if (!is_valid_unset(cmd[k].exec.argv[j]))
 		{
 			stderror_putstr("export: `", cmd[k].exec.argv[j],
 				"': not a valid identifier", 1);

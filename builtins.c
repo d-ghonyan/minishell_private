@@ -16,6 +16,7 @@ int	ft_echo(t_cmd *cmd, int i, int single);
 int	ft_unset(t_cmd *cmd, int k);
 int	ft_cd(t_cmd *cmd, char **argv);
 int	ft_export(t_cmd *cmd, int i, int single);
+int	ft_exit(t_cmd *cmd, int i, int single);
 
 int	ft_pwd(t_cmd *cmd, int i, int single)
 {
@@ -51,7 +52,8 @@ int	ft_env(t_cmd *cmd, int i, int envp, int single)
 		if (!envp)
 		{
 			ft_putstr_fd("declare -x ", to);
-			ft_putendl_fd(cmd->new_env[j], to);
+			export_print(cmd->new_env[j], to);
+			ft_putendl_fd("", to);
 		}
 		else
 		{
@@ -61,32 +63,6 @@ int	ft_env(t_cmd *cmd, int i, int envp, int single)
 	}
 	*(cmd->status) = 0;
 	return (0);
-}
-
-int	ft_exit(t_cmd *cmd, int i, int single)
-{
-	int	status;
-
-	status = 0;
-	if (single)
-		ft_putendl_fd("exit", STDOUT_FILENO);
-	if (ptr_arr_len(cmd[i].exec.argv) > 2)
-	{
-		*(cmd->status) = 1;
-		ft_putendl_fd("minishell: exit: Too many arguments", STDERR_FILENO);
-		return (1);
-	}
-	else
-	{
-		status = *(cmd->status);
-		if (ptr_arr_len(cmd[i].exec.argv) > 1)
-			status = (unsigned char)ft_atoi(cmd[i].exec.argv[1]);
-		free_ptr_arr(cmd->new_env);
-		free(cmd->pwd);
-		free(cmd->oldpwd);
-		free_cmd(cmd);
-		exit(status);
-	}
 }
 
 int	call_builtins(t_cmd *cmd, int i, int single)
