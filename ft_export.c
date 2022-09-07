@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/05 13:02:31 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/07 20:23:14 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,21 @@ int	find_index(char *s, char c)
 int	is_valid(char *s)
 {
 	int	i;
+	int	val;
 
+	if (s[0] == '=')
+		return (0);
 	i = 0;
-	while (s[i] && s[i] != '=')
+	val = 0;
+	while (s[i] && s[i] != '+' && s[i] != '=')
 	{
 		if (!is_a_valid_name(s[i], i == 0))
-			return (0);
+			val = 1;
 		i++;
 	}
-	return (s[0] != '=');
+	if (val)
+		return (0);
+	return ((!s[i] || s[i] == '=') || (s[i] == '+' && s[i + 1] == '='));
 }
 
 int	ft_strcmp_env(char *s1, char *s2)
