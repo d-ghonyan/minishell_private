@@ -12,7 +12,9 @@
 
 #include "minishell.h"
 
-int	ft_env(t_cmd *cmd, int i, int envp, int single);
+int		ft_env(t_cmd *cmd, int i, int envp, int single);
+int		append_export(char *s);
+void	append_env(char **env, char *key, char *value);
 
 int	find_index(char *s, char c)
 {
@@ -71,7 +73,12 @@ char	**_env(char **old_env, char *val, t_cmd *cmd)
 		key = _key(val, cmd);
 		value = _value(val, cmd);
 		if (is_in_env(old_env, key))
-			replace_env(old_env, key, value, cmd);
+		{
+			if (append_export(val))
+				append_env(cmd->new_env, key, value);
+			else
+				replace_env(old_env, key, value, cmd);
+		}
 		else
 			old_env = env(old_env, key, value, cmd);
 		free(key);

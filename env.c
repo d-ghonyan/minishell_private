@@ -77,6 +77,7 @@ void	replace_env(char **old_env, char *key, char *value, t_cmd *cmd)
 					free(old_env[i]);
 				return ;
 			}
+			return ;
 		}
 	}
 }

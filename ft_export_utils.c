@@ -12,6 +12,38 @@
 
 #include "minishell.h"
 
+void	append_env(char **env, char *key, char *value)
+{
+	int		i;
+	char	*temp;
+
+	i = -1;
+	while (env[++i])
+	{
+		if (!ft_strcmp_env(env[i], key))
+		{
+			temp = env[i];
+			env[i] = ft_strjoin(env[i], value);
+			free(temp);
+			return ;
+		}
+	}
+}
+
+int	append_export(char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i] && s[i] != '=')
+	{
+		if (s[i] == '+')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 void	export_print(char *s, int fd)
 {
 	int	i;
@@ -43,7 +75,7 @@ char	*_key(char *s, t_cmd *cmd)
 	i = 0;
 	res = malloc(sizeof (*res) * (find_index(s, '=') + 1));
 	perror_exit(cmd, "malloc at _value", !res);
-	while (s[i] && s[i] != '=')
+	while (s[i] && s[i] != '+' && s[i] != '=')
 	{
 		res[i] = s[i];
 		i++;
