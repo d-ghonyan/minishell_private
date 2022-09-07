@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/07 13:54:46 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/07 14:11:13 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,23 +17,6 @@ int		*getstat(void);
 char	*getoldpwd(char *oldpwd, int mode);
 int		_readline(char **line, char **new_env, int *status, char *pwd);
 void	setstat(t_cmd *cmd);
-
-// int		lvl;
-// char	*shlvl;
-
-// lvl = 0;
-// shlvl = _getenv(new_env, "SHLVL", cmd);
-// if (!shlvl)
-// 	new_env = _env(new_env, "SHLVL=1", cmd);
-// else
-// {
-// 	lvl = ft_atoi(shlvl) + 1;
-// 	free(shlvl);
-// 	shlvl = ft_itoa(lvl);
-// 	perror_exit(cmd, "malloc at ft_itoa", !shlvl);
-// 	replace_env(new_env, "SHLVL", shlvl, cmd);
-// 	free(shlvl);
-// }
 
 void	init_lvl(int *lvl, char *shlvl, char **env)
 {
@@ -71,7 +54,7 @@ void	update_env(char ***__env)
 		*__env = env(*__env, "SHLVL", "1", NULL);
 	else
 	{
-		shlvl = _value((*__env)[lvl], NULL);		
+		shlvl = _value((*__env)[lvl], NULL);
 		lvl = ft_atoi(shlvl) + 1;
 		init_lvl(&lvl, shlvl, *__env);
 		newlvl = ft_itoa(lvl);
