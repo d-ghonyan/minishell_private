@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 13:07:17 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/07 15:45:52 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/07 15:55:58 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,8 @@ void	check_llong(t_cmd *cmd, int i)
 {
 	if (ptr_arr_len(cmd[i].exec.argv) > 1)
 	{
-		if (int_128_atoi(cmd[i].exec.argv[1]) > LLONG_MAX
+		if (ft_strlen(cmd[i].exec.argv[1]) > 21
+			|| int_128_atoi(cmd[i].exec.argv[1]) > LLONG_MAX
 			|| int_128_atoi(cmd[i].exec.argv[1]) < LLONG_MIN)
 		{
 			_exit_(cmd, 255, 1, cmd[i].exec.argv[1]);
