@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/07 13:12:03 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/07 16:07:51 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,12 @@ int	has_an_error(t_cmd *cmd, int i)
 	return (0);
 }
 
-int	parent(t_cmd *cmd, int (*pipes)[2], pid_t *pids)
+int	parent(t_cmd *cmd, int (*pipes)[2], pid_t *pids, int i)
 {
-	int	i;
 	int	count;
 	int	status;
 
 	close_pipes_parent(cmd->len - 1, pipes);
-	i = -1;
 	count = 1;
 	while (++i < cmd->len)
 	{
@@ -55,7 +53,9 @@ int	parent(t_cmd *cmd, int (*pipes)[2], pid_t *pids)
 					ft_putstr_fd("Quit", STDOUT_FILENO);
 				ft_putendl_fd("", STDOUT_FILENO);
 			}
-			*(cmd->status) = 128 + WTERMSIG(status);
+			*(cmd->status) = 1;
+			if (WTERMSIG(status) != SIGQUIT && WTERMSIG(status) != SIGINT)
+				*(cmd->status) = 128 + WTERMSIG(status);
 			count = 0;
 		}
 	}
@@ -109,7 +109,9 @@ int	single_command(t_cmd *cmd)
 			if (WTERMSIG(a) == SIGQUIT)
 				ft_putstr_fd("Quit", STDOUT_FILENO);
 			ft_putendl_fd("", STDOUT_FILENO);
-			*(cmd->status) = 128 + WTERMSIG(a);
+			*(cmd->status) = 1;
+			if (WTERMSIG(a) != SIGQUIT && WTERMSIG(a) != SIGINT)
+				*(cmd->status) = 128 + WTERMSIG(a);
 		}
 		return (0);
 	}
@@ -129,7 +131,7 @@ int	call_forks(t_cmd *cmd, char *line)
 		if (init_pipes(pipes, count_pipes(line), !pipes))
 			return (1);
 		fork_loop(line, pids, cmd, pipes);
-		parent(cmd, pipes, pids);
+		parent(cmd, pipes, pids, -1);
 		free(pipes);
 	}
 	else
