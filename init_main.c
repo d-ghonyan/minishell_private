@@ -6,13 +6,14 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/05 13:50:29 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/07 13:45:23 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	empty_event(void);
+int		empty_event(void);
+void	update_env(char ***_env);
 
 int	*getstat(void)
 {
@@ -37,6 +38,7 @@ char	**init_main(char **envp, char **argv, char **pwd, struct termios *old)
 	rl_catch_signals = 0;
 	*pwd = getcwd(NULL, 0);
 	free(cwd);
+	update_env(&new_env);
 	return (new_env);
 }
 

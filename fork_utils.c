@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/05 13:48:34 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/07 13:13:12 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,29 +20,6 @@ int	free_stuff(t_cmd *cmd, char *path, int (*pipes)[2], int status)
 	free(cmd->pwd);
 	free_cmd(cmd);
 	exit(status);
-}
-
-void	update_env(t_cmd *cmd, int i)
-{
-	int		lvl;
-	char	*shlvl;
-
-	lvl = 0;
-	if (!strcmp_minishell(cmd[i].exec.exec))
-	{
-		shlvl = _getenv(cmd->new_env, "SHLVL", cmd);
-		if (!shlvl)
-			cmd->new_env = _env(cmd->new_env, "SHLVL=1", cmd);
-		else
-		{
-			lvl = ft_atoi(shlvl) + 1;
-			free(shlvl);
-			shlvl = ft_itoa(lvl);
-			perror_exit(cmd, "malloc at ft_itoa", !shlvl);
-			replace_env(cmd->new_env, "SHLVL", shlvl, cmd);
-			free(shlvl);
-		}
-	}
 }
 
 void	to_from(t_cmd *cmd)
@@ -67,7 +44,6 @@ void	single_child(t_cmd *cmd)
 	char	*path;
 	int		status;
 
-	update_env(cmd, 0);
 	status = EXIT_FAILURE;
 	if (!cmd[0].exec.exec[0])
 		status = EXIT_SUCCESS;

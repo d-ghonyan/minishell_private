@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/05 13:49:30 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/07 13:54:46 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,69 @@ int		*getstat(void);
 char	*getoldpwd(char *oldpwd, int mode);
 int		_readline(char **line, char **new_env, int *status, char *pwd);
 void	setstat(t_cmd *cmd);
+
+// int		lvl;
+// char	*shlvl;
+
+// lvl = 0;
+// shlvl = _getenv(new_env, "SHLVL", cmd);
+// if (!shlvl)
+// 	new_env = _env(new_env, "SHLVL=1", cmd);
+// else
+// {
+// 	lvl = ft_atoi(shlvl) + 1;
+// 	free(shlvl);
+// 	shlvl = ft_itoa(lvl);
+// 	perror_exit(cmd, "malloc at ft_itoa", !shlvl);
+// 	replace_env(new_env, "SHLVL", shlvl, cmd);
+// 	free(shlvl);
+// }
+
+void	init_lvl(int *lvl, char *shlvl, char **env)
+{
+	char	*newlvl;
+
+	*lvl = ft_atoi(shlvl) + 1;
+	if (*lvl < 0)
+		*lvl = 0;
+	if (*lvl > 1000)
+	{
+		newlvl = ft_itoa(*lvl);
+		if (!newlvl)
+		{
+			free_ptr_arr(env);
+			free(shlvl);
+			perror_exit(NULL, "malloc at init_lvl", 1);
+		}
+		stderror_putstr("minishell: warning: shell level (",
+			newlvl, ") too high, resetting to 1", 1);
+		*lvl = 1;
+		free(newlvl);
+	}
+}
+
+void	update_env(char ***__env)
+{
+	int		lvl;
+	char	*shlvl;
+	char	*newlvl;
+
+	lvl = 0;
+	while ((*__env)[lvl] && ft_strcmp_env((*__env)[lvl], "SHLVL"))
+		lvl++;
+	if (!(*__env)[lvl])
+		*__env = env(*__env, "SHLVL", "1", NULL);
+	else
+	{
+		shlvl = _value((*__env)[lvl], NULL);		
+		lvl = ft_atoi(shlvl) + 1;
+		init_lvl(&lvl, shlvl, *__env);
+		newlvl = ft_itoa(lvl);
+		replace_env((*__env), "SHLVL", newlvl, NULL);
+		free(newlvl);
+		free(shlvl);
+	}
+}
 
 int	main(int argc, char **argv, char **envp)
 {

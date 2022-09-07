@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/05 19:34:32 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/07 13:12:03 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int		free_stuff(t_cmd *cmd, char *path, int (*pipes)[2], int status);
 void	to_from(t_cmd *cmd);
 void	fork_loop(char *line, pid_t *pids, t_cmd *cmd, int (*pipes)[2]);
 void	single_child(t_cmd *cmd);
-void	update_env(t_cmd *cmd, int i);
 void	init_vars(int *status, char **path, t_cmd *cmd, int i);
 
 int	has_an_error(t_cmd *cmd, int i)
@@ -76,8 +75,6 @@ int	children(t_cmd *cmd, int (*pipes)[2], int size, int i)
 		path = get_path(cmd, cmd[i].exec.exec);
 		if (!path && !has_an_error(cmd, i))
 			status = not_found(cmd[i].exec.exec);
-		if (path && !has_an_error(cmd, i))
-			update_env(cmd, i);
 		if (path && !has_an_error(cmd, i))
 			execve(path, cmd[i].exec.argv, cmd->envp);
 		if (path && !dir(path) && !has_an_error(cmd, i) && cmd[i].exec.exec[0])
