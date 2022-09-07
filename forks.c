@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/07 16:07:51 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/07 16:27:01 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	parent(t_cmd *cmd, int (*pipes)[2], pid_t *pids, int i)
 				ft_putendl_fd("", STDOUT_FILENO);
 			}
 			*(cmd->status) = 1;
-			if (WTERMSIG(status) != SIGQUIT && WTERMSIG(status) != SIGINT)
+			if (WTERMSIG(status) == SIGQUIT || WTERMSIG(status) == SIGINT)
 				*(cmd->status) = 128 + WTERMSIG(status);
 			count = 0;
 		}
@@ -110,7 +110,7 @@ int	single_command(t_cmd *cmd)
 				ft_putstr_fd("Quit", STDOUT_FILENO);
 			ft_putendl_fd("", STDOUT_FILENO);
 			*(cmd->status) = 1;
-			if (WTERMSIG(a) != SIGQUIT && WTERMSIG(a) != SIGINT)
+			if (WTERMSIG(a) == SIGQUIT || WTERMSIG(a) == SIGINT)
 				*(cmd->status) = 128 + WTERMSIG(a);
 		}
 		return (0);
