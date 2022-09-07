@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/07 14:12:08 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/07 15:19:47 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	init_prompt(char **prompt, char *pwd)
 
 	*prompt = ft_strdup(pwd);
 	if (!(*prompt))
-		*prompt = ft_strdup("\001" BLUE "\002" "$ " "\001" RESET "\002");
+		*prompt = ft_strdup("\001" BLUE "\002" "minishell$ " "\001" RESET "\002");
 	else
 	{
 		temp = *prompt;
@@ -56,6 +56,7 @@ void	init_prompt(char **prompt, char *pwd)
 
 int	_readline(char **line, char **new_env, int *status, char *pwd)
 {
+	int		cond;
 	char	*prompt;
 
 	init_prompt(&prompt, pwd);
@@ -64,15 +65,16 @@ int	_readline(char **line, char **new_env, int *status, char *pwd)
 	if (!(*line))
 	{
 		free_ptr_arr(new_env);
+		free(pwd);
+		free(getoldpwd(NULL, 0));
 		ft_putendl_fd("exit", STDOUT_FILENO);
 		exit(EXIT_SUCCESS);
 	}
 	_add_history(*line);
-	if (!(*line[0]) || count_pipes(*line) < 0
-		|| check_quotes(*line) || valid_red(*line))
+	cond = count_pipes(*line) < 0 || check_quotes(*line) || valid_red(*line);
+	if (!(*line[0]) || cond)
 	{
-		*status = (g_status == 130 || count_pipes(*line) < 0
-			|| check_quotes(*line) || valid_red(*line));
+		*status = (g_status == 130 || cond);
 		g_status = 0;
 		free(*line);
 		return (1);

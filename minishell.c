@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/07 14:11:13 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/07 15:19:17 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 char	**init_main(char **envp, char **argv, char **pwd, struct termios *old);
 int		*getstat(void);
-char	*getoldpwd(char *oldpwd, int mode);
 int		_readline(char **line, char **new_env, int *status, char *pwd);
 void	setstat(t_cmd *cmd);
 

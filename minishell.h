@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/07 13:32:10 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/07 15:19:27 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,7 @@ void		init_signals_child(void);
 void		init_signals_heredoc(void);
 void		free_cmd(t_cmd *cmd);
 void		free_fds(t_fds *fds);
+char		*getoldpwd(char *oldpwd, int mode);
 char		*_getenv(char **envp, char *s, t_cmd *cmd);
 char		*ft_strdup_env(char *key, char *value);
 char		*_key(char *s, t_cmd *cmd);
