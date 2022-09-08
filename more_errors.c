@@ -25,6 +25,7 @@ void	perror_exit_free(t_cmd *cmd, char *s, char *msg, int cond)
 		free_cmd(cmd);
 		free(s);
 		perror(msg);
+		rl_clear_history();
 		exit(EXIT_FAILURE);
 	}
 }

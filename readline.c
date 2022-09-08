@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/08 12:20:33 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/08 14:22:52 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,19 @@ void	init_prompt(char **prompt, char *pwd)
 	char	*temp;
 
 	*prompt = ft_strdup(pwd);
-	if (!(*prompt))
-		*prompt = ft_strdup("\001" BLUE "\002" "minishell$ " "\001" RESET "\002");
+	if (!(*prompt) || !(*prompt)[0])
+	{
+		free(*prompt);
+		*prompt = ft_strdup("minishell$ ");
+	}
 	else
 	{
 		temp = *prompt;
-		*prompt = ft_strjoin(*prompt, "\001" BLUE "\002" "$ " "\001" RESET "\002");
+		*prompt = ft_strjoin(*prompt, "$ ");
 		free(temp);
 	}
 	temp = *prompt;
-	*prompt = ft_strjoin("\001" GREEN "\002", *prompt);
+	*prompt = ft_strjoin("\001" BLUE "\002", *prompt);
 	free(temp);
 	temp = *prompt;
 	*prompt = ft_strjoin(*prompt, "\001" RESET "\002");
@@ -68,6 +71,7 @@ int	_readline(char **line, char **new_env, int *status, char *pwd)
 		free(pwd);
 		free(getoldpwd(NULL, 0));
 		ft_putendl_fd("exit", STDOUT_FILENO);
+		rl_clear_history();
 		exit(*status);
 	}
 	_add_history(*line);

@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/04 14:03:45 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/08 13:40:32 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,9 @@ void	replace_env(char **old_env, char *key, char *value, t_cmd *cmd)
 			old_env[i] = ft_strdup_env(key, value);
 			if (!old_env[i])
 			{
-				i = -1;
-				while (++i < j)
-					free(old_env[i]);
-				return ;
+				free(key);
+				free(value);
+				perror_exit(cmd, "malloc at replace_env", 1);
 			}
 			return ;
 		}

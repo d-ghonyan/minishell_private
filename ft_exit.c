@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 13:07:17 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/07 15:55:58 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/08 14:06:58 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	_exit_(t_cmd *cmd, int status, int err, char *msg)
 	free(cmd->pwd);
 	free(cmd->oldpwd);
 	free_cmd(cmd);
+	rl_clear_history();
 	exit(status);
 }
 

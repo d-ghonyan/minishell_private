@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/07 15:19:17 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/08 13:31:21 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	init_lvl(int *lvl, char *shlvl, char **env)
 			perror_exit(NULL, "malloc at init_lvl", 1);
 		}
 		stderror_putstr("minishell: warning: shell level (",
-			newlvl, ") too high, resetting to 1", 1);
+			newlvl, ") too high, resetting to 1", STDOUT_FILENO);
 		*lvl = 1;
 		free(newlvl);
 	}

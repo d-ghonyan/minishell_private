@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/05 13:52:06 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/08 14:07:39 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	perror_exit(t_cmd *cmd, char *msg, int cond)
 			free(cmd->oldpwd);
 		}
 		free_cmd(cmd);
+		rl_clear_history();
 		exit(EXIT_FAILURE);
 	}
 }
