@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/07 18:22:43 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/08 11:44:39 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ int	parent(t_cmd *cmd, int (*pipes)[2], pid_t *pids, int i)
 			count = 0;
 		}
 	}
-	
 	return (0);
 }
 
