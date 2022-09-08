@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/07 15:56:24 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/08 12:20:33 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	_readline(char **line, char **new_env, int *status, char *pwd)
 		free(pwd);
 		free(getoldpwd(NULL, 0));
 		ft_putendl_fd("exit", STDOUT_FILENO);
-		exit(EXIT_SUCCESS);
+		exit(*status);
 	}
 	_add_history(*line);
 	cond = (count_pipes(*line) < 0 || check_quotes(*line) || valid_red(*line));
