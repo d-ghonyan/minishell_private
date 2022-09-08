@@ -29,3 +29,13 @@ void	perror_exit_free(t_cmd *cmd, char *s, char *msg, int cond)
 		exit(EXIT_FAILURE);
 	}
 }
+
+void	ctrl_d(char **new_env, char *pwd, int *status)
+{
+	free_ptr_arr(new_env);
+	free(pwd);
+	free(getoldpwd(NULL, 0));
+	ft_putendl_fd("exit", STDOUT_FILENO);
+	rl_clear_history();
+	exit(*status);
+}
