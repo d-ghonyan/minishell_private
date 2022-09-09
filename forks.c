@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/08 11:44:39 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/09 19:01:33 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ int	has_an_error(t_cmd *cmd, int i)
 		return (0);
 	while (++j < cmd[i].fds->len)
 	{
-		if (!cmd[i].fds[j].heredoc && cmd[i].fds[j].fd < 0)
+		if ((!cmd[i].fds[j].heredoc && cmd[i].fds[j].fd < 0)
+			|| (cmd[i].fds[j].heredoc && cmd[i].fds[j].fd == -255))
 			return (1);
 	}
 	return (0);

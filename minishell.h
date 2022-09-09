@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/07 15:19:27 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/09 18:59:44 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ typedef struct s_exp
 
 int			dir(char *s);
 int			valid_red(char *line);
-int			has_an_error(t_cmd *cmd, int i);
 int			is_signaled(t_cmd *cmd);
 int			has_an_error(t_cmd *cmd, int i);
 int			strcmp_minishell(char *s);
@@ -137,7 +136,6 @@ char		*_key(char *s, t_cmd *cmd);
 char		*_value(char *s, t_cmd *cmd);
 char		*expanded_env(char *cmd, int i, int quote, t_cmd *cmd1);
 char		*get_path(t_cmd *cmd, char *command);
-char		*alloc_command(char *line, int i, int size, int j);
 char		*expand_line(char *cmd, t_cmd *cmd1);
 char		**_env(char **old_env, char *val, t_cmd *cmd);
 char		**copy_env(char **envp, int i, char *cwd);

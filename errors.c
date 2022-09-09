@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/08 14:07:39 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/09 18:59:17 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	perror_ret(char *msg)
 int	perror_neg(char *msg)
 {
 	perror(msg);
-	return (-1);
+	return (-255);
 }
 
 int	stderror_putstr(char *s1, char *s2, char *s3, int cond)
