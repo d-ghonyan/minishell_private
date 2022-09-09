@@ -63,6 +63,10 @@ void	update_env(char ***__env)
 	}
 }
 
+//start typing a line
+//and go back in history
+//to get a memory leak
+
 int	main(int argc, char **argv, char **envp)
 {
 	char			*pwd;
