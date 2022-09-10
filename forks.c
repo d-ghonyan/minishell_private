@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/09 19:01:33 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/10 14:53:11 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	to_from(t_cmd *cmd);
 void	fork_loop(char *line, pid_t *pids, t_cmd *cmd, int (*pipes)[2]);
 void	single_child(t_cmd *cmd);
 void	init_vars(int *status, char **path, t_cmd *cmd, int i);
+void	print_sig(int status);
 
 int	has_an_error(t_cmd *cmd, int i)
 {
@@ -49,13 +50,9 @@ int	parent(t_cmd *cmd, int (*pipes)[2], pid_t *pids, int i)
 		else if (WIFSIGNALED(status))
 		{
 			if (count && WTERMSIG(status) != SIGPIPE)
-			{
-				if (WTERMSIG(status) == SIGQUIT)
-					ft_putstr_fd("Quit", STDOUT_FILENO);
-				ft_putendl_fd("", STDOUT_FILENO);
-			}
+				print_sig(status);
 			*(cmd->status) = 1;
-			if (WTERMSIG(status) == SIGQUIT || WTERMSIG(status) == SIGINT)
+			if (WTERMSIG(status) != SIGPIPE)
 				*(cmd->status) = 128 + WTERMSIG(status);
 			count = 0;
 		}
@@ -107,11 +104,9 @@ int	single_command(t_cmd *cmd)
 			*(cmd->status) = WEXITSTATUS(a);
 		else if (WIFSIGNALED(a))
 		{
-			if (WTERMSIG(a) == SIGQUIT)
-				ft_putstr_fd("Quit", STDOUT_FILENO);
-			ft_putendl_fd("", STDOUT_FILENO);
+			print_sig(a);
 			*(cmd->status) = 1;
-			if (WTERMSIG(a) == SIGQUIT || WTERMSIG(a) == SIGINT)
+			if (WTERMSIG(a) != SIGPIPE)
 				*(cmd->status) = 128 + WTERMSIG(a);
 		}
 		return (0);

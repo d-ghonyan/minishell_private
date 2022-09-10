@@ -6,11 +6,20 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/08 21:02:49 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/10 14:52:37 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	print_sig(int status)
+{
+	if (WTERMSIG(status) == SIGQUIT)
+		ft_putstr_fd("Quit: 3", STDOUT_FILENO);
+	else if (WTERMSIG(status) == SIGSEGV)
+		ft_putstr_fd("Segmentation fault: 11", STDOUT_FILENO);
+	ft_putendl_fd("", STDOUT_FILENO);
+}
 
 int	free_stuff(t_cmd *cmd, char *path, int (*pipes)[2], int status)
 {
