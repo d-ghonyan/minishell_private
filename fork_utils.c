@@ -6,18 +6,24 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/10 14:52:37 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/10 15:12:28 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	faster_than_printf(char *msg, int signum);
+
 void	print_sig(int status)
 {
 	if (WTERMSIG(status) == SIGQUIT)
-		ft_putstr_fd("Quit: 3", STDOUT_FILENO);
+		faster_than_printf("Quit: ", SIGQUIT);
 	else if (WTERMSIG(status) == SIGSEGV)
-		ft_putstr_fd("Segmentation fault: 11", STDOUT_FILENO);
+		faster_than_printf("Segmentation fault: ", SIGSEGV);
+	else if (WTERMSIG(status) == SIGABRT)
+		faster_than_printf("Abort trap: ", SIGABRT);
+	else if (WTERMSIG(status) == SIGFPE)
+		faster_than_printf("Floating point exception: ", SIGFPE);
 	ft_putendl_fd("", STDOUT_FILENO);
 }
 

@@ -30,6 +30,12 @@ void	perror_exit_free(t_cmd *cmd, char *s, char *msg, int cond)
 	}
 }
 
+void	faster_than_printf(char *msg, int signum)
+{
+	ft_putstr_fd(msg, STDOUT_FILENO);
+	ft_putnbr_fd(signum, STDOUT_FILENO);
+}
+
 void	ctrl_d(char **new_env, char *pwd, int *status)
 {
 	free_ptr_arr(new_env);
