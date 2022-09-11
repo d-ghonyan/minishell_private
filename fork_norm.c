@@ -6,13 +6,13 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/03 15:25:01 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/11 15:07:07 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/11 15:15:59 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	fork_error(int i, pid_t *pids, t_cmd *cmd)
+int	fork_error(int i, pid_t *pids, t_cmd *cmd, int (*pipes)[2])
 {
 	int	stat;
 	int	j;
@@ -23,7 +23,10 @@ int	fork_error(int i, pid_t *pids, t_cmd *cmd)
 		waitpid(pids[j], &stat, 0);
 		j++;
 	}
+	close_pipes_parent(cmd->len - 1, pipes);
 	*(cmd->status) = 1;
+	free(pipes);
+	free(pids);
 	return (1);
 }
 

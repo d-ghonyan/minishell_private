@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/11 15:08:05 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/11 15:15:50 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int		fork_loop(char *line, pid_t *pids, t_cmd *cmd, int (*pipes)[2]);
 void	single_child(t_cmd *cmd);
 void	init_vars(int *status, char **path, t_cmd *cmd, int i);
 void	print_sig(int status);
-int		fork_error(int i, pid_t *pids, t_cmd *cmd);
+int		fork_error(int i, pid_t *pids, t_cmd *cmd, int (*pipes)[2]);
 
 int	has_an_error(t_cmd *cmd, int i)
 {
@@ -126,7 +126,7 @@ int	call_forks(t_cmd *cmd, char *line)
 			return (1);
 		i = fork_loop(line, pids, cmd, pipes);
 		if (i)
-			return (fork_error(i, pids, cmd));
+			return (fork_error(i, pids, cmd, pipes));
 		parent(cmd, pipes, pids, -1);
 		free(pipes);
 	}
