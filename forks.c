@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/10 14:53:11 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/11 15:08:05 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 
 int		free_stuff(t_cmd *cmd, char *path, int (*pipes)[2], int status);
 void	to_from(t_cmd *cmd);
-void	fork_loop(char *line, pid_t *pids, t_cmd *cmd, int (*pipes)[2]);
+int		fork_loop(char *line, pid_t *pids, t_cmd *cmd, int (*pipes)[2]);
 void	single_child(t_cmd *cmd);
 void	init_vars(int *status, char **path, t_cmd *cmd, int i);
 void	print_sig(int status);
+int		fork_error(int i, pid_t *pids, t_cmd *cmd);
 
 int	has_an_error(t_cmd *cmd, int i)
 {
@@ -51,9 +52,7 @@ int	parent(t_cmd *cmd, int (*pipes)[2], pid_t *pids, int i)
 		{
 			if (count && WTERMSIG(status) != SIGPIPE)
 				print_sig(status);
-			*(cmd->status) = 1;
-			if (WTERMSIG(status) != SIGPIPE)
-				*(cmd->status) = 128 + WTERMSIG(status);
+			*(cmd->status) = 128 + WTERMSIG(status);
 			count = 0;
 		}
 	}
@@ -105,9 +104,7 @@ int	single_command(t_cmd *cmd)
 		else if (WIFSIGNALED(a))
 		{
 			print_sig(a);
-			*(cmd->status) = 1;
-			if (WTERMSIG(a) != SIGPIPE)
-				*(cmd->status) = 128 + WTERMSIG(a);
+			*(cmd->status) = 128 + WTERMSIG(a);
 		}
 		return (0);
 	}
@@ -116,6 +113,7 @@ int	single_command(t_cmd *cmd)
 
 int	call_forks(t_cmd *cmd, char *line)
 {
+	int		i;
 	int		(*pipes)[2];
 	pid_t	*pids;
 
@@ -126,7 +124,9 @@ int	call_forks(t_cmd *cmd, char *line)
 		pipes = malloc(sizeof (*pipes) * (count_pipes(line)));
 		if (init_pipes(pipes, count_pipes(line), !pipes))
 			return (1);
-		fork_loop(line, pids, cmd, pipes);
+		i = fork_loop(line, pids, cmd, pipes);
+		if (i)
+			return (fork_error(i, pids, cmd));
 		parent(cmd, pipes, pids, -1);
 		free(pipes);
 	}

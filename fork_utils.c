@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/10 15:12:28 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/11 14:57:39 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,10 @@ int	fork_loop(char *line, pid_t *pids, t_cmd *cmd, int (*pipes)[2])
 	{
 		pids[i] = fork();
 		if (pids[i] < 0)
-			return (perror_ret("fork at call_forks()"));
+		{
+			perror("fork at call_forks()");
+			return (i);
+		}
 		if (pids[i] == 0)
 			children(cmd, pipes, count_pipes(line) + 1, i);
 	}
