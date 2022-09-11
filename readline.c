@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/08 21:05:06 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/11 17:16:39 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	g_status = 0;
 
-void	ctrl_d(char **new_env, char *pwd, int *status);
+void	ctrl_d(char **new_env, char *pwd, int *status, char *old_line);
 
 int	empty_event(void)
 {
@@ -29,10 +29,14 @@ void	sigint_p(int signum)
 	g_status = signum + 128;
 }
 
-void	_add_history(char *line)
+void	_add_history(char *line, char **old_line)
 {
-	if (line[0])
+	if (line[0] && (!(*old_line) || ft_strcmp(line, *old_line)))
+	{
 		add_history(line);
+		free(*old_line);
+		*old_line = ft_strdup(line);
+	}
 }
 
 void	init_prompt(char **prompt, char *pwd)
@@ -61,17 +65,16 @@ void	init_prompt(char **prompt, char *pwd)
 
 int	_readline(char **line, char **new_env, int *status, char *pwd)
 {
-	int		cond;
-	char	*prompt;
+	int			cond;
+	char		*prompt;
+	static char	*old_line = NULL;
 
 	init_prompt(&prompt, pwd);
 	*line = readline(prompt);
 	free(prompt);
 	if (!(*line))
-	{
-		ctrl_d(new_env, pwd, status);
-	}
-	_add_history(*line);
+		ctrl_d(new_env, pwd, status, old_line);
+	_add_history(*line, &old_line);
 	cond = (count_pipes(*line) < 0 || check_quotes(*line) || valid_red(*line));
 	if (!(*line[0]) || cond)
 	{

@@ -36,10 +36,11 @@ void	faster_than_printf(char *msg, int signum)
 	ft_putnbr_fd(signum, STDOUT_FILENO);
 }
 
-void	ctrl_d(char **new_env, char *pwd, int *status)
+void	ctrl_d(char **new_env, char *pwd, int *status, char *old_line)
 {
 	free_ptr_arr(new_env);
 	free(pwd);
+	free(old_line);
 	free(getoldpwd(NULL, 0));
 	ft_putendl_fd("exit", STDOUT_FILENO);
 	rl_clear_history();
