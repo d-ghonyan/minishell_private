@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/11 15:15:50 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/11 15:28:19 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,10 @@ int	single_command(t_cmd *cmd)
 	{
 		pid = fork();
 		if (pid < 0)
+		{
+			*(cmd->status) = 1;
 			return (perror_ret("fork at single_command"));
+		}
 		if (pid == 0)
 			single_child(cmd);
 		waitpid(pid, &a, 0);
