@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/05 13:02:38 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/12 11:51:12 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,13 @@ int	ft_env(t_cmd *cmd, int i, int envp, int single)
 	j = -1;
 	while (cmd->new_env[++j])
 	{
-		if (!envp)
+		if (!envp && ft_strcmp_env(cmd->new_env[j], "_"))
 		{
 			ft_putstr_fd("declare -x ", to);
 			export_print(cmd->new_env[j], to);
 			ft_putendl_fd("", to);
 		}
-		else
+		else if (envp)
 		{
 			if (ft_strchr(cmd->new_env[j], '='))
 				ft_putendl_fd(cmd->new_env[j], to);
