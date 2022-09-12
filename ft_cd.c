@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 17:32:59 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/08 11:39:12 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/12 11:36:18 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ int	_cd(t_cmd *cmd, char *s)
 {
 	char	*cwd;
 
+	if (!s[0])
+		return (0);
 	if (chdir(s) < 0)
 	{
 		perror_builtins(NF, "cd: ", s, ": ");
