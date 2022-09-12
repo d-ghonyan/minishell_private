@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/11 16:11:02 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/12 11:02:36 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,30 @@ void	faster_than_printf(char *msg, int signum);
 
 void	print_sig(int status)
 {
-	if (WTERMSIG(status) == SIGQUIT)
+	if (WTERMSIG(status) == SIGHUP)
+		faster_than_printf("Hangup: ", SIGHUP);
+	else if (WTERMSIG(status) == SIGQUIT)
 		faster_than_printf("Quit: ", SIGQUIT);
-	else if (WTERMSIG(status) == SIGSEGV)
-		faster_than_printf("Segmentation fault: ", SIGSEGV);
+	else if (WTERMSIG(status) == SIGILL)
+		faster_than_printf("Illegal instruction: ", SIGILL);
+	else if (WTERMSIG(status) == SIGTRAP)
+		faster_than_printf("Trace/BPT trap: ", SIGTRAP);
 	else if (WTERMSIG(status) == SIGABRT)
 		faster_than_printf("Abort trap: ", SIGABRT);
+	else if (WTERMSIG(status) == SIGBUS)
+		faster_than_printf("Bus error: ", SIGBUS);
+	else if (WTERMSIG(status) == SIGSEGV)
+		faster_than_printf("Segmentation fault: ", SIGSEGV);
+	else if (WTERMSIG(status) == SIGSYS)
+		faster_than_printf("Bad system call: ", SIGSYS);
 	else if (WTERMSIG(status) == SIGFPE)
 		faster_than_printf("Floating point exception: ", SIGFPE);
+	else if (WTERMSIG(status) == SIGXCPU)
+		faster_than_printf("Cputime limit exceeded: ", SIGXCPU);
+	else if (WTERMSIG(status) == SIGXFSZ)
+		faster_than_printf("Filesize limit exceeded: ", SIGXFSZ);
+	else if (WTERMSIG(status) == SIGPROF)
+		faster_than_printf("Profiling timer expired: ", SIGPROF);
 	ft_putendl_fd("", STDOUT_FILENO);
 }
 
