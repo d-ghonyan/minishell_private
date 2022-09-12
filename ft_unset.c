@@ -23,7 +23,7 @@ int	is_valid_unset(char *s)
 			return (0);
 		i++;
 	}
-	return (s[0] != '=');
+	return (s[0] != '\0');
 }
 
 void	remove_pwds(t_cmd *cmd, char *del)
