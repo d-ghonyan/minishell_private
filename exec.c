@@ -23,8 +23,8 @@ int	init_redirections(t_cmd *cmd, int i, int j)
 	while (++i < cmd->len)
 	{
 		j = -1;
-		cmd[i].fds = open_files(cmd, cmd[i].command);
-		if (!cmd[i].fds && redirection_count(cmd[i].command) > 0)
+		cmd[i].fds = open_files(cmd, cmd[i].command, 0, -1);
+		if (!cmd[i].fds && redirection_count(cmd[i].command, 0, 0) > 0)
 			return (1);
 		while (!is_signaled(cmd) && cmd[i].fds && ++j < cmd[i].fds->len)
 		{

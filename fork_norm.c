@@ -14,12 +14,10 @@
 
 int	fork_error(int i, pid_t *pids, t_cmd *cmd, int (*pipes)[2])
 {
-	int	dead;
 	int	stat;
 	int	j;
 
 	j = 0;
-	dead = 0;
 	while (j < i)
 	{
 		kill(pids[j], SIGTERM);

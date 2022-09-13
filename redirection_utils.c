@@ -57,37 +57,31 @@ int	valid_red(char *line)
 	return (0);
 }
 
-int	redirection_count(char *cmd)
+int	redirection_count(char *s, int i, int count)
 {
-	int	i;
-	int	count;
-
-	i = 0;
-	count = 0;
-	while (cmd[i])
+	while (s[i])
 	{
-		if (cmd[i] == '\'')
-			while (cmd[++i] && cmd[i] != '\'')
+		if (s[i] == '\'')
+			while (s[++i] && s[i] != '\'')
 				;
-		if (cmd[i] == '"')
-			while (cmd[++i] && cmd[i] != '"')
+		if (s[i] == '"')
+			while (s[++i] && s[i] != '"')
 				;
-		if (cmd[i] && (cmd[i] == '>' || cmd[i] == '<'))
+		if (s[i] && (s[i] == '>' || s[i] == '<'))
 		{
-			while (cmd[i] && (cmd[i] == '>' || cmd[i] == '<'))
+			while (s[i] && (s[i] == '>' || s[i] == '<'))
 				i++;
-			while (cmd[i] && ft_isspace(cmd[i]))
+			while (s[i] && ft_isspace(s[i]))
 				i++;
-			if (cmd[i] && !ft_isspace(cmd[i])
-				&& cmd[i] != '<' && cmd[i] != '>')
+			if (s[i] && !ft_isspace(s[i]) && s[i] != '<' && s[i] != '>')
 			{
 				count++;
-				while (cmd[i] && !ft_isspace(cmd[i])
-					&& cmd[i] != '<' && cmd[i] != '>')
+				while (s[i] && !ft_isspace(s[i])
+					&& s[i] != '<' && s[i] != '>')
 					i++;
 			}
 		}
-		i += (cmd[i] != '\0');
+		i += (s[i] != '\0');
 	}
 	return (count);
 }
