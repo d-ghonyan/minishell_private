@@ -79,17 +79,13 @@ int	redirection_index_but_like_changed(char *cmd, int i)
 	return (i);
 }
 
-t_fds	*open_files(t_cmd *cmd, char *s)
+t_fds	*open_files(t_cmd *cmd, char *s, int i, int j)
 {
-	int		i;
-	int		j;
 	char	*filename;
 	t_fds	*fds;
 
-	i = 0;
-	j = -1;
-	fds = alloc_fds(redirection_count(s));
-	perror_exit(cmd, "malloc at alloc_fds()", !fds && redirection_count(s));
+	fds = alloc_fds(redirection_count(s, 0, 0));
+	perror_exit(cmd, "malloc at alloc_fds()", !fds && redirection_count(s, 0, 0));
 	while (fds && s[i])
 	{
 		if (s[i] == '\'')

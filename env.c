@@ -63,7 +63,7 @@ void	replace_env(char **old_env, char *key, char *value, t_cmd *cmd)
 
 	i = -1;
 	j = ptr_arr_len(old_env);
-	while (++i < ptr_arr_len(old_env))
+	while (++i < j)
 	{
 		if (!ft_strcmp_env(old_env[i], key))
 		{
