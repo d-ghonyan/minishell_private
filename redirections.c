@@ -6,7 +6,7 @@
 /*   By: dghonyan <dghonyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 20:19:51 by dghonyan          #+#    #+#             */
-/*   Updated: 2022/09/12 14:29:31 by dghonyan         ###   ########.fr       */
+/*   Updated: 2022/09/21 15:24:24 by dghonyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,10 +98,8 @@ t_fds	*open_files(t_cmd *cmd, char *s)
 		if (s[i] == '"')
 			while (s[++i] && s[i] != '"')
 				;
-		printf("BBB\n");
 		if (s[i] == '<' || s[i] == '>')
 		{
-			printf("AAA");
 			filename = get_filename(s, i, s[i]);
 			perror_exit(cmd, "malloc at get_filename", !filename);
 			if (init_fds(fds + ++j, &s[i], filename, cmd))
