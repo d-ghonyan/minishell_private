@@ -1,8 +1,8 @@
 NAME = minishell
 CC = cc
-CFLAGS = -c -Wall -Wextra -g -ggdb3 -D LINUX # -Werror
-# READLINE = -lreadline -L readline-dghonyan/lib/
-READLINE = -lreadline
+CFLAGS = -c -Wall -Wextra -g -ggdb3 #-D LINUX # -Werror
+READLINE = -lreadline -L readline-dghonyan/lib/
+# READLINE = -lreadline
 PREFIX = "${shell find ${HOME} -name readline-dghonyan 2>/dev/null}"
 LIBFT = -lft -L libft
 SRCS = $(wildcard *.c)
