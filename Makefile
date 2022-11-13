@@ -1,12 +1,17 @@
+UNAME = $(shell uname -s)
 NAME = minishell
 CC = cc
-CFLAGS = -c -Wall -Wextra -g -ggdb3 #-D LINUX # -Werror
-READLINE = -lreadline -L readline-dghonyan/lib/
-# READLINE = -lreadline
+CFLAGS = -c -Wall -Wextra -g -ggdb3
 PREFIX = "${shell find ${HOME} -name readline-dghonyan 2>/dev/null}"
 LIBFT = -lft -L libft
 SRCS = $(wildcard *.c)
 OBJS = $(SRCS:.c=.o)
+
+ifeq ($(UNAME), Linux)
+	READLINE = -lreadline
+else
+	READLINE = -lreadline -L readline-dghonyan/lib/
+endif
 
 %.c:
 	$(CC) $(CFLAGS) $(SRCS)
@@ -28,7 +33,6 @@ fclean: clean
 re: fclean all
 
 readline:
-# rm -rf readline-dghonyan/*
 	cd readline-master && ./configure --prefix=$(PREFIX)/ && make clean && make && make install
 
 .PHONY: all clean fclean re lib readline

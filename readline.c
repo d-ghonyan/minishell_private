@@ -56,7 +56,7 @@ void	init_prompt(char **prompt, char *pwd)
 		free(temp);
 	}
 	temp = *prompt;
-	*prompt = ft_strjoin("\001" BLUE "\002", *prompt);
+	*prompt = ft_strjoin("\001" LIGHTCYAN "\002", *prompt);
 	free(temp);
 	temp = *prompt;
 	*prompt = ft_strjoin(*prompt, "\001" RESET "\002");
