@@ -7,14 +7,11 @@ LIBFT = -lft -L libft
 SRCS = $(wildcard *.c)
 OBJS = $(SRCS:.c=.o)
 
-ifeq ($(UNAME), Linux)
-	READLINE = -lreadline
-else
-	READLINE = -lreadline -L readline-dghonyan/lib/
-endif
+READLINE = -lreadline
 
-%.c:
-	$(CC) $(CFLAGS) $(SRCS)
+ifneq ($(UNAME), Linux)
+	READLINE += -L readline-dghonyan/lib/
+endif
 
 all: lib $(NAME)
 
