@@ -21,7 +21,7 @@ int	fork_error(int i, pid_t *pids, t_cmd *cmd, int (*pipes)[2])
 	while (j < i)
 	{
 		kill(pids[j], SIGTERM);
-		waitpid(pids[j], &stat, WNOHANG);
+		waitpid(pids[j], &stat, 0);
 		j++;
 	}
 	close_pipes_parent(cmd->len - 1, pipes);
